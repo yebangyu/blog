@@ -1,0 +1,466 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>再谈C++中的static const - Yebangyu's Blog</title>
+  <meta name="author" content="Yebangyu">
+
+  
+  <meta name="description" content="static const 在C++中的应用">
+  <meta name="keywords" content="static, const, c++, template">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.yebangyu.org/blog/2015/11/15/static-const-in-cpp/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Yebangyu's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.useso.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.useso.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.useso.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Yebangyu's Blog</a></h1>
+  
+    <h2>Specialized in Concurrent Programming and C++.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.baidu.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="www.yebangyu.org">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About Me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">再谈C++中的static const</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-11-15T12:45:16+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:45 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>废话不多说了，开始这次的讨论吧。</p>
+
+<h2 id="section">提出问题</h2>
+
+<p>同事颜廷帅（微博：@颜挺帅）拿了一段代码让我分析。以下代码，能编译链接通过吗？</p>
+
+<!--more-->
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="k">const</span> <span class="kt">int</span> <span class="o">&amp;</span><span class="n">value</span><span class="p">)</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="k">class</span> <span class="nc">Test</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line"><span class="k">public</span><span class="o">:</span>
+</span><span class="line">  <span class="k">static</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line"><span class="p">};</span>
+</span><span class="line"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="n">f</span><span class="p">(</span><span class="n">Test</span><span class="o">::</span><span class="n">a</span><span class="p">);</span>
+</span><span class="line">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>我的第一感觉是：应该没问题，吧。在<strong>Visual Studio 2013</strong> 实验了下，顺利通过，一切正常.</p>
+
+<p>然而同事说，<strong>gcc</strong>下是报错的：Undefined reference to ‘Test::a’</p>
+
+<p>这是为什么？</p>
+
+<h2 id="section-1">分析问题</h2>
+
+<p>写作本文时所用的环境是<strong>gcc 4.8.2 (Ubuntu 14.04 , X86平台)</strong>。</p>
+
+<p>注意，本文的讨论只针对类的<strong>static const</strong>成员，也就是所谓的<strong>class scope</strong>。<strong>namespace scope</strong>的情况不属于我们的讨论范围内。</p>
+
+<p>把以上代码保存为<strong>test.cpp</strong>，然后用<strong>gcc</strong>编译它：</p>
+
+<pre><code>g++ -c -o test.o test.cpp
+</code></pre>
+
+<p>这个命令执行之后，我们会在目录下得到<strong>test.o</strong>文件。接着，我们通过<strong>objdump</strong>来查看符号表：</p>
+
+<pre><code>objdump -x test.o
+</code></pre>
+
+<p>我们可以看到类似如下的输出：</p>
+
+<pre><code>SYMBOL TABLE:
+00000000 l    df *ABS*	00000000 test.cpp
+00000000 l    d  .text	00000000 .text
+00000000 l    d  .data	00000000 .data
+00000000 l    d  .bss	00000000 .bss
+00000000 l    d  .note.GNU-stack	00000000 .note.GNU-stack
+00000000 l    d  .eh_frame	00000000 .eh_frame
+00000000 l    d  .comment	00000000 .comment
+00000000 g     F .text	00000005 _Z1fRKi
+00000005 g     F .text	00000019 main
+00000000         *UND*	00000000 _ZN4Test1aE
+</code></pre>
+
+<p>上面的最后一行，<strong>_ZN4Test1aE</strong>就是对应我们程序中声明的<strong>Test::a</strong>。之所以长得这么复杂、奇怪，是因为编译器做了<strong>mangling</strong>处理。</p>
+
+<p>注意到*UND*没？根据<a href="https://sourceware.org/binutils/docs/binutils/objdump.html">文档</a>的解释：</p>
+
+<p>*UND* : if the section is referenced in the file being dumped, but not defined there</p>
+
+<p>也就是<strong>_ZN4Test1aE</strong>在本<strong>.o</strong>文件中引用，然而它却木有定义。因此，报Undefined reference to ‘Test::a’的错，也就情理之中了。</p>
+
+<p>那么，我们的程序是否真的引用了<strong>_ZN4Test1aE</strong>呢？恩，我们接着往下看。</p>
+
+<p>输入如下命令：</p>
+
+<pre><code>g++ -S test.cpp
+</code></pre>
+
+<p>我们可以得到类似这样的汇编代码(做了整理，节选)：</p>
+
+<pre><code>main:
+	pushl	%ebp
+	movl	%esp, %ebp
+	subl	$4, %esp
+	movl	$_ZN4Test1aE, (%esp) ;看到没？_ZN4Test1aE ！
+	call	_Z1fRKi ;调用函数f
+	movl	$0, %eax
+	leave
+	ret
+</code></pre>
+
+<p>虽然我们已经分析出为什么会报错，然而，我们还有一个疑问，就是，为什么下面的代码，是OK的？</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="k">const</span> <span class="kt">int</span> <span class="n">value</span><span class="p">)</span> <span class="c1">//这里没有 &amp;</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="k">class</span> <span class="nc">Test</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line"><span class="k">public</span><span class="o">:</span>
+</span><span class="line">  <span class="k">static</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line"><span class="p">};</span>
+</span><span class="line"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="n">f</span><span class="p">(</span><span class="n">Test</span><span class="o">::</span><span class="n">a</span><span class="p">);</span><span class="c1">//没问题</span>
+</span><span class="line">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>恩，有了前面的基础，相信读者诸君已经知道怎么分析。我们可以用同样的方法，看看它的汇编代码：</p>
+
+<pre><code>main:
+	pushl	%ebp
+	movl	%esp, %ebp
+	subl	$4, %esp
+	movl	$1, (%esp)     ;看到没？1，不是_ZN4Test1aE，也不是Test::a
+	call	_Z1fi
+	movl	$0, %eax
+	leave
+	ret
+</code></pre>
+
+<p>也就是说，在这里，编译器只是把<strong>Test::a</strong>认作一个占位符，实际使用之处用<strong>1</strong>代替了。</p>
+
+<h2 id="section-2">解决问题</h2>
+
+<p>知道原因了，那么怎么解决呢？恩，至少三种方法：</p>
+
+<p>1，我们可以<strong>定义</strong>（而不是声明）<strong>Test::a</strong>。是的，上面的<code>static const int a = 1;</code>并不是它的定义式。如果要定义，那么我们应该这么做：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="k">const</span> <span class="kt">int</span> <span class="o">&amp;</span><span class="n">value</span><span class="p">)</span><span class="c1">//还是传引用</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="k">class</span> <span class="nc">Test</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line"><span class="k">public</span><span class="o">:</span>
+</span><span class="line">  <span class="k">static</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">a</span><span class="p">;</span>
+</span><span class="line"><span class="p">};</span>
+</span><span class="line"><span class="k">const</span> <span class="kt">int</span> <span class="n">Test</span><span class="o">::</span><span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span><span class="c1">//定义a</span>
+</span><span class="line"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="n">f</span><span class="p">(</span><span class="n">Test</span><span class="o">::</span><span class="n">a</span><span class="p">);</span><span class="c1">//现在没问题了</span>
+</span><span class="line">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>有兴趣的读者可以看看这个程序对应的符号表，就会发现<strong>Test::a</strong>被放在了程序的<strong>rodata section</strong>，而不是*UND*了。</p>
+
+<p>2，如果仅仅声明<strong>a</strong>，那么我们可以按值的方式使用它，这没问题。也就是只使用它的值；而不去获得它的地址(当然，也包括引用。引用本质上也是地址)。</p>
+
+<p>3，使用枚举类型。是的，枚举！像这样：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="k">const</span> <span class="kt">int</span> <span class="o">&amp;</span><span class="n">value</span><span class="p">)</span><span class="c1">//还是传引用</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="k">class</span> <span class="nc">Test</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line"><span class="k">public</span><span class="o">:</span>
+</span><span class="line">  <span class="k">enum</span> <span class="n">HELLOWORLD</span> <span class="p">{</span><span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">};</span> <span class="c1">//枚举，而不是 static const</span>
+</span><span class="line"><span class="p">};</span>
+</span><span class="line"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="n">f</span><span class="p">(</span><span class="n">Test</span><span class="o">::</span><span class="n">a</span><span class="p">);</span><span class="c1">//没问题</span>
+</span><span class="line">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>那么，这种情况下，编译器是如何处理的呢？就留给读者诸君作为练习吧。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Yebangyu</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-11-15T12:45:16+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:45 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/c-plus-plus/'>c++</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/11/11/xinpingqiheshuosangumaolu/" title="Previous Post: 心平气和说三顾茅庐">&laquo; 心平气和说三顾茅庐</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2015/11/23/build-distributed-compilation-ev/" title="Next Post: 利用Distcc和Dmucs构建大规模、分布式C++编译环境(上)">利用Distcc和Dmucs构建大规模、分布式C++编译环境(上) &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/12/26/aprogrammersclock/">程序员时钟解读</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/19/cuckoo-hashing/">Introduction To Cuckoo Hashing</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/16/readinglist/">2015-12-16 近期好书推荐</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/14/introduction-to-hazard-pointer/">Lock Free中的Hazard Pointer(中)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/10/introduction-to-hazard-pointer/">Lock Free中的Hazard Pointer(上)</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>友情链接</h1>
+  <ul>
+    <li>
+	  <li><a href="http://www.chongh.wiki/">wangchonghua</a></li>
+      <li><a href="http://www.armsword.com">armsword</a></li>
+    </li>
+  </ul>
+</section><section>
+  <h1>Yebangyu</h1>
+  <p>福建人。热爱历史、K歌、NBA</p>
+  <p>帝都码农</p>
+  <p>历史学家，专治三国史</p>
+</section>
+<section>
+ <h1>Categories</h1>
+ <ul id="categories">
+  <li class='category'><a href='/blog/categories/c-plus-plus/'>c++ (4)</a></li>
+<li class='category'><a href='/blog/categories/life/'>life (1)</a></li>
+<li class='category'><a href='/blog/categories/web/'>web (1)</a></li>
+<li class='category'><a href='/blog/categories/qi-ta/'>其他 (4)</a></li>
+<li class='category'><a href='/blog/categories/li-shi/'>历史 (1)</a></li>
+<li class='category'><a href='/blog/categories/bing-xing-bian-cheng/'>并行编程 (5)</a></li>
+<li class='category'><a href='/blog/categories/suan-fa/'>算法 (1)</a></li>
+<li class='category'><a href='/blog/categories/bian-yi-lian-jie/'>编译链接 (2)</a></li>
+
+ </ul>
+</section>
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+<p>
+  Copyright &copy; 2015 - Yebangyu -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

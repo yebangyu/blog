@@ -1,0 +1,343 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Introduction To Cuckoo Hashing - Yebangyu's Blog</title>
+  <meta name="author" content="Yebangyu">
+
+  
+  <meta name="description" content="Cuckoo Hashing">
+  <meta name="keywords" content="Cuckoo Hashing , Lock Free">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.yebangyu.org/blog/2015/12/19/cuckoo-hashing/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Yebangyu's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.useso.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.useso.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.useso.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Yebangyu's Blog</a></h1>
+  
+    <h2>Specialized in Concurrent Programming and C++.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.baidu.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="www.yebangyu.org">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About Me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Introduction To Cuckoo Hashing</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-12-19T00:41:37+08:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:41 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2 id="motivation--intuition">Motivation &amp; Intuition</h2>
+
+<p>为什么引入<strong>Cuckoo Hashing</strong>？</p>
+
+<p>常见的<strong>hashing</strong>处理冲突方法一般包括两种：开散列（<strong>Separate Chaining</strong>）和闭散列<strong>（Linear / Quadratic Probing</strong>
+）。开散列是将冲突的元素组织成一个链表（其实组织成一个二叉搜索树也是完全没问题的，甚至跳表也行），闭散列将冲突的元素还是放在哈希表<strong>slot</strong>中，使用线性探测等方法进行处理。</p>
+
+<p>那么，这两种方法，都有啥优缺点呢？</p>
+
+<!--more-->
+
+<p>开散列，实现简单，但是对<strong>cache</strong>不友好，<strong>cache miss rate</strong>较高。</p>
+
+<p>闭散列，实现相对复杂一点点，对<strong>cache</strong>很友好，但是对<strong>load factor</strong>要求苛刻：<strong>load factor</strong>稍高性能就急剧下降。</p>
+
+<p>这两种方式下，查找某个元素的最坏时间都是<strong>O(n)</strong>。</p>
+
+<p>你说，<strong>OK，OK</strong>，我知道，这些都是常识。那么，是否可以做到查找最坏是<strong>O(1)</strong>呢？</p>
+
+<p>一种思路是元素只可能被安置到有限的常数(记为<strong>K</strong>)个位置，插入时，如果发生冲突，由于每个元素可以存放的位置有<strong>K</strong>个，因此可以对表部分元素进行重排，产生一个空缺的位置。</p>
+
+<p><strong>Cuckoo Hashing</strong>就是这样的方式。当<strong>K=2</strong>时，<strong>Cuckoo Hashing</strong>在<strong>load factor</strong>为<strong>50%</strong>左右的情况下表现较佳。如果<strong>K=4</strong>，那么甚至可以在<strong>97%</strong>的<strong>load factor</strong>下良好工作。</p>
+
+<h2 id="cuckoo-hashing">Cuckoo Hashing</h2>
+
+<p>一般的<strong>Hashing</strong>只包括一个<strong>Hash Tables</strong>，但是<strong>Cuckoo Hashing</strong>由两张甚至多张表构成。每张表对应一个哈希函数。本文讨论两张哈希表（记为<strong>table1</strong>和<strong>table2</strong>）、两个哈希函数（记为<strong>hf1</strong>和<strong>hf2</strong>）这种常见情形。</p>
+
+<h3 id="insert">Insert</h3>
+
+<p>首先通过<strong>hf1</strong>计算出一个<strong>slot index</strong>，然后查看<strong>table1</strong>中该<strong>slot</strong>是否<strong>vacant</strong>，如果是，则插入；否则通过<strong>hf2</strong>计算出一个<strong>slot index</strong>，通过查看<strong>table2</strong>中该<strong>slot</strong>是否<strong>vacant</strong>，如果是，则插入，否则执行<strong>rearrange</strong>操作。</p>
+
+<p><strong>rearrange</strong>操作的过程：随机选出一张表，将<strong>slot index</strong>对应的那个元素踢出(<strong>evict</strong>)，把我们待插入的元素插到那个位置。那被踢出来的元素呢？尝试插入到另外一张表对应的<strong>slot</strong>处，这时候可能又踢出一个元素，接下去就是递归的执行这个过程，直到所有元素都安置妥当。</p>
+
+<p>举个例子吧，假如某个时刻，两个哈希表的内容如下：</p>
+
+<p><img src="http://7xnljs.com1.z0.glb.clouddn.com/table1.jpg" alt="table1" /></p>
+
+<p>假设我们待插入的元素为<strong>77</strong>。</p>
+
+<p><strong>slot index1 = hf1(77) = 1</strong></p>
+
+<p><strong>Table1</strong>中的<strong>index</strong>为<strong>1</strong>的<strong>slot</strong>已经被<strong>78</strong>占了。那么看<strong>Table2</strong>：</p>
+
+<p><strong>slot index2 = hf2(77) = 3</strong></p>
+
+<p><strong>Table2</strong>中的<strong>index</strong>为<strong>3</strong>的<strong>slot</strong>已经被<strong>33</strong>占了。因此执行<strong>rearrange</strong>。</p>
+
+<p>执行<strong>rearrange</strong>动作，选择<strong>Table2</strong>，将<strong>slot index = 3</strong>的元素<strong>33</strong>踢出，插入<strong>77</strong>。然后被踢出的元素<strong>33</strong>，计算它在<strong>Table1</strong>中的<strong>index</strong>为<strong>slot index1 = hf2(33) = 2</strong>，因此将<strong>95</strong>踢出，插入<strong>33</strong>。被踢出的元素<strong>95</strong>在<strong>Table2</strong>中的<strong>slot index</strong>为<strong>2</strong>，该<strong>slot</strong>为<strong>vacant</strong>，没人使用，因此将<strong>95</strong>插入。完毕。现在的<strong>Tables</strong>中元素为：</p>
+
+<p><img src="http://7xnljs.com1.z0.glb.clouddn.com/table2.jpg" alt="table2" /></p>
+
+<p>值得注意的是，<strong>rearrange</strong>可能失败（表满了;或者发生“死循环”），此时需要进行<strong>rehash</strong>，因此代码里需要有一定的判断。当<strong>K=2</strong>时，只要<strong>load factor</strong>低于<strong>50%</strong>，需要<strong>rehash</strong>的概率很小很小。</p>
+
+<p>在某些假设下，插入操作的摊还期望复杂度为常数时间。</p>
+
+<h3 id="find">Find</h3>
+
+<p>要检查的<strong>slot</strong>一共两个，<strong>index</strong>分别为<strong>hf1(key)</strong>和<strong>hf2(key)</strong>，因此只要查看一下<strong>Table1</strong>中的<strong>hf1(key)</strong>以及<strong>Table2</strong>中的<strong>hf2(key)</strong>这两个<strong>slot</strong>即可。时间复杂度为<strong>O(1)</strong>。</p>
+
+<h3 id="del">Del</h3>
+
+<p>同<strong>Find</strong>，要检查的<strong>slot</strong>也就两个，复杂度为<strong>O(1)</strong>。</p>
+
+<h2 id="section">实现</h2>
+
+<p>简单实现了一个，有需要的可以参考<a href="https://github.com/yebangyu/Yedis/blob/master/src/ds/CuckooHashMap.h">这里</a></p>
+
+<h2 id="section-1">其他</h2>
+
+<p>1，我们注意到，<strong>Cuckoo Hashing</strong>的精髓是使用两个不同的哈希函数，而不是两张表。两张表的存在，仅仅是为了分析上的方便。</p>
+
+<p>当需要<strong>rehash</strong>而<strong>load factor</strong>又没达到<strong>100%</strong>时，我们其实不需要扩容哈希表，只需要更换哈希函数。</p>
+
+<p>2，为嘛叫做<strong>Cuckoo Hashing</strong>？<strong>Cuckoo</strong>，即杜鹃鸟（布谷鸟），这种鸟有一种尿性：孵卵寄生。把蛋产到别的鸟窝里，让别人帮它孵化。这还不算，还要把人家寄主的一些卵给移走（不然容易引起怀疑嘛，毕竟鸟窝里突然多出几枚蛋。至于移走多少，就得看杜鹃鸟数学合不合格了）！等卵孵化完成，幼雏会将鸟窝里寄主的卵和其他幼雏推出鸟窝。真是牛逼闪闪了。</p>
+
+<h2 id="section-2">参考文献</h2>
+
+<p>http://resources.mpi-inf.mpg.de/departments/d1/teaching/ws14/AlgoDat/materials/cuckoo.pdf</p>
+
+<p><strong>Cuckoo Hashing</strong>原始论文</p>
+
+<p>https://www.eecs.harvard.edu/~michaelm/postscripts/esa2009.pdf</p>
+
+<p>这篇文章介绍了一些关于<strong>Cuckoo Hashing</strong>的<strong>Open Questions</strong></p>
+
+<p>http://web.stanford.edu/class/cs166/lectures/13/Slides13.pdf</p>
+
+<p>这个<strong>slides</strong>偏重对<strong>Cuckoo Hashing</strong>理论上的分析，注意其中对于插入操作的处理和本文介绍的不同。</p>
+
+<p>http://excess-project.eu/publications/published/CuckooHashing_ICDCS.pdf</p>
+
+<p>碉堡了，<strong>Lock Free Cuckoo Hashing</strong>。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Yebangyu</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-12-19T00:41:37+08:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:41 am</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/suan-fa/'>算法</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/12/16/readinglist/" title="Previous Post: 2015-12-16 近期好书推荐">&laquo; 2015-12-16 近期好书推荐</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2015/12/26/aprogrammersclock/" title="Next Post: 程序员时钟解读">程序员时钟解读 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/12/26/aprogrammersclock/">程序员时钟解读</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/19/cuckoo-hashing/">Introduction To Cuckoo Hashing</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/16/readinglist/">2015-12-16 近期好书推荐</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/14/introduction-to-hazard-pointer/">Lock Free中的Hazard Pointer(中)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/10/introduction-to-hazard-pointer/">Lock Free中的Hazard Pointer(上)</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>友情链接</h1>
+  <ul>
+    <li>
+	  <li><a href="http://www.chongh.wiki/">wangchonghua</a></li>
+      <li><a href="http://www.armsword.com">armsword</a></li>
+    </li>
+  </ul>
+</section><section>
+  <h1>Yebangyu</h1>
+  <p>福建人。热爱历史、K歌、NBA</p>
+  <p>帝都码农</p>
+  <p>历史学家，专治三国史</p>
+</section>
+<section>
+ <h1>Categories</h1>
+ <ul id="categories">
+  <li class='category'><a href='/blog/categories/c-plus-plus/'>c++ (4)</a></li>
+<li class='category'><a href='/blog/categories/life/'>life (1)</a></li>
+<li class='category'><a href='/blog/categories/web/'>web (1)</a></li>
+<li class='category'><a href='/blog/categories/qi-ta/'>其他 (4)</a></li>
+<li class='category'><a href='/blog/categories/li-shi/'>历史 (1)</a></li>
+<li class='category'><a href='/blog/categories/bing-xing-bian-cheng/'>并行编程 (5)</a></li>
+<li class='category'><a href='/blog/categories/suan-fa/'>算法 (1)</a></li>
+<li class='category'><a href='/blog/categories/bian-yi-lian-jie/'>编译链接 (2)</a></li>
+
+ </ul>
+</section>
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+<p>
+  Copyright &copy; 2015 - Yebangyu -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,441 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Linux环境多线程编程基础设施 - Yebangyu's Blog</title>
+  <meta name="author" content="Yebangyu">
+
+  
+  <meta name="description" content="linux下多线程编程基础设施">
+  <meta name="keywords" content="多线程, volatile, memory barrier, __sync_synchronize">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.yebangyu.org/blog/2015/10/31/linux-parallen-programmming-infrastructure/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Yebangyu's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.useso.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.useso.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.useso.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Yebangyu's Blog</a></h1>
+  
+    <h2>Specialized in Concurrent Programming and C++.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.baidu.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="www.yebangyu.org">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About Me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Linux环境多线程编程基础设施</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-10-31T18:43:00+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>6:43 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>本文介绍多线程环境下并行编程的基础设施。主要包括：
+&gt; * volatile
+&gt; * __thread
+&gt; * Memory Barrier
+&gt; * __sync_synchronize</p>
+
+<h2 id="volatile">volatile</h2>
+
+<p>编译器有时候为了优化性能，会将一些变量的值缓存到寄存器中，因此如果编译器发现该变量的值没有改变的话，将从寄存器里读出该值，这样可以避免内存访问。</p>
+
+<p>但是这种做法有时候会有问题。如果该变量确实（以某种很难检测的方式）被修改呢？那岂不是读到错的值？是的。在多线程情况下，问题更为突出：当某个线程对一个内存单元进行修改后，其他线程如果从寄存器里读取该变量可能读到老值，未更新的值，错误的值，不新鲜的值。</p>
+
+<!--more-->
+
+<p>如何防止这样错误的“优化”？方法就是给变量加上<strong>volatile</strong>修饰。</p>
+
+<pre><code>volatile int i=10;//用volatile修饰变量i
+......//something happened 
+int b = i;//强制从内存中读取实时的i的值
+</code></pre>
+
+<p><strong>OK</strong>，毕竟<strong>volatile</strong>不是完美的，它也在某种程度上限制了优化。有时候是不是有这样的需求：我要你立即实时读取数据的时候，你就访问内存，别优化；否则，你该优化还是优化你的。能做到吗？</p>
+
+<p>不加<strong>volatile</strong>修饰，那么就做不到前面一点。加了<strong>volatile</strong>，后面这一方面就无从谈起，怎么办？伤脑筋。</p>
+
+<p>其实我们可以这样：</p>
+
+<pre><code>int i = 2; //变量i还是不用加volatile修饰
+
+#define ACCESS_ONCE(x) (* (volatile typeof(x) *) &amp;(x))
+</code></pre>
+
+<p>需要实时读取i的值时候，就调用<code>ACCESS_ONCE(i)</code>，否则直接使用i即可。</p>
+
+<p>这个技巧，我是从《<strong>Is parallel programming hard？</strong>》上学到的。</p>
+
+<p>听起来都很好？然而险象环生：<strong>volatile</strong>常被误用，很多人往往不知道或者忽略它的两个特点：在<strong>C/C++</strong>语言里，<strong>volatile</strong>不保证原子性；使用<strong>volatile</strong>不应该对它有任何<strong>Memory Barrier</strong>的期待。</p>
+
+<p>第一点比较好理解，对于第二点，我们来看一个很经典的例子：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="k">volatile</span> <span class="kt">int</span> <span class="n">is_ready</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="kt">char</span> <span class="n">message</span><span class="p">[</span><span class="mi">123</span><span class="p">];</span>
+</span><span class="line"><span class="kt">void</span> <span class="n">thread_A</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="k">while</span><span class="p">(</span><span class="n">is_ready</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class="line">  <span class="p">{</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line">  <span class="c1">//use message;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="kt">void</span> <span class="n">thread_B</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="n">strcpy</span><span class="p">(</span><span class="n">message</span><span class="p">,</span><span class="s">&quot;everything seems ok&quot;</span><span class="p">);</span>
+</span><span class="line">  <span class="n">is_ready</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>线程<strong>B</strong>中，虽然<strong>is_ready</strong>有<strong>volatile</strong>修饰，但是这里的<strong>volatile</strong>不提供任何<strong>Memory Barrier</strong>，因此<strong>12</strong>行和<strong>13</strong>行可能被乱序执行，<code>is_ready = 1</code>被执行，而<strong>message</strong>还未被正确设置，导致线程<strong>A</strong>读到错误的值。</p>
+
+<p>这意味着，在多线程中使用<strong>volatile</strong>需要非常谨慎、小心。</p>
+
+<h2 id="thread">__thread</h2>
+
+<p><strong>__thread</strong>是<strong>gcc</strong>内置的用于多线程编程的基础设施。用<strong>__thread</strong>修饰的变量，每个线程都拥有一份实体，相互独立，互不干扰。举个例子：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="cp">#include&lt;iostream&gt;  </span>
+</span><span class="line"><span class="cp">#include&lt;pthread.h&gt;  </span>
+</span><span class="line"><span class="cp">#include&lt;unistd.h&gt;  </span>
+</span><span class="line"><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span><span class="line"><span class="n">__thread</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line"><span class="kt">void</span><span class="o">*</span> <span class="nf">thread1</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">arg</span><span class="p">);</span>
+</span><span class="line"><span class="kt">void</span><span class="o">*</span> <span class="nf">thread2</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">arg</span><span class="p">);</span>
+</span><span class="line"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="kt">pthread_t</span> <span class="n">pthread1</span><span class="p">;</span>
+</span><span class="line">  <span class="kt">pthread_t</span> <span class="n">pthread2</span><span class="p">;</span>
+</span><span class="line">  <span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pthread1</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">thread1</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span><span class="line">  <span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pthread2</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">thread2</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span><span class="line">  <span class="n">pthread_join</span><span class="p">(</span><span class="n">pthread1</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span><span class="line">  <span class="n">pthread_join</span><span class="p">(</span><span class="n">pthread2</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span><span class="line">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="kt">void</span><span class="o">*</span> <span class="nf">thread1</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">arg</span><span class="p">)</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="n">cout</span><span class="o">&lt;&lt;++</span><span class="n">i</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span><span class="c1">//输出 2  </span>
+</span><span class="line">  <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="kt">void</span><span class="o">*</span> <span class="nf">thread2</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">arg</span><span class="p">)</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="c1">//等待thread1完成更新</span>
+</span><span class="line">  <span class="n">cout</span><span class="o">&lt;&lt;++</span><span class="n">i</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span><span class="c1">//输出 2，而不是3</span>
+</span><span class="line">  <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>需要注意的是：</p>
+
+<p>1，<strong>__thread</strong>可以修饰全局变量、函数的静态变量，但是无法修饰函数的局部变量。</p>
+
+<p>2，被<strong>__thread</strong>修饰的变量只能在编译期初始化，且只能通过常量表达式来初始化。</p>
+
+<h2 id="memory-barrier">Memory Barrier</h2>
+
+<p>为了优化，现代编译器和<strong>CPU</strong>可能会乱序执行指令。例如：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line"><span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class="line"><span class="n">a</span> <span class="o">=</span> <span class="n">b</span> <span class="o">+</span> <span class="mi">3</span><span class="p">;</span>
+</span><span class="line"><span class="n">b</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><strong>CPU</strong>乱序执行后，第4行语句和第5行语句的执行顺序可能变为先<code>b=10</code>然后再<code>a=b+3</code></p>
+
+<p>有些人可能会说，那结果不就不对了吗？b为10，a为13？可是正确结果应该是a为5啊。</p>
+
+<p>哦，这里说的是语句的执行，对应的汇编指令不是简单的mov b,10和mov b,a+3。</p>
+
+<p>生成的汇编代码可能是：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="n">movl</span>    <span class="n">b</span><span class="p">(</span><span class="o">%</span><span class="n">rip</span><span class="p">),</span> <span class="o">%</span><span class="n">eax</span> <span class="p">;</span> <span class="err">将</span><span class="n">b</span><span class="err">的值暂存入</span><span class="o">%</span><span class="n">eax</span>
+</span><span class="line"><span class="n">movl</span>    <span class="err">$</span><span class="mi">10</span><span class="p">,</span> <span class="n">b</span><span class="p">(</span><span class="o">%</span><span class="n">rip</span><span class="p">)</span> <span class="p">;</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">10</span>
+</span><span class="line"><span class="n">addl</span>    <span class="err">$</span><span class="mi">3</span><span class="p">,</span> <span class="o">%</span><span class="n">eax</span> <span class="p">;</span> <span class="o">%</span><span class="n">eax</span><span class="err">加</span><span class="mi">3</span>
+</span><span class="line"><span class="n">movl</span>    <span class="o">%</span><span class="n">eax</span><span class="p">,</span> <span class="n">a</span><span class="p">(</span><span class="o">%</span><span class="n">rip</span><span class="p">)</span> <span class="p">;</span> <span class="err">将</span><span class="o">%</span><span class="n">eax</span><span class="err">也就是</span><span class="n">b</span><span class="o">+</span><span class="mi">3</span><span class="err">的值写入</span><span class="n">a</span><span class="p">,</span><span class="err">即</span> <span class="n">a</span> <span class="o">=</span> <span class="n">b</span> <span class="o">+</span> <span class="mi">3</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>这并不奇怪，为了优化性能，有时候确实可以这么做。但是在多线程并行编程中，有时候乱序就会出问题。</p>
+
+<p>一个最典型的例子是用锁保护临界区。如果临界区的代码被拉到加锁前或者释放锁之后执行，那么将导致不明确的结果，往往让人不开心的结果。</p>
+
+<p>还有，比如随意将读数据和写数据乱序，那么本来是先读后写，变成先写后读就导致后面读到了脏的数据。因此，<strong>Memory Barrier</strong>就是用来防止乱序执行的。具体说来，<strong>Memory Barrier</strong>包括三种：</p>
+
+<p>1，<strong>acquire barrier</strong>。<strong>acquire barrier</strong>之后的指令不能也不会被拉到该<strong>acquire barrier</strong>之前执行。</p>
+
+<p>2，<strong>release barrier</strong>。<strong>release barrier</strong>之前的指令不能也不会被拉到该<strong>release barrier</strong>之后执行。</p>
+
+<p>3，<strong>full barrier</strong>。以上两种的合集。</p>
+
+<p>所以，很容易知道，加锁，也就是<strong>lock</strong>对应<strong>acquire barrier</strong>；释放锁，也就是<strong>unlock</strong>对应<strong>release barrier</strong>。哦，那么<strong>full barrier</strong>呢？</p>
+
+<h2 id="syncsynchronize">__sync_synchronize</h2>
+
+<p><code>__sync_synchronize</code>就是一种<strong>full barrier</strong>。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Yebangyu</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-10-31T18:43:00+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>6:43 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/bing-xing-bian-cheng/'>并行编程</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/10/25/tools-of-the-trade/" title="Previous Post: Tools of the trade">&laquo; Tools of the trade</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2015/11/06/how-to-write-elegant-cpp-codes/" title="Next Post: 编写高质量代码(上)">编写高质量代码(上) &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/12/26/aprogrammersclock/">程序员时钟解读</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/19/cuckoo-hashing/">Introduction To Cuckoo Hashing</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/16/readinglist/">2015-12-16 近期好书推荐</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/14/introduction-to-hazard-pointer/">Lock Free中的Hazard Pointer(中)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/10/introduction-to-hazard-pointer/">Lock Free中的Hazard Pointer(上)</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>友情链接</h1>
+  <ul>
+    <li>
+	  <li><a href="http://www.chongh.wiki/">wangchonghua</a></li>
+      <li><a href="http://www.armsword.com">armsword</a></li>
+    </li>
+  </ul>
+</section><section>
+  <h1>Yebangyu</h1>
+  <p>福建人。热爱历史、K歌、NBA</p>
+  <p>帝都码农</p>
+  <p>历史学家，专治三国史</p>
+</section>
+<section>
+ <h1>Categories</h1>
+ <ul id="categories">
+  <li class='category'><a href='/blog/categories/c-plus-plus/'>c++ (4)</a></li>
+<li class='category'><a href='/blog/categories/life/'>life (1)</a></li>
+<li class='category'><a href='/blog/categories/web/'>web (1)</a></li>
+<li class='category'><a href='/blog/categories/qi-ta/'>其他 (4)</a></li>
+<li class='category'><a href='/blog/categories/li-shi/'>历史 (1)</a></li>
+<li class='category'><a href='/blog/categories/bing-xing-bian-cheng/'>并行编程 (5)</a></li>
+<li class='category'><a href='/blog/categories/suan-fa/'>算法 (1)</a></li>
+<li class='category'><a href='/blog/categories/bian-yi-lian-jie/'>编译链接 (2)</a></li>
+
+ </ul>
+</section>
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+<p>
+  Copyright &copy; 2015 - Yebangyu -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

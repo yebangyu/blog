@@ -1,0 +1,2898 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Yebangyu's Blog]]></title>
+  <link href="http://www.yebangyu.org/atom.xml" rel="self"/>
+  <link href="http://www.yebangyu.org/"/>
+  <updated>2015-12-27T20:35:33+08:00</updated>
+  <id>http://www.yebangyu.org/</id>
+  <author>
+    <name><![CDATA[Yebangyu]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[程序员时钟解读]]></title>
+    <link href="http://www.yebangyu.org/blog/2015/12/26/aprogrammersclock/"/>
+    <updated>2015-12-26T10:59:04+08:00</updated>
+    <id>http://www.yebangyu.org/blog/2015/12/26/aprogrammersclock</id>
+    <content type="html"><![CDATA[<p>最近购买圣诞礼物，抱着万能的淘宝的想法，在上面搜了一下“数学钟”，也就是非常流行的下面这幅图：</p>
+
+<p><img src="http://7xnljs.com1.z0.glb.clouddn.com/mathclock.jpg" alt="matchclock" /></p>
+
+<p>以前，只知道其中十一个点钟的分析；对于3点钟，一直没有思路。于是发了一条朋友圈，求助大神解释其中的3点钟。在刘梓溪、贾顾森、黎鸣等大神的指导下，明白了其中是怎么回事。所以这里介绍下这十二个点，应该如何解释。个人观点，仅供参考。</p>
+
+<h2 id="section">12点</h2>
+
+<p>不用说了，1728的立方根。</p>
+
+<h2 id="section-1">1点</h2>
+
+<p>可能很多人不大知道，这是勒让德常数：</p>
+
+<!--more-->
+
+<p>$\lim_{x \rightarrow +\infty} {ln(x) - \frac{x}{\pi(x)}}$</p>
+
+<p>其中的$\pi(x)$表示不大于x的素数的个数，可以用$\frac{x}{lnx}$近似。</p>
+
+<p>这个值经过勒让德、高斯等一批数学大佬的努力，最后被数学家Charles Jean证明为1。</p>
+
+<h2 id="section-2">2点</h2>
+
+<p>无穷递缩等比级数的求和，首项为1，公比为$\frac{1}{2}$ ，所以它的和为</p>
+
+<p>S = $\frac{a_1}{1-q}$ = 2</p>
+
+<h2 id="section-3">3点</h2>
+
+<p>在刘梓溪、贾顾森、黎鸣等大神的帮助下，终于知道了。</p>
+
+<p>广泛用于XML、HTML中。&amp;#后面接十进制字符，&amp;#x后面接十六进制字符。相当于转义序列吧。</p>
+
+<p>其中十六进制33，等于十进制51，即’3’。</p>
+
+<h2 id="section-4">4点</h2>
+
+<p>同余问题（Modular Multiplicative Inverse）</p>
+
+<p>令</p>
+
+<p>$x\equiv2^{-1} mod 7$</p>
+
+<p>$2x\equiv1 mod 7$</p>
+
+<p>$x =  4$</p>
+
+<h2 id="section-5">5点</h2>
+
+<p>$\phi$表示黄金分割比，$\phi = \frac{\sqrt{5} - 1}{2} $</p>
+
+<p>黄金分割比在斐波那契数列的通项公式中出现。</p>
+
+<p>不过这个地方，我没搞懂，不知道这是不是这幅图作者的笔误？个人认为应该是 $(2\phi+1)^2$ 而不是 $(2\phi-1)^2$</p>
+
+<h2 id="section-6">6点</h2>
+
+<p>不用说了，阶乘。</p>
+
+<h2 id="section-7">7点</h2>
+
+<p>表示6.999999999…其中9的头上一横，表示循环节是9。</p>
+
+<p>那么，6.9999….为什么等于7呢？恩，还是无穷递缩等比级数的视角来考虑，就老少皆宜了。</p>
+
+<p>6.9999…= 6 + 0.9 + 0.09 + 0.009 + 0.0009 + …</p>
+
+<p>后面的那个，</p>
+
+<p>0.9 + 0.09 + 0.009 + 0.0009 + …</p>
+
+<p>首项为0.9，公比为0.1，收敛于1。</p>
+
+<p>因此6.9999… = 7</p>
+
+<h2 id="section-8">8点</h2>
+
+<p>代表1000（二进制），因为只有第一个是亮的，其他是暗的。（亮为1，暗为0，bitmap的感觉。可能是盲文），因此为8。</p>
+
+<h2 id="section-9">9点</h2>
+
+<p>四进制。21（四进制） = 2 * 4 + 1 = 9。</p>
+
+<h2 id="section-10">10点</h2>
+
+<p>组合数，5! /(2! * 3!) = 10</p>
+
+<h2 id="section-11">11点</h2>
+
+<p>十六进制，A是10，B是11，C是12。注意，注意，这里是0x0B，不是0x08。哈哈。</p>
+
+<p>点评：知识点有点重复，比如进制就有好几个。给个好评吧，但不是五星的。</p>
+
+<h2 id="section-12">感谢</h2>
+
+<p>感谢朋友刘梓溪、贾顾森、黎鸣告诉我如何解读其中的3点钟。</p>
+
+<p>本文发出后，阿里花隆同学指出了文中的一个笔误。非常感谢。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Introduction To Cuckoo Hashing]]></title>
+    <link href="http://www.yebangyu.org/blog/2015/12/19/cuckoo-hashing/"/>
+    <updated>2015-12-19T00:41:37+08:00</updated>
+    <id>http://www.yebangyu.org/blog/2015/12/19/cuckoo-hashing</id>
+    <content type="html"><![CDATA[<h2 id="motivation--intuition">Motivation &amp; Intuition</h2>
+
+<p>为什么引入<strong>Cuckoo Hashing</strong>？</p>
+
+<p>常见的<strong>hashing</strong>处理冲突方法一般包括两种：开散列（<strong>Separate Chaining</strong>）和闭散列<strong>（Linear / Quadratic Probing</strong>
+）。开散列是将冲突的元素组织成一个链表（其实组织成一个二叉搜索树也是完全没问题的，甚至跳表也行），闭散列将冲突的元素还是放在哈希表<strong>slot</strong>中，使用线性探测等方法进行处理。</p>
+
+<p>那么，这两种方法，都有啥优缺点呢？</p>
+
+<!--more-->
+
+<p>开散列，实现简单，但是对<strong>cache</strong>不友好，<strong>cache miss rate</strong>较高。</p>
+
+<p>闭散列，实现相对复杂一点点，对<strong>cache</strong>很友好，但是对<strong>load factor</strong>要求苛刻：<strong>load factor</strong>稍高性能就急剧下降。</p>
+
+<p>这两种方式下，查找某个元素的最坏时间都是<strong>O(n)</strong>。</p>
+
+<p>你说，<strong>OK，OK</strong>，我知道，这些都是常识。那么，是否可以做到查找最坏是<strong>O(1)</strong>呢？</p>
+
+<p>一种思路是元素只可能被安置到有限的常数(记为<strong>K</strong>)个位置，插入时，如果发生冲突，由于每个元素可以存放的位置有<strong>K</strong>个，因此可以对表部分元素进行重排，产生一个空缺的位置。</p>
+
+<p><strong>Cuckoo Hashing</strong>就是这样的方式。当<strong>K=2</strong>时，<strong>Cuckoo Hashing</strong>在<strong>load factor</strong>为<strong>50%</strong>左右的情况下表现较佳。如果<strong>K=4</strong>，那么甚至可以在<strong>97%</strong>的<strong>load factor</strong>下良好工作。</p>
+
+<h2 id="cuckoo-hashing">Cuckoo Hashing</h2>
+
+<p>一般的<strong>Hashing</strong>只包括一个<strong>Hash Tables</strong>，但是<strong>Cuckoo Hashing</strong>由两张甚至多张表构成。每张表对应一个哈希函数。本文讨论两张哈希表（记为<strong>table1</strong>和<strong>table2</strong>）、两个哈希函数（记为<strong>hf1</strong>和<strong>hf2</strong>）这种常见情形。</p>
+
+<h3 id="insert">Insert</h3>
+
+<p>首先通过<strong>hf1</strong>计算出一个<strong>slot index</strong>，然后查看<strong>table1</strong>中该<strong>slot</strong>是否<strong>vacant</strong>，如果是，则插入；否则通过<strong>hf2</strong>计算出一个<strong>slot index</strong>，通过查看<strong>table2</strong>中该<strong>slot</strong>是否<strong>vacant</strong>，如果是，则插入，否则执行<strong>rearrange</strong>操作。</p>
+
+<p><strong>rearrange</strong>操作的过程：随机选出一张表，将<strong>slot index</strong>对应的那个元素踢出(<strong>evict</strong>)，把我们待插入的元素插到那个位置。那被踢出来的元素呢？尝试插入到另外一张表对应的<strong>slot</strong>处，这时候可能又踢出一个元素，接下去就是递归的执行这个过程，直到所有元素都安置妥当。</p>
+
+<p>举个例子吧，假如某个时刻，两个哈希表的内容如下：</p>
+
+<p><img src="http://7xnljs.com1.z0.glb.clouddn.com/table1.jpg" alt="table1" /></p>
+
+<p>假设我们待插入的元素为<strong>77</strong>。</p>
+
+<p><strong>slot index1 = hf1(77) = 1</strong></p>
+
+<p><strong>Table1</strong>中的<strong>index</strong>为<strong>1</strong>的<strong>slot</strong>已经被<strong>78</strong>占了。那么看<strong>Table2</strong>：</p>
+
+<p><strong>slot index2 = hf2(77) = 3</strong></p>
+
+<p><strong>Table2</strong>中的<strong>index</strong>为<strong>3</strong>的<strong>slot</strong>已经被<strong>33</strong>占了。因此执行<strong>rearrange</strong>。</p>
+
+<p>执行<strong>rearrange</strong>动作，选择<strong>Table2</strong>，将<strong>slot index = 3</strong>的元素<strong>33</strong>踢出，插入<strong>77</strong>。然后被踢出的元素<strong>33</strong>，计算它在<strong>Table1</strong>中的<strong>index</strong>为<strong>slot index1 = hf2(33) = 2</strong>，因此将<strong>95</strong>踢出，插入<strong>33</strong>。被踢出的元素<strong>95</strong>在<strong>Table2</strong>中的<strong>slot index</strong>为<strong>2</strong>，该<strong>slot</strong>为<strong>vacant</strong>，没人使用，因此将<strong>95</strong>插入。完毕。现在的<strong>Tables</strong>中元素为：</p>
+
+<p><img src="http://7xnljs.com1.z0.glb.clouddn.com/table2.jpg" alt="table2" /></p>
+
+<p>值得注意的是，<strong>rearrange</strong>可能失败（表满了;或者发生“死循环”），此时需要进行<strong>rehash</strong>，因此代码里需要有一定的判断。当<strong>K=2</strong>时，只要<strong>load factor</strong>低于<strong>50%</strong>，需要<strong>rehash</strong>的概率很小很小。</p>
+
+<p>在某些假设下，插入操作的摊还期望复杂度为常数时间。</p>
+
+<h3 id="find">Find</h3>
+
+<p>要检查的<strong>slot</strong>一共两个，<strong>index</strong>分别为<strong>hf1(key)</strong>和<strong>hf2(key)</strong>，因此只要查看一下<strong>Table1</strong>中的<strong>hf1(key)</strong>以及<strong>Table2</strong>中的<strong>hf2(key)</strong>这两个<strong>slot</strong>即可。时间复杂度为<strong>O(1)</strong>。</p>
+
+<h3 id="del">Del</h3>
+
+<p>同<strong>Find</strong>，要检查的<strong>slot</strong>也就两个，复杂度为<strong>O(1)</strong>。</p>
+
+<h2 id="section">实现</h2>
+
+<p>简单实现了一个，有需要的可以参考<a href="https://github.com/yebangyu/Yedis/blob/master/src/ds/CuckooHashMap.h">这里</a></p>
+
+<h2 id="section-1">其他</h2>
+
+<p>1，我们注意到，<strong>Cuckoo Hashing</strong>的精髓是使用两个不同的哈希函数，而不是两张表。两张表的存在，仅仅是为了分析上的方便。</p>
+
+<p>当需要<strong>rehash</strong>而<strong>load factor</strong>又没达到<strong>100%</strong>时，我们其实不需要扩容哈希表，只需要更换哈希函数。</p>
+
+<p>2，为嘛叫做<strong>Cuckoo Hashing</strong>？<strong>Cuckoo</strong>，即杜鹃鸟（布谷鸟），这种鸟有一种尿性：孵卵寄生。把蛋产到别的鸟窝里，让别人帮它孵化。这还不算，还要把人家寄主的一些卵给移走（不然容易引起怀疑嘛，毕竟鸟窝里突然多出几枚蛋。至于移走多少，就得看杜鹃鸟数学合不合格了）！等卵孵化完成，幼雏会将鸟窝里寄主的卵和其他幼雏推出鸟窝。真是牛逼闪闪了。</p>
+
+<h2 id="section-2">参考文献</h2>
+
+<p>http://resources.mpi-inf.mpg.de/departments/d1/teaching/ws14/AlgoDat/materials/cuckoo.pdf</p>
+
+<p><strong>Cuckoo Hashing</strong>原始论文</p>
+
+<p>https://www.eecs.harvard.edu/~michaelm/postscripts/esa2009.pdf</p>
+
+<p>这篇文章介绍了一些关于<strong>Cuckoo Hashing</strong>的<strong>Open Questions</strong></p>
+
+<p>http://web.stanford.edu/class/cs166/lectures/13/Slides13.pdf</p>
+
+<p>这个<strong>slides</strong>偏重对<strong>Cuckoo Hashing</strong>理论上的分析，注意其中对于插入操作的处理和本文介绍的不同。</p>
+
+<p>http://excess-project.eu/publications/published/CuckooHashing_ICDCS.pdf</p>
+
+<p>碉堡了，<strong>Lock Free Cuckoo Hashing</strong>。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[2015-12-16 近期好书推荐]]></title>
+    <link href="http://www.yebangyu.org/blog/2015/12/16/readinglist/"/>
+    <updated>2015-12-16T23:05:35+08:00</updated>
+    <id>http://www.yebangyu.org/blog/2015/12/16/readinglist</id>
+    <content type="html"><![CDATA[<p>推荐几本近期阅读的好书。</p>
+
+<h2 id="recommender-systems-handbook">Recommender Systems Handbook</h2>
+
+<!--more-->
+
+<p><img src="http://7xnljs.com1.z0.glb.clouddn.com/recommendersystemhandbook2nd.jpg" alt="rsh" /></p>
+
+<p>这本书最近出第二版了，和第一版相比新增了不少内容，我最感兴趣的是其中的第11章，<strong>Recommender Systems in Industry: A Netflix Case Study</strong>，<strong>Xavier Amatriain</strong>大牛所写。</p>
+
+<h2 id="distributed-systems--an-algorithmic-approach">Distributed Systems : An Algorithmic Approach</h2>
+
+<p><img src="http://7xnljs.com1.z0.glb.clouddn.com/distributedsystem.jpg" alt="dsaaa" /></p>
+
+<p>这本书去年出的第二版(第一版没看过)，貌似增加了<strong>paxos</strong>等不少内容。这本书强烈推荐，和其他分布式系统书籍相比，它不扯淡，也不是百科全书一样各种列词条全而不深，这本书实实在在的讲了一些内容，非常适合作为分布式系统的入门书。</p>
+
+<h2 id="shared-memory-synchronization">Shared-Memory Synchronization</h2>
+
+<p><img src="http://7xnljs.com1.z0.glb.clouddn.com/sharedmemorysync.jpg" alt="sms" /></p>
+
+<p>并发编程（多处理器编程）方面的书籍，涉及到原子操作、<strong>spin lock</strong>、<strong>lock free</strong>等内容，配合其他书籍，效果更佳。</p>
+
+<h2 id="the-go-programming-language">The Go Programming Language</h2>
+
+<p><img src="http://7xnljs.com1.z0.glb.clouddn.com/thegoprogramminglanguage.jpg" alt="tgpl" /></p>
+
+<p><strong>Go</strong>语言编程入门书，作者之一<strong>Brian W. Kernighan</strong>，不用多介绍了吧。估计不久就要被列为<strong>Go</strong>语言的圣经了。为嘛学<strong>Go</strong>？个人对其中的并行特性比较感兴趣。</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Lock Free中的Hazard Pointer(中)]]></title>
+    <link href="http://www.yebangyu.org/blog/2015/12/14/introduction-to-hazard-pointer/"/>
+    <updated>2015-12-14T22:33:01+08:00</updated>
+    <id>http://www.yebangyu.org/blog/2015/12/14/introduction-to-hazard-pointer</id>
+    <content type="html"><![CDATA[<p>看过<a href="http://www.yebangyu.org/blog/2015/12/10/introduction-to-hazard-pointer/">上篇</a>的朋友，可能会认为：这不就是<strong>Smart Pointer</strong>么？于是可能写出这样的代码：</p>
+
+<!--more-->
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="cp">#include&lt;iostream&gt;</span>
+</span><span class="line"><span class="cp">#include&lt;thread&gt;</span>
+</span><span class="line"><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span><span class="line"><span class="k">class</span> <span class="nc">SmartPointer</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line"><span class="k">public</span><span class="o">:</span>
+</span><span class="line">  <span class="n">SmartPointer</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">p</span><span class="p">)</span>
+</span><span class="line">  <span class="p">{</span>
+</span><span class="line">    <span class="n">pointee_</span> <span class="o">=</span> <span class="n">p</span><span class="p">;</span>
+</span><span class="line">    <span class="n">ref_counts_</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line">  <span class="kt">int</span> <span class="o">*</span><span class="n">pointee_</span><span class="p">;</span>
+</span><span class="line">  <span class="kt">int</span> <span class="n">ref_counts_</span><span class="p">;</span>
+</span><span class="line"><span class="p">};</span>
+</span><span class="line"><span class="n">SmartPointer</span> <span class="nf">sp</span><span class="p">(</span><span class="k">new</span> <span class="kt">int</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+</span><span class="line"><span class="kt">void</span> <span class="nf">Reader</span><span class="p">()</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="o">++</span><span class="n">sp</span><span class="p">.</span><span class="n">ref_counts_</span><span class="p">;</span>
+</span><span class="line">  <span class="n">cout</span><span class="o">&lt;&lt;*</span><span class="p">(</span><span class="n">sp</span><span class="p">.</span><span class="n">pointee_</span><span class="p">)</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class="line">  <span class="o">--</span><span class="n">sp</span><span class="p">.</span><span class="n">ref_counts_</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="kt">void</span> <span class="nf">Writer</span><span class="p">()</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="k">if</span> <span class="p">(</span><span class="n">sp</span><span class="p">.</span><span class="n">ref_counts_</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class="line">    <span class="k">delete</span> <span class="n">sp</span><span class="p">.</span><span class="n">pointee_</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="kr">thread</span> <span class="n">t1</span><span class="p">(</span><span class="n">Reader</span><span class="p">);</span>
+</span><span class="line">  <span class="kr">thread</span> <span class="n">t2</span><span class="p">(</span><span class="n">Reader</span><span class="p">);</span>
+</span><span class="line">  <span class="kr">thread</span> <span class="n">t3</span><span class="p">(</span><span class="n">Reader</span><span class="p">);</span>
+</span><span class="line">  <span class="kr">thread</span> <span class="n">t4</span><span class="p">(</span><span class="n">Writer</span><span class="p">);</span>
+</span><span class="line">  <span class="n">t1</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+</span><span class="line">  <span class="n">t2</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+</span><span class="line">  <span class="n">t3</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+</span><span class="line">  <span class="n">t4</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+</span><span class="line">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>然而事实上，这样做是错的。其中的<strong>race condition</strong>请读者自行分析。</p>
+
+<p>那么，<strong>Hazard Pointer</strong>(<strong>HP</strong>)和<strong>Smart Pointer</strong>(<strong>SP</strong>)有什么区别呢？它们的共同点就是管理对应对象的生命周期，然而这两者有本质的区别，<strong>HP</strong>是线程安全的，而<strong>SP</strong>不是。</p>
+
+<p>在<strong>HP</strong>中，每个读线程维护着自己的<strong>HP</strong> <strong>list</strong>，这个<strong>list</strong>，只由该线程写。因此，它是线程安全的。该<strong>list</strong>会（可以）被其他线程读。</p>
+
+<p>每个写线程维护自己的<strong>retire list</strong>，该<strong>retire list</strong>只由该写线程进行读写。由于写线程可以读其他所有读线程的<strong>HP list</strong>，这样，差集（在自己的<strong>retire list</strong>，但是不在所有读线程的<strong>HP list</strong>里的指针），就是可以安全释放的指针。</p>
+
+<p>而<strong>SP</strong>，则被多个线程读写，<strong>18、19</strong>两行也无法做成原子操作，因此，<strong>SP</strong>和<strong>HP</strong>有本质的区别，使用<strong>SP</strong>的程序往往需要搭配使用锁等设施来保证线程安全。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Lock Free中的Hazard Pointer(上)]]></title>
+    <link href="http://www.yebangyu.org/blog/2015/12/10/introduction-to-hazard-pointer/"/>
+    <updated>2015-12-10T23:00:20+08:00</updated>
+    <id>http://www.yebangyu.org/blog/2015/12/10/introduction-to-hazard-pointer</id>
+    <content type="html"><![CDATA[<p>废话不多说了，直接开始讨论。</p>
+
+<h2 id="section">险象环生</h2>
+
+<p>首先看以下的程序，有问题吗？</p>
+
+<!--more-->
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="cp">#include&lt;iostream&gt;</span>
+</span><span class="line"><span class="cp">#include&lt;thread&gt; </span><span class="c1">//C++11中的多线程基础设施</span>
+</span><span class="line"><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span><span class="line"><span class="kt">int</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+</span><span class="line"><span class="kt">void</span> <span class="nf">reader</span><span class="p">()</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="k">if</span> <span class="p">(</span><span class="k">nullptr</span> <span class="o">!=</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//nullptr是C++11中引入的</span>
+</span><span class="line">    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="n">p</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="kt">void</span> <span class="nf">writer</span><span class="p">()</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="k">delete</span> <span class="n">p</span><span class="p">;</span>
+</span><span class="line">  <span class="n">p</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="kr">thread</span> <span class="n">t1</span><span class="p">(</span><span class="n">reader</span><span class="p">);</span>
+</span><span class="line">  <span class="kr">thread</span> <span class="n">t2</span><span class="p">(</span><span class="n">writer</span><span class="p">);</span>
+</span><span class="line">  <span class="n">t1</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+</span><span class="line">  <span class="n">t2</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+</span><span class="line">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>答案当然是有问题。这个程序存在如下的<strong>race</strong> <strong>condition</strong>：如果当线程<strong>reader</strong>判断完<strong>p</strong>发现它不是<strong>nullptr</strong>后，还未执行第<strong>8</strong>行就被调度出去，轮到线程<strong>writer</strong>执行，它执行完<strong>13</strong>、<strong>14</strong>行后，又继续调度线程<strong>reader</strong>，此时执行第<strong>8</strong>行导致程序崩溃。</p>
+
+<p>这里的问题，可以不精确地表述为：多线程程序中，某线程通过一个指针访问一段内存时，如何保证指针所指向的那块内存是有效的？</p>
+
+<h2 id="hazard-pointer">Hazard Pointer</h2>
+
+<p>这当然有多种方法，加一把互斥锁就万事大吉了(当然，得注意锁本身的生命周期)。不过本文讨论的是<strong>lock</strong> <strong>free</strong>情况下的内存管理，这里要介绍的是<strong>2004</strong>年左右提出的<strong>Hazard</strong> <strong>Pointer</strong>方法。</p>
+
+<p>接着看以下代码：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+<span class="line-number">50</span>
+<span class="line-number">51</span>
+<span class="line-number">52</span>
+<span class="line-number">53</span>
+<span class="line-number">54</span>
+<span class="line-number">55</span>
+<span class="line-number">56</span>
+<span class="line-number">57</span>
+<span class="line-number">58</span>
+<span class="line-number">59</span>
+<span class="line-number">60</span>
+<span class="line-number">61</span>
+<span class="line-number">62</span>
+<span class="line-number">63</span>
+<span class="line-number">64</span>
+<span class="line-number">65</span>
+<span class="line-number">66</span>
+<span class="line-number">67</span>
+<span class="line-number">68</span>
+<span class="line-number">69</span>
+<span class="line-number">70</span>
+<span class="line-number">71</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="cp">#include&lt;thread&gt;</span>
+</span><span class="line"><span class="cp">#include&lt;iostream&gt;</span>
+</span><span class="line"><span class="cp">#define Strong_Memory_Barrier __sync_synchronize</span>
+</span><span class="line"><span class="cp">#define ACCESS_ONCE(x) (* (volatile typeof(x) *) &amp;(x))</span>
+</span><span class="line"><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span><span class="line"><span class="k">struct</span> <span class="n">HazardPointer</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="n">HazardPointer</span><span class="p">()</span> <span class="o">:</span><span class="n">p_</span><span class="p">(</span><span class="k">nullptr</span><span class="p">){}</span>
+</span><span class="line">  <span class="kt">int</span> <span class="o">*</span><span class="n">p_</span><span class="p">;</span> <span class="c1">//Hazard Pointer封装了原始指针</span>
+</span><span class="line"><span class="p">};</span>
+</span><span class="line">
+</span><span class="line"><span class="kt">int</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span> <span class="c1">//原始指针</span>
+</span><span class="line">
+</span><span class="line"><span class="n">HazardPointer</span> <span class="o">*</span><span class="n">hp</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HazardPointer</span><span class="p">();</span> <span class="c1">//只有一个线程可以写</span>
+</span><span class="line">
+</span><span class="line"><span class="k">class</span> <span class="nc">Writer</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line"><span class="k">public</span><span class="o">:</span>
+</span><span class="line">  <span class="kt">void</span> <span class="n">retire</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">tmp</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">retire_list</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">;</span><span class="c1">//设置要释放的指针</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line">  <span class="kt">void</span> <span class="n">gc</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="n">retire_list</span> <span class="o">==</span> <span class="n">hp</span><span class="o">-&gt;</span><span class="n">p_</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">      <span class="c1">//说明有读者正在使用它，不能释放</span>
+</span><span class="line">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class="line">      <span class="c1">//可以安全地释放</span>
+</span><span class="line">      <span class="k">delete</span> <span class="n">retire_list</span><span class="p">;</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line">  <span class="kt">void</span> <span class="n">write</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">    <span class="kt">int</span> <span class="o">*</span><span class="n">tmp</span> <span class="o">=</span> <span class="n">ACCESS_ONCE</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
+</span><span class="line">    <span class="n">p</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+</span><span class="line">    <span class="n">retire</span><span class="p">(</span><span class="n">tmp</span><span class="p">);</span>
+</span><span class="line">    <span class="n">gc</span><span class="p">();</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line"><span class="k">private</span><span class="o">:</span>
+</span><span class="line">  <span class="kt">int</span> <span class="o">*</span><span class="n">retire_list</span><span class="p">;</span><span class="c1">//记录待释放的指针</span>
+</span><span class="line"><span class="p">};</span>
+</span><span class="line"><span class="k">class</span> <span class="nc">Reader</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line"><span class="k">public</span><span class="o">:</span>
+</span><span class="line">  <span class="kt">void</span> <span class="n">acquire</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">tmp</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">hp</span><span class="o">-&gt;</span><span class="n">p_</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">;</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line">  <span class="kt">void</span> <span class="n">release</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">hp</span><span class="o">-&gt;</span><span class="n">p_</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line">  <span class="kt">void</span> <span class="n">read</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">    <span class="kt">int</span> <span class="o">*</span><span class="n">tmp</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+</span><span class="line">    <span class="k">do</span>
+</span><span class="line">    <span class="p">{</span>
+</span><span class="line">      <span class="n">tmp</span> <span class="o">=</span> <span class="n">ACCESS_ONCE</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
+</span><span class="line">      <span class="n">Strong_Memory_Barrier</span><span class="p">();</span>
+</span><span class="line">      <span class="n">acquire</span><span class="p">(</span><span class="n">tmp</span><span class="p">);</span> <span class="c1">//封装。这是告诉Writer：我要读，别释放！</span>
+</span><span class="line">    <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">tmp</span> <span class="o">!=</span> <span class="n">ACCESS_ONCE</span><span class="p">(</span><span class="n">p</span><span class="p">));</span><span class="c1">//仔细想想，为什么这里还要判断？</span>
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="k">nullptr</span> <span class="o">!=</span> <span class="n">tmp</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//不妨想想，这里为什么也要判断？</span>
+</span><span class="line">      <span class="c1">//it is safe to access *tmp from now on</span>
+</span><span class="line">      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="n">tmp</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span><span class="c1">//没问题~</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="c1">//when you finish reading it, just release it .</span>
+</span><span class="line">    <span class="n">release</span><span class="p">();</span><span class="c1">//其实就是告诉Writer：用完了，可以释放了。</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line"><span class="p">};</span>
+</span><span class="line"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="kr">thread</span> <span class="n">t1</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Reader</span><span class="o">::</span><span class="n">read</span><span class="p">,</span> <span class="n">Reader</span><span class="p">());</span>
+</span><span class="line">  <span class="kr">thread</span> <span class="n">t2</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Writer</span><span class="o">::</span><span class="n">write</span><span class="p">,</span> <span class="n">Writer</span><span class="p">());</span>
+</span><span class="line">  <span class="n">t1</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+</span><span class="line">  <span class="n">t2</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+</span><span class="line">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>总结：</p>
+
+<p>1，对于读线程，每次访问指针前，都通过<strong>acquire</strong>动作，用<strong>Hazard</strong> <strong>Pointer</strong>封装一下待读取指针，此举保护了原始指针，向其他线程宣告，我正在读取它指向的内存，请别释放它。用完就<strong>release</strong>一下。</p>
+
+<p>2，对于写线程，真正释放前，需要检查是否有读线程正在操作它。如何知道？看看自己待释放的指针，有没有存在在读线程的<strong>Hazard</strong> <strong>Pointer</strong>里即可。</p>
+
+<p>至于<strong>52</strong>行，考虑如下情形：读线程刚刚设置了<strong>tmp</strong>指针，还没对它进行保护，就被调度出去；写线程执行<strong>gc</strong>时，发现没有读线程的<strong>Hazard</strong> <strong>Pointer</strong>封装了<strong>tmp</strong>指针，于是将它释放；等读线程重新被调度执行时通过<strong>tmp</strong>进行内存访问，就会导致问题。</p>
+
+<p>至于<strong>53</strong>行，请读者自行分析。</p>
+
+<h2 id="section-1">最后思考</h2>
+
+<p>那么，<strong>Hazard</strong> <strong>Pointer</strong>的内存空间，谁来负责管理？</p>
+
+<p>在实际程序里，一般所需<strong>Hazard</strong> <strong>Pointer</strong>的数量不会太多且较为固定，因此基本上只申请，不释放了。</p>
+
+<h2 id="section-2">参考文献</h2>
+
+<p>https://www.research.ibm.com/people/m/michael/ieeetpds-2004.pdf</p>
+
+<h2 id="section-3">特别感谢</h2>
+
+<p>感谢<a href="http://weibo.com/hanfooo">韩富晟</a>先生对我的指点，让我加深了对<strong>Hazard</strong> <strong>Pointer</strong>的认识。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[利用Distcc和Dmucs构建大规模、分布式C++编译环境(下)]]></title>
+    <link href="http://www.yebangyu.org/blog/2015/11/30/build-distributed-compilation-env/"/>
+    <updated>2015-11-30T22:23:46+08:00</updated>
+    <id>http://www.yebangyu.org/blog/2015/11/30/build-distributed-compilation-env</id>
+    <content type="html"><![CDATA[<p><a href="http://www.yebangyu.org/blog/2015/11/23/build-distributed-compilation-ev/">上篇</a>文章，我们介绍了如何利用<strong>Distcc</strong>来搭建分布式编译环境，但是<strong>Distcc</strong>的默认调度策略过于简单，并且并不合理。假如我们的配置是</p>
+
+<pre><code>export DISTCC_HOSTS="192.168.1.11 192.168.1.22 192.168.1.33"
+</code></pre>
+
+<p>那么<strong>Distcc</strong>会根据<strong>DISTCC_HOSTS</strong>中机器出现的先后顺序，来安排编译任务，越靠前的机器(比如这里的<strong>192.168.1.11</strong>)获得越多的任务，这显然是不科学的。</p>
+
+<p>因此，我们可以利用<strong>Dmucs</strong>提供的调度策略，来优化我们的方案。它可以根据编译机的负载情况和硬件实力，来合理的调度资源。能者多劳嘛。</p>
+
+<p>为了保证本文的完整性，我们还是不厌其烦地把我们的环境再交待下：</p>
+
+<!--more-->
+
+<p>开发机（<strong>Client</strong>）：这一台机器上有我们的项目、工程文件、代码，平时我们在这台机器上写代码，要编译的对象也在这台机器上。机器<strong>IP</strong>为<strong>192.168.1.99</strong>。</p>
+
+<p>服务器（<strong>Server</strong>）：负责编译的机器，一共有<strong>3</strong>台。<strong>IP</strong>分别为<strong>192.168.1.11</strong>,<strong>192.168.1.22</strong>,<strong>192.168.1.33</strong>。</p>
+
+<p>调度器（<strong>Scheduler</strong>）：调度程序<strong>Dmucs</strong>所在的机器，负责把编译任务合理的派发到编译机器（服务器）的编译程序上。<strong>IP</strong>为<strong>192.168.1.88</strong>。</p>
+
+<h2 id="section">服务器</h2>
+
+<p>1，安装<strong>gcc</strong></p>
+
+<pre><code>sudo apt-get install gcc
+</code></pre>
+
+<p>2，安装<strong>Distcc</strong></p>
+
+<pre><code>sudo apt-get install distcc
+</code></pre>
+
+<p>安装后可以得到两个二进制文件，<strong>distccd</strong>和<strong>distcc</strong>。前者主要负责网络数据处理，后者可以认为是<strong>g++</strong>的前端，调用<strong>g++</strong>进行编译。</p>
+
+<p>3，配置<strong>Distcc</strong></p>
+
+<p>打开<code>/etc/default/distcc</code>，设置如下配置项：</p>
+
+<pre><code>STARTDISTCC="true"  
+ALLOWEDNETS="127.0.0.1 192.168.1.0/24"
+LISTENER="0.0.0.0"
+</code></pre>
+
+<p>第一行设置开机就启动<strong>distccd</strong></p>
+
+<p>第二行设置允许利用本机进行编译的开发机</p>
+
+<p>第三行设置监听的网络</p>
+
+<p>4，启动<strong>distccd</strong></p>
+
+<pre><code>sudo service distcc start
+</code></pre>
+
+<p>经过以上配置，每次机器开机，都会自动运行<strong>distccd</strong>。</p>
+
+<p>运行如下命令确认下：</p>
+
+<pre><code>ps -aux | grep distccd
+</code></pre>
+
+<p>如果看到类似的输出，说明<strong>distccd</strong>成功启动了。</p>
+
+<pre><code>distccd   3457  0.0  0.0   3260   144 ?        SNs  23:33   0:00 /usr/bin/distccd --pid-file=/var/run/distccd.pid --log-file=/var/log/distccd.log --daemon --allow 127.0.0.1 --listen 0.0.0.0 --nice 10
+distccd   3458  0.0  0.0   3260   144 ?        SN   23:33   0:00 /usr/bin/distccd --pid-file=/var/run/distccd.pid --log-file=/var/log/distccd.log --daemon --allow 127.0.0.1 --listen 0.0.0.0 --nice 10
+distccd   3461  0.0  0.0   3260   144 ?        SN   23:33   0:00 /usr/bin/distccd --pid-file=/var/run/distccd.pid --log-file=/var/log/distccd.log --daemon --allow 127.0.0.1 --listen 0.0.0.0 --nice 10
+</code></pre>
+
+<p>5，安装<strong>Dmucs</strong></p>
+
+<p>首先，从<a href="http://sourceforge.net/projects/dmucs/files/dmucs/dmucs%200.6.1/">这里</a>下载最新版本的<strong>Dmucs</strong>。</p>
+
+<p>安装也就是普通的<code>configure</code>、<code>make</code>和<code>make install</code>，需要注意的是，执行<strong>make</strong>时，需要加上参数，例如：</p>
+
+<pre><code>make CPPFLAGS=-DSERVER_MACH_NAME=\\\"192.168.1.88\\\"
+</code></pre>
+
+<p>其中<strong>192.168.1.88</strong>是我们的调度器的机器<strong>IP</strong>，根据实际情况自行修改。服务器上的编译程序，需要把编译负载情况，发送给调度器上的调度程序，作为它调度时的参考信息。</p>
+
+<p>如果您嫌这样麻烦，那么也可以在<strong>make</strong>的时候不指定选项，而是在安装后，打开<code>/etc/default/dmucs</code>文件，设置如下字段：</p>
+
+<pre><code>USE_SERVER = 192.168.1.88
+</code></pre>
+
+<p>6，启动<strong>loadavg</strong></p>
+
+<p><strong>loadavg</strong>是安装<strong>Dmucs</strong>后得到的一个二进制文件，它会定期发送服务器平均负载情况给调度器，供调度程序决策之用。</p>
+
+<pre><code>sudo loadavg -s 192.168.1.88 &amp;
+</code></pre>
+
+<p>其中，<strong>192.168.1.88</strong>是调度程序所在机器的<strong>IP</strong>地址。</p>
+
+<h2 id="section-1">调度器</h2>
+
+<p>1，安装<strong>Dmucs</strong></p>
+
+<p>请参考上面的第<strong>5</strong>步。</p>
+
+<p>2，配置服务器属性</p>
+
+<p>在调度器的<code>/usr/local/share/dmucs/</code>目录下，新建<strong>hosts-info</strong>文件，格式和内容如下：</p>
+
+<pre><code>#Format: machine number-of-cpus power-index
+192.168.1.11       4            10
+192.168.1.22       4            5
+192.168.1.33       4            5
+</code></pre>
+
+<p>其中，<strong>power-index</strong>（必须大于等于<strong>1</strong>）表示了这台机器的战斗力，值越高代表性能越强，分到的编译任务也越多。能者多劳嘛。</p>
+
+<p>3，启动调度程序</p>
+
+<p>命令为：</p>
+
+<pre><code>sudo service dmucs start
+</code></pre>
+
+<h2 id="section-2">开发机</h2>
+
+<p>1，安装<strong>Distcc</strong></p>
+
+<p>当然啦，我们假设您的开发机上已经安装<strong>gcc</strong>了。</p>
+
+<p>2，设置编译资源</p>
+
+<p>这一步是指定哪些机器（也就是上面的<strong>Server</strong>）来负责编译工作。</p>
+
+<pre><code>export DISTCC_HOSTS="192.168.1.11 192.168.1.22 192.168.1.33"
+</code></pre>
+
+<p>每台机器的<strong>IP</strong>之间用空格隔开。</p>
+
+<p>如果机器很多，那么这样填写可能不大方便，可以在<code>/etc/distcc/hosts</code>里添加。</p>
+
+<p>这两种方法可以任选一种，如果您两种都用，那么<strong>Distcc</strong>只认<strong>DISTCC_HOSTS</strong>值。</p>
+
+<p>3，应用<strong>Distcc</strong>和<strong>Dmucs</strong></p>
+
+<p>应用<strong>Distcc</strong>和<strong>Dmucs</strong>来编译代码有几种方法：</p>
+
+<p>方法一：修改<strong>makefile</strong>中的<strong>CXX</strong>的值</p>
+
+<p>将<strong>makefile</strong>文件中的这一行</p>
+
+<pre><code>CXX = g++
+</code></pre>
+
+<p>改为</p>
+
+<pre><code>CXX = gethost distcc g++
+</code></pre>
+
+<p>然后运行<code>make -j18</code>即可。这里的<strong>18</strong>，为所有服务器的<strong>CPU Cores</strong>的数量乘以<strong>1.5</strong>。上面有<strong>3</strong>台服务器，每台有<strong>4</strong>核，因此这里设置为<strong>18</strong>。</p>
+
+<p>为了获得最优值，很可能需要反复实验、测试。</p>
+
+<p>方法二：修改<strong>configure</strong>文件</p>
+
+<p>如果您的<strong>makefile</strong>文件由<strong>automake</strong>产生，那么在运行<code>./configure</code>时得加上参数，变为：</p>
+
+<pre><code>./configure --CXX=gethost distcc g++
+</code></pre>
+
+<p>那么生成的<strong>makefile</strong>文件将自动使用<strong>Distcc</strong>和<strong>Dmucs</strong>了。</p>
+
+<h2 id="section-3">附录：调度策略</h2>
+
+<p>根据<a href="http://dmucs.sourceforge.net/">文档</a>，<strong>Dmucs</strong>的调度策略是：</p>
+
+<p>1，<strong>Dmucs</strong>会维护几个列表（原文为<strong>tier</strong>，表示等级、阶梯），每个列表对应一个<strong>power-index</strong>，具有相同<strong>power-index</strong>值的机器会在同一个列表中。因此，上面三台服务器，<strong>192.168.1.22</strong>和<strong>192.168.1.33</strong>会在同一个列表里，<strong>192.168.1.11</strong>在一个列表里。</p>
+
+<p>2，每次获得编译任务请求时，<strong>Dmucs</strong>会优先从高<strong>power-index</strong>对应的列表里随机选一台机器。</p>
+
+<p>3，如果<strong>Dmucs</strong>获知某台机器的平均负载过高（回忆下，该信息是服务器上的<strong>loadavg</strong>进程发过来的），那么会把该机器放到低一级的<strong>power-index</strong>对应的列表里。例如，<strong>192.168.1.11</strong>会被“下放”到<strong>power-index</strong>为<strong>5</strong>对应的列表里。</p>
+
+<p>4，如果某台机器的平均负载过高超过五分钟，那么该机器会被暂时雪藏，不会给它分发编译任务，直到它的负载下降到正常水平。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[利用Distcc和Dmucs构建大规模、分布式C++编译环境(上)]]></title>
+    <link href="http://www.yebangyu.org/blog/2015/11/23/build-distributed-compilation-ev/"/>
+    <updated>2015-11-23T22:48:32+08:00</updated>
+    <id>http://www.yebangyu.org/blog/2015/11/23/build-distributed-compilation-ev</id>
+    <content type="html"><![CDATA[<p>如果您的<strong>C++</strong>项目非常庞大，含有<strong>1000</strong>个<strong>.h</strong>文件，<strong>2000</strong>个<strong>.cpp</strong>文件，那么我敢打赌，每次编译所花的时间，都足够您喝<strong>3000</strong>杯咖啡了。如何加快编译速度？</p>
+
+<p><strong>Distcc</strong>是开源的用于搭建分布式编译环境的利器，它通过利用多台机器的资源，并行编译，来解决这个棘手的问题。然而，它的调度算法过于简单，不大合理，因此我们利用<strong>DMUCS</strong>提供的调度功能，来搭建一个相对完美的分布式编译平台。本文，我们首先介绍如何（单独）使用<strong>Distcc</strong>来加速编译，下一篇介绍如何组合使用<strong>Distcc</strong>+<strong>DMUCS</strong>来做进一步的完善和优化。</p>
+
+<p>话不多说，我们的编译平台包括：</p>
+
+<!--more-->
+
+<p>开发机（<strong>Client</strong>）：这一台机器上有我们的项目、工程文件、代码，平时我们在这台机器上写代码，要编译的对象也在这台机器上。机器<strong>IP</strong>为<strong>192.168.1.99</strong></p>
+
+<p>服务器（<strong>Server</strong>）：负责编译的机器，一共有<strong>3</strong>台。<strong>IP</strong>分别为<strong>192.168.1.11</strong>,<strong>192.168.1.22</strong>,<strong>192.168.1.33</strong>.</p>
+
+<p>调度器（<strong>Scheduler</strong>）：调度程序所在的机器，负责把编译任务合理的派发到编译机器（服务器）的编译程序上。<strong>IP</strong>为<strong>192.168.1.88</strong>。这台机器的部署和配置，我们留到下一篇博文介绍。</p>
+
+<p>以上所有机器都是安装的<strong>Ubuntu 14.04</strong>操作系统。</p>
+
+<h2 id="section">服务器</h2>
+
+<p>1，安装<strong>gcc</strong></p>
+
+<pre><code>sudo apt-get install gcc
+</code></pre>
+
+<p>2，安装<strong>Distcc</strong></p>
+
+<pre><code>sudo apt-get install distcc
+</code></pre>
+
+<p>安装后可以得到两个二进制文件，<strong>distccd</strong>和<strong>distcc</strong>。前者主要负责网络数据处理，后者可以认为是<strong>g++</strong>的前端，调用<strong>g++</strong>进行编译。</p>
+
+<p>3，配置<strong>Distcc</strong></p>
+
+<p>打开<code>/etc/default/distcc</code>，设置如下配置项：</p>
+
+<pre><code>STARTDISTCC="true"  
+ALLOWEDNETS="127.0.0.1 192.168.1.0/24"
+LISTENER="0.0.0.0"
+</code></pre>
+
+<p>第一行设置开机就启动<strong>distccd</strong></p>
+
+<p>第二行设置允许利用本机进行编译的开发机</p>
+
+<p>第三行设置监听的网络</p>
+
+<p>4，启动<strong>distccd</strong></p>
+
+<pre><code>sudo service distcc start
+</code></pre>
+
+<p>经过以上配置，每次机器开机，都会自动运行<strong>distccd</strong>。</p>
+
+<p>运行如下命令确认下：</p>
+
+<pre><code>ps -aux | grep distccd
+</code></pre>
+
+<p>如果看到类似的输出，说明一切OK了。</p>
+
+<pre><code>distccd   3457  0.0  0.0   3260   144 ?        SNs  23:33   0:00 /usr/bin/distccd --pid-file=/var/run/distccd.pid --log-file=/var/log/distccd.log --daemon --allow 127.0.0.1 --listen 0.0.0.0 --nice 10
+distccd   3458  0.0  0.0   3260   144 ?        SN   23:33   0:00 /usr/bin/distccd --pid-file=/var/run/distccd.pid --log-file=/var/log/distccd.log --daemon --allow 127.0.0.1 --listen 0.0.0.0 --nice 10
+distccd   3461  0.0  0.0   3260   144 ?        SN   23:33   0:00 /usr/bin/distccd --pid-file=/var/run/distccd.pid --log-file=/var/log/distccd.log --daemon --allow 127.0.0.1 --listen 0.0.0.0 --nice 10
+</code></pre>
+
+<h2 id="section-1">开发机</h2>
+
+<p>1，安装<strong>Distcc</strong></p>
+
+<p>当然啦，我们假设您的开发机上已经安装<strong>gcc</strong>了。</p>
+
+<p>2，设置编译资源</p>
+
+<p>这一步是指定哪些机器（也就是上面的<strong>Server</strong>）来负责编译工作。</p>
+
+<pre><code>export DISTCC_HOSTS="192.168.1.11 192.168.1.22 192.168.1.33"
+</code></pre>
+
+<p>每台机器的<strong>IP</strong>之间用空格隔开。</p>
+
+<p>如果机器很多，那么这样填写可能不大方便，可以在<code>/etc/distcc/hosts</code>里添加。</p>
+
+<p>这两种方法可以任选一种，如果您两种都用，那么<strong>Distcc</strong>只认<strong>DISTCC_HOSTS</strong>值。</p>
+
+<p>3，应用<strong>Distcc</strong></p>
+
+<p>应用<strong>Distcc</strong>来编译代码有几种方法：</p>
+
+<p>方法一：修改<strong>makefile</strong>中的<code>CXX</code>的值</p>
+
+<p>将<strong>makefile</strong>文件中的这一行</p>
+
+<pre><code>CXX = g++ 
+</code></pre>
+
+<p>改为</p>
+
+<pre><code>CXX = distcc g++
+</code></pre>
+
+<p>然后运行<code>make -j18</code>即可。这里的<strong>18</strong>，为所有服务器的<strong>CPU Cores</strong>的数量乘以<strong>1.5</strong>。上面有3台服务器，每台有<strong>4</strong>核，因此这里设置为<strong>18</strong>。</p>
+
+<p>为了获得最优值，很可能需要反复实验、测试。</p>
+
+<p>方法二：修改<strong>configure</strong>文件</p>
+
+<p>如果您的<strong>makefile</strong>文件由<strong>automake</strong>产生，那么在运行<code>./configure</code>时得加上参数，变为：</p>
+
+<pre><code>./configure --CXX=distcc g++
+</code></pre>
+
+<p>那么生成的<strong>makefile</strong>文件将自动使用<strong>Distcc</strong>了。</p>
+
+<p>如果不出意外，编译速度已经大大提升了。然而，还有提高的空间，欲知详情，请看<a href="http://www.yebangyu.org/blog/2015/11/30/build-distributed-compilation-env/">下篇</a>分解。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[再谈C++中的static const]]></title>
+    <link href="http://www.yebangyu.org/blog/2015/11/15/static-const-in-cpp/"/>
+    <updated>2015-11-15T12:45:16+08:00</updated>
+    <id>http://www.yebangyu.org/blog/2015/11/15/static-const-in-cpp</id>
+    <content type="html"><![CDATA[<p>废话不多说了，开始这次的讨论吧。</p>
+
+<h2 id="section">提出问题</h2>
+
+<p>同事颜廷帅（微博：@颜挺帅）拿了一段代码让我分析。以下代码，能编译链接通过吗？</p>
+
+<!--more-->
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="k">const</span> <span class="kt">int</span> <span class="o">&amp;</span><span class="n">value</span><span class="p">)</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="k">class</span> <span class="nc">Test</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line"><span class="k">public</span><span class="o">:</span>
+</span><span class="line">  <span class="k">static</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line"><span class="p">};</span>
+</span><span class="line"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="n">f</span><span class="p">(</span><span class="n">Test</span><span class="o">::</span><span class="n">a</span><span class="p">);</span>
+</span><span class="line">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>我的第一感觉是：应该没问题，吧。在<strong>Visual Studio 2013</strong> 实验了下，顺利通过，一切正常.</p>
+
+<p>然而同事说，<strong>gcc</strong>下是报错的：Undefined reference to ‘Test::a’</p>
+
+<p>这是为什么？</p>
+
+<h2 id="section-1">分析问题</h2>
+
+<p>写作本文时所用的环境是<strong>gcc 4.8.2 (Ubuntu 14.04 , X86平台)</strong>。</p>
+
+<p>注意，本文的讨论只针对类的<strong>static const</strong>成员，也就是所谓的<strong>class scope</strong>。<strong>namespace scope</strong>的情况不属于我们的讨论范围内。</p>
+
+<p>把以上代码保存为<strong>test.cpp</strong>，然后用<strong>gcc</strong>编译它：</p>
+
+<pre><code>g++ -c -o test.o test.cpp
+</code></pre>
+
+<p>这个命令执行之后，我们会在目录下得到<strong>test.o</strong>文件。接着，我们通过<strong>objdump</strong>来查看符号表：</p>
+
+<pre><code>objdump -x test.o
+</code></pre>
+
+<p>我们可以看到类似如下的输出：</p>
+
+<pre><code>SYMBOL TABLE:
+00000000 l    df *ABS*	00000000 test.cpp
+00000000 l    d  .text	00000000 .text
+00000000 l    d  .data	00000000 .data
+00000000 l    d  .bss	00000000 .bss
+00000000 l    d  .note.GNU-stack	00000000 .note.GNU-stack
+00000000 l    d  .eh_frame	00000000 .eh_frame
+00000000 l    d  .comment	00000000 .comment
+00000000 g     F .text	00000005 _Z1fRKi
+00000005 g     F .text	00000019 main
+00000000         *UND*	00000000 _ZN4Test1aE
+</code></pre>
+
+<p>上面的最后一行，<strong>_ZN4Test1aE</strong>就是对应我们程序中声明的<strong>Test::a</strong>。之所以长得这么复杂、奇怪，是因为编译器做了<strong>mangling</strong>处理。</p>
+
+<p>注意到*UND*没？根据<a href="https://sourceware.org/binutils/docs/binutils/objdump.html">文档</a>的解释：</p>
+
+<p>*UND* : if the section is referenced in the file being dumped, but not defined there</p>
+
+<p>也就是<strong>_ZN4Test1aE</strong>在本<strong>.o</strong>文件中引用，然而它却木有定义。因此，报Undefined reference to ‘Test::a’的错，也就情理之中了。</p>
+
+<p>那么，我们的程序是否真的引用了<strong>_ZN4Test1aE</strong>呢？恩，我们接着往下看。</p>
+
+<p>输入如下命令：</p>
+
+<pre><code>g++ -S test.cpp
+</code></pre>
+
+<p>我们可以得到类似这样的汇编代码(做了整理，节选)：</p>
+
+<pre><code>main:
+	pushl	%ebp
+	movl	%esp, %ebp
+	subl	$4, %esp
+	movl	$_ZN4Test1aE, (%esp) ;看到没？_ZN4Test1aE ！
+	call	_Z1fRKi ;调用函数f
+	movl	$0, %eax
+	leave
+	ret
+</code></pre>
+
+<p>虽然我们已经分析出为什么会报错，然而，我们还有一个疑问，就是，为什么下面的代码，是OK的？</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="k">const</span> <span class="kt">int</span> <span class="n">value</span><span class="p">)</span> <span class="c1">//这里没有 &amp;</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="k">class</span> <span class="nc">Test</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line"><span class="k">public</span><span class="o">:</span>
+</span><span class="line">  <span class="k">static</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line"><span class="p">};</span>
+</span><span class="line"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="n">f</span><span class="p">(</span><span class="n">Test</span><span class="o">::</span><span class="n">a</span><span class="p">);</span><span class="c1">//没问题</span>
+</span><span class="line">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>恩，有了前面的基础，相信读者诸君已经知道怎么分析。我们可以用同样的方法，看看它的汇编代码：</p>
+
+<pre><code>main:
+	pushl	%ebp
+	movl	%esp, %ebp
+	subl	$4, %esp
+	movl	$1, (%esp)     ;看到没？1，不是_ZN4Test1aE，也不是Test::a
+	call	_Z1fi
+	movl	$0, %eax
+	leave
+	ret
+</code></pre>
+
+<p>也就是说，在这里，编译器只是把<strong>Test::a</strong>认作一个占位符，实际使用之处用<strong>1</strong>代替了。</p>
+
+<h2 id="section-2">解决问题</h2>
+
+<p>知道原因了，那么怎么解决呢？恩，至少三种方法：</p>
+
+<p>1，我们可以<strong>定义</strong>（而不是声明）<strong>Test::a</strong>。是的，上面的<code>static const int a = 1;</code>并不是它的定义式。如果要定义，那么我们应该这么做：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="k">const</span> <span class="kt">int</span> <span class="o">&amp;</span><span class="n">value</span><span class="p">)</span><span class="c1">//还是传引用</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="k">class</span> <span class="nc">Test</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line"><span class="k">public</span><span class="o">:</span>
+</span><span class="line">  <span class="k">static</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">a</span><span class="p">;</span>
+</span><span class="line"><span class="p">};</span>
+</span><span class="line"><span class="k">const</span> <span class="kt">int</span> <span class="n">Test</span><span class="o">::</span><span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span><span class="c1">//定义a</span>
+</span><span class="line"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="n">f</span><span class="p">(</span><span class="n">Test</span><span class="o">::</span><span class="n">a</span><span class="p">);</span><span class="c1">//现在没问题了</span>
+</span><span class="line">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>有兴趣的读者可以看看这个程序对应的符号表，就会发现<strong>Test::a</strong>被放在了程序的<strong>rodata section</strong>，而不是*UND*了。</p>
+
+<p>2，如果仅仅声明<strong>a</strong>，那么我们可以按值的方式使用它，这没问题。也就是只使用它的值；而不去获得它的地址(当然，也包括引用。引用本质上也是地址)。</p>
+
+<p>3，使用枚举类型。是的，枚举！像这样：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="k">const</span> <span class="kt">int</span> <span class="o">&amp;</span><span class="n">value</span><span class="p">)</span><span class="c1">//还是传引用</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="k">class</span> <span class="nc">Test</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line"><span class="k">public</span><span class="o">:</span>
+</span><span class="line">  <span class="k">enum</span> <span class="n">HELLOWORLD</span> <span class="p">{</span><span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">};</span> <span class="c1">//枚举，而不是 static const</span>
+</span><span class="line"><span class="p">};</span>
+</span><span class="line"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="n">f</span><span class="p">(</span><span class="n">Test</span><span class="o">::</span><span class="n">a</span><span class="p">);</span><span class="c1">//没问题</span>
+</span><span class="line">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>那么，这种情况下，编译器是如何处理的呢？就留给读者诸君作为练习吧。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[心平气和说三顾茅庐]]></title>
+    <link href="http://www.yebangyu.org/blog/2015/11/11/xinpingqiheshuosangumaolu/"/>
+    <updated>2015-11-11T22:47:31+08:00</updated>
+    <id>http://www.yebangyu.org/blog/2015/11/11/xinpingqiheshuosangumaolu</id>
+    <content type="html"><![CDATA[<p>前几天在知乎上，看到一个如何评价易中天先生品三国的帖子，楼里有人这样说（节选，细节可以看这里：<a href="http://www.zhihu.com/question/23414118">怎样评价易中天品三国？</a>）：</p>
+
+<!--more-->
+
+<p>“因为偏颇导致他所举出的材料都带有偏颇性。比方说有一集他质疑三顾茅庐的真实性，举出一个例子是出自裴松之的注，诸葛亮去找刘备，结果刘备只是把他当普通人处理，结果之后刘备拿草编织，被诸葛亮看到说难道将军的志向就是编草鞋吗。然后刘备叹口气说那我能怎么办呢。诸葛亮说：你认为你和曹操比何如？刘备便答：自然是比不上云云大抵就是这样的一个故事。易中天照搬不误，讲了出来，但是没有讲这篇材料的出处。这篇材料并不是出自三国志，而是出自《魏略》。是裴松之把他补了进去，并且提出了自己的反对意见，认为这条材料不可信。但是易中天没有提这个故事的出处，也没有谈裴松之的“不可信”意见，却直接拿来用，为了达到自己的观点，丝毫不向观众解释清楚。这个是有点误导了罢？”</p>
+
+<p>在我看来，这是典型的睁着眼睛说瞎话，因此，我在下面和他理论起来，双方对话也不妨贴在下面：</p>
+
+<p><img src="http://7xnljs.com1.z0.glb.clouddn.com/xinpingqiheshuosangu.png" alt="zhihuduihua" /></p>
+
+<p>这就很有意思了，那我就不妨来钻钻牛角尖。</p>
+
+<h2 id="section">易中天是否没讲出处</h2>
+
+<p>根据《易中天品三国》，易中天先生在谈到这个问题时，说：</p>
+
+<p>另外裴松之（这里是口误，应该是陈寿）编完诸葛亮的这个集子以后，有一个《上诸葛亮集表》（有错，应该是进《诸葛亮集》表）里面也是这么记载的，所以裴松之在为《三国志》作注的时候，他把《魏略》和《九州春秋》的说法他注在注文里面了，同时他发了一个议论，他说历史上由于历史学家文件不同，就是他的信息渠道不同，他的信息来源不同，是会有不同的记载，这很正常，但是这个事情如此冲突和矛盾太奇怪了。</p>
+
+<p>可见，易中天先生不仅说了出处是《魏略》和《九州春秋》，并且还提了裴松之的议论。</p>
+
+<p>这里节选的是易中天品三国视频版本，书籍版本也大体一致。读者可以查阅《易中天品三国（上）》149-151页。书里不但明确说了出处，还交待了“裴松之认为不实”。</p>
+
+<h2 id="section-1">《魏书》和《魏略》，谁不可信？</h2>
+
+<p>要明白这一点，得先知道《魏书》和《魏略》的作者。</p>
+
+<p>《魏书》的作者，是王沈。王沈是司马懿一党，所以，在写《魏书》的时候，便抹去了很多真相，抹去了很多对司马懿家族不利的东西。另外，根据《晋书》列传第九之王沈等传对它的评价，“多为时讳，未若陈寿之实录也。”。《史通》也说它“其书多为时讳，殊非实录”。</p>
+
+<p>至于《魏略》，是魏朝郎中鱼豢自己撰写的，非官方史书。马植杰先生在他的《三国史》里（407页），这么评价它：</p>
+
+<p>近人张鹏一《魏略辑本》谓鱼豢死于晋太康以后，则鱼豢入晋后还活了十六年以上，可知鱼豢不曾仕晋。看来，鱼豢是忠于曹魏而耻为晋臣者，故《魏略》叙事颇注重品节作风。裴松之注《三国志》，引用之书，以《魏略》为最多，《魏略》虽早已亡佚，但从裴注中尚可窥知其梗概。从《魏略》的内容和文字看，还是相当好的。</p>
+
+<p>史家多认为《魏略》是良史，比较可信。</p>
+
+<h2 id="section-2">魏国人难道比蜀国更懂蜀国历史？</h2>
+
+<p>不能说蜀国人自己的记载就一定比别国真实。</p>
+
+<p>要知道，魏蜀吴三国中，（只有）蜀国是没有史官的，很多事情的记载，还得去别国的书籍中去了解，比如说，蜀国费祎出使吴国时的一些外交趣事，还得从《祎别传》中获得。这并不奇怪，也没什么。</p>
+
+<p>著名历史学家缪钺先生说，陈寿在写《三国志》时，就把《魏略》等作为参考资料的依据。（参考先生为岳麓出版社出版的《三国志》写的序言）。</p>
+
+<p>因此，认为蜀国人比一定比魏国人更懂蜀国历史，是非常狭隘的观点，也是混账逻辑，也是不懂历史的表现。</p>
+
+<p>完。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[2015年大事纪]]></title>
+    <link href="http://www.yebangyu.org/blog/2015/11/08/my2015/"/>
+    <updated>2015-11-08T18:37:16+08:00</updated>
+    <id>http://www.yebangyu.org/blog/2015/11/08/my2015</id>
+    <content type="html"><![CDATA[<p>2015就要过去了，2016就要来了。简单回顾下这一年。</p>
+
+<h2 id="section">老婆来京</h2>
+
+<p>老婆来北京工作了。哈哈，不用苦逼异地恋了。三年的异地恋，让我学会很多东西。我本是一个负责任的人，老婆又是相对独立、不粘人的自强的人，这三年的异地恋，总体来说非常融洽、顺利。哈哈。</p>
+
+<!--more-->
+
+<p><img src="http://7xnljs.com1.z0.glb.clouddn.com/laopolaijing.jpg" alt="laopolaijing" /></p>
+
+<h2 id="section-1">回校讲座</h2>
+
+<p>五月份回本科母校做了一个讲座，简单介绍了Big Data的应用、背后的技术以及八卦。见到了很多以前的老师、同学、学弟。真的很开心。这回很圆满，见到了非常难见到的坤总和老同桌。</p>
+
+<p><img src="http://7xnljs.com1.z0.glb.clouddn.com/2015051309103736849.jpg" alt="huixiaojiangzuo" /></p>
+
+<h2 id="section-2">顺利毕业</h2>
+
+<p>硕士毕业了。这三年来，感谢王斌恩师对我的指点和栽培；感谢师兄师姐对我的热心帮助。在实验室的三年，虽然比较辛苦，干的活很多，有时候还很重，但是有一群可爱的小伙伴，让人很难忘。</p>
+
+<h2 id="section-3">见到赵神</h2>
+
+<p>见到了赵海平老师。一直对赵老师非常敬重，群里的小伙伴也是。去拜访他之前，还特地拉上了群里的王杰童鞋。哈哈，感觉他说话非常接地气，没有架子，也不说什么空话。非常平易近人。</p>
+
+<p><img src="http://7xnljs.com1.z0.glb.clouddn.com/jiandaozhaoshen.jpg" alt="jiandaozhaoshen" /></p>
+
+<h2 id="section-4">工作转正</h2>
+
+<p>毕业后进入了一个非常优秀的团队，非常庆幸。话不用多说，踏踏实实做一个靠谱的人，做靠谱的事。</p>
+
+<p><img src="http://7xnljs.com1.z0.glb.clouddn.com/gongzuozhuanzheng.jpg" alt="gongzuozhuanzheng" /></p>
+
+<h2 id="section-5">老王赴美</h2>
+
+<p>老王去美帝了。作为研究生期间最好的朋友（之一），老王对我的帮助很大，带我去医院体检，容忍我非常坏的脾气，还带我单反入门。一起去蹦极，一起说笑话。啊，真是让人怀念。希望老王在美帝认真学习，学成归来，带我牛逼带我飞。</p>
+
+<p><img src="http://7xnljs.com1.z0.glb.clouddn.com/laowangfumei1.jpg" alt="laowangfumei1" /></p>
+
+<p><img src="http://7xnljs.com1.z0.glb.clouddn.com/laowangfumei2.jpg" alt="laowangfumei2" /></p>
+
+<h2 id="section-6">老婆晋升</h2>
+
+<p>哈哈，老婆升职了。虽然老婆入职美团不到7个月，然而凭借优秀的表现，还是顺利升职啦。哈哈。恭喜恭喜。</p>
+
+<p><img src="http://7xnljs.com1.z0.glb.clouddn.com/laopojinsheng.jpg" alt="laopojinsheng2" /></p>
+
+<h2 id="section-7">相守一生</h2>
+
+<p>订婚啦。哈哈。和老婆在一起的五年里，感谢大家对我们的祝福和关心。一路走来，感谢始终陪伴的见证者：杨老板、亚玲、Delphi Genius、荣辉、张春华兄等等等等。</p>
+
+<p><img src="http://7xnljs.com1.z0.glb.clouddn.com/xiangshouyisheng2.jpg" alt="xiangshouyisheng2" /></p>
+
+<p><img src="http://7xnljs.com1.z0.glb.clouddn.com/xiangshouyisheng3.jpg" alt="xiangshouyisyheng3" /></p>
+
+<h2 id="section-8">再添一员</h2>
+
+<p>当叔叔了。家里面又多了一员。一种身份，对应一种责任。希望可以做一个称职的叔叔。</p>
+
+<p><img src="http://7xnljs.com1.z0.glb.clouddn.com/zaijianyiyuan.jpg" alt="zaitianyiyuan" /></p>
+
+<p>那么，2016年呢？</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[空指针(NULL)不能用吗？]]></title>
+    <link href="http://www.yebangyu.org/blog/2015/11/06/null-pointer-can-be-accessed/"/>
+    <updated>2015-11-06T22:38:30+08:00</updated>
+    <id>http://www.yebangyu.org/blog/2015/11/06/null-pointer-can-be-accessed</id>
+    <content type="html"><![CDATA[<p>我们常常被告知，使用指针前需要判断是否为<strong>NULL</strong>；如果是<strong>NULL</strong>而你去使用它就会出问题。真相果真是这样吗？</p>
+
+<p>同事颜廷帅（微博：@颜挺帅）给我看以下一个程序，问我，这段程序执行后，有问题吗？</p>
+
+<!--more-->
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="cp">#include&lt;iostream&gt;</span>
+</span><span class="line"><span class="cp">#include&lt;cstdlib&gt;</span>
+</span><span class="line"><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span><span class="line"><span class="k">class</span> <span class="nc">Test1</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line"><span class="k">private</span><span class="o">:</span>
+</span><span class="line">  <span class="kt">int</span> <span class="n">a</span><span class="p">;</span>
+</span><span class="line"><span class="k">public</span><span class="o">:</span>
+</span><span class="line">  <span class="kt">void</span> <span class="n">f</span><span class="p">()</span>
+</span><span class="line">  <span class="p">{</span>
+</span><span class="line">    <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Test1: Core or not ? &quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line"><span class="p">};</span>
+</span><span class="line"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="n">Test1</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span><span class="line">  <span class="n">p</span><span class="o">-&gt;</span><span class="n">f</span><span class="p">();</span><span class="c1">//会core吗？会出大事吗？</span>
+</span><span class="line">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>这里，<strong>p</strong>是一个空指针，通过这个空指针，我们访问了函数<strong>f</strong>。没<strong>core</strong>，没问题，成功输出了 <strong>Test1: Core or not ?</strong></p>
+
+<p>发生了什么事？空指针也能用？</p>
+
+<p>如果我们把<strong>f</strong>稍作修改，程序其他地方不做任何变动：</p>
+
+<pre><code>void f()
+{
+  cout&lt;&lt;"Test1: Core or not ? "&lt;&lt;a&lt;&lt;endl;//access a
+}
+</code></pre>
+
+<p>那么程序运行后分分钟<strong>core</strong>掉了。</p>
+
+<p>有没有感觉了？嗯，相信有了。我们继续往下看：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="cp">#include&lt;iostream&gt;</span>
+</span><span class="line"><span class="cp">#include&lt;cstdlib&gt;</span>
+</span><span class="line"><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span><span class="line"><span class="k">static</span> <span class="kt">int</span> <span class="n">global</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line"><span class="k">class</span> <span class="nc">Test2</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line"><span class="k">private</span><span class="o">:</span>
+</span><span class="line">  <span class="kt">int</span> <span class="n">a</span><span class="p">;</span>
+</span><span class="line"><span class="k">public</span><span class="o">:</span>
+</span><span class="line">  <span class="kt">void</span> <span class="n">f</span><span class="p">()</span>
+</span><span class="line">  <span class="p">{</span>
+</span><span class="line">    <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Test1: Core or not ? &quot;</span><span class="o">&lt;&lt;</span><span class="n">global</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span><span class="c1">//access global</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line"><span class="p">};</span>
+</span><span class="line"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="n">Test2</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span><span class="line">  <span class="n">p</span><span class="o">-&gt;</span><span class="n">f</span><span class="p">();</span><span class="c1">//会core吗？会出大事吗？</span>
+</span><span class="line">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>也没问题。</p>
+
+<p>嗯，你可能已经知道了真相。通过空指针访问东西，只要那个东西是确实存在的，就不会有问题。</p>
+
+<p>怎么理解“确实存在”？它是一个实体，看得见，摸得着。</p>
+
+<p>这得说到<strong>C++</strong>程序中对象的内存布局。</p>
+
+<p>在<strong>C++</strong>中，成员函数、静态变量是独立于对象存放的；而普通的数据成员是和对象相关的。</p>
+
+<pre><code>Test1 obj1;
+Test1 obj2;
+</code></pre>
+
+<p><strong>obj1</strong>和<strong>obj2</strong>是共用函数<strong>f</strong>的，函数<strong>f</strong>对<strong>obj1</strong>和<strong>obj2</strong>是相同的，内存中只有一份实体；而<strong>obj1</strong>和<strong>obj2</strong>有自己的实体<strong>a</strong>。</p>
+
+<p>然而，注意到<code>Test1 *p = NULL;</code>仅仅是声明式，而非定义式。这时候，没有定义任何的对象出来，通过<strong>p</strong>如何访问<strong>a</strong>呢？哪来的<strong>a</strong>呢？<strong>a</strong>在内存里并不存在。因此，访问<strong>a</strong>必定<strong>core</strong>。</p>
+
+<p>而函数<strong>f</strong>呢？它是独立于对象存放的，自然没问题。一般说来，<strong>f</strong>位于程序的代码段，而全局变量一般位于<strong>BSS</strong>段或者<strong>DATA</strong>段（这个比较复杂，和该全局变量是否初始化以及初始化为<strong>0</strong>还是非<strong>0</strong>有关）。而当我们定义对象时，才为该对象分配内存，才有数据成员<strong>a</strong>的存在：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="cp">#include&lt;iostream&gt;</span>
+</span><span class="line"><span class="cp">#include&lt;cstdlib&gt;</span>
+</span><span class="line"><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span><span class="line"><span class="k">static</span> <span class="kt">int</span> <span class="n">global1</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">//DATA段</span>
+</span><span class="line"><span class="k">static</span> <span class="kt">int</span> <span class="n">global2</span><span class="p">;</span> <span class="c1">//BSS段</span>
+</span><span class="line"><span class="k">class</span> <span class="nc">Test3</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line"><span class="k">private</span><span class="o">:</span>
+</span><span class="line">  <span class="kt">int</span> <span class="n">a</span><span class="p">;</span>
+</span><span class="line"><span class="k">public</span><span class="o">:</span>
+</span><span class="line">  <span class="kt">void</span> <span class="n">f</span><span class="p">()</span>
+</span><span class="line">  <span class="p">{</span>
+</span><span class="line">    <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Test1: Core or not ? &quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line"><span class="p">};</span>
+</span><span class="line"><span class="n">Test3</span> <span class="n">obj3</span><span class="p">;</span> <span class="c1">//DATA段 (调用默认构造函数进行初始化)</span>
+</span><span class="line"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="n">Test3</span> <span class="n">obj1</span><span class="p">;</span> <span class="c1">//stack段。定义obj1，这时候自然为a分配内存了</span>
+</span><span class="line">  <span class="n">Test3</span> <span class="o">*</span><span class="n">obj2</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Test3</span><span class="p">();</span><span class="c1">//heap段，也为a分配内存了。</span>
+</span><span class="line">  <span class="n">Test3</span> <span class="o">*</span><span class="n">p</span><span class="p">;</span><span class="c1">//只是声明，没有定义。没有对象，也没有a。</span>
+</span><span class="line">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>受王杰兄（微博：@skyline09_）启发和提示，其实我们可以换一种形式来理解。</p>
+
+<p>我们知道，<strong>C++</strong>中，类的非静态成员函数会被编译器改写：</p>
+
+<p><code>void Test::f()</code>被改写为类似于<code>void Test__f(Test *const this)</code></p>
+
+<p>而</p>
+
+<pre><code>Test *p = NULL;
+
+p-&gt;f();
+</code></pre>
+
+<p>将被编译器改写为</p>
+
+<pre><code>Test *p = NULL;
+Test__f(p);
+</code></pre>
+
+<p>因此<code>Test::f</code>中带有一个值为<strong>NULL</strong>的<strong>this</strong>指针（<strong>p</strong>），如果通过这个空指针<strong>p</strong>读写数据，就会崩溃。否则，安然无事。</p>
+
+<p>那么，<strong>this</strong>指针可以操纵哪些东西呢？哦，类的非静态数据成员。而类的静态数据成员，全局变量等，是不会通过<strong>this</strong>指针访问的，因此，上例中，访问<strong>a</strong>崩溃，访问<strong>global</strong>则安全。</p>
+
+<p>最后，我们看一个问题。这个问题，最早我是从杜克伟兄（微博：@小伙伴-小伙伴儿）那里听到的。</p>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="k">class</span> <span class="nc">Test4</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line"><span class="k">public</span><span class="o">:</span>
+</span><span class="line">  <span class="kt">void</span> <span class="n">f</span><span class="p">()</span>
+</span><span class="line">  <span class="p">{</span>
+</span><span class="line">    <span class="n">cout</span><span class="o">&lt;&lt;&amp;</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">)</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span> <span class="c1">// 有问题吗？</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line"><span class="p">};</span>
+</span><span class="line"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="n">Test4</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span><span class="line">  <span class="n">p</span><span class="o">-&gt;</span><span class="n">f</span><span class="p">();</span>
+</span><span class="line">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>没问题。<strong>&amp;(*this)</strong>就是<strong>this</strong>，值和<strong>p</strong>相等。因此上面会输出<strong>0</strong>。</p>
+
+<p>综上，使用空指针并不一定会发生问题，关键是怎么用。遇到问题得理性分析，不要想当然。</p>
+
+<p>纸上学来终觉浅，绝知此事要躬行。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[编写高质量代码(上)]]></title>
+    <link href="http://www.yebangyu.org/blog/2015/11/06/how-to-write-elegant-cpp-codes/"/>
+    <updated>2015-11-06T00:24:56+08:00</updated>
+    <id>http://www.yebangyu.org/blog/2015/11/06/how-to-write-elegant-cpp-codes</id>
+    <content type="html"><![CDATA[<p>我们知道，<strong>int</strong>和<strong>double</strong>能表示的数值的范围不同。其中，<strong>64</strong>位有符号整数的范围是[<strong>-9223372036854775808</strong>,<strong>9223372036854775807</strong>]，而<strong>64</strong>位无符号整数的范围是[<strong>0</strong>,<strong>18446744073709551615</strong>]。这两个区间有一定的<strong>overlap</strong>，而<strong>double</strong>可以表示的范围更大。</p>
+
+<p>现在，需要编写两个函数:给定一个<strong>double</strong>型的<strong>value</strong>，判断这个<strong>value</strong>是否是一个合法的<strong>int64_t</strong>或者<strong>uint64_t</strong>。本文说的“合法”，是指数值上落在了范围内。</p>
+
+<pre><code>bool is_valid_uint64(const Double &amp;value);
+
+bool is_valid_int64(const Double &amp;value);
+</code></pre>
+
+<p>这里我们用<strong>Double</strong>而不是<strong>double</strong>，原因是我们的<strong>double</strong>不是基础数据类型，而是通过一定方法实现的<strong>ADT</strong>，这个<strong>ADT</strong>的成员函数有：</p>
+
+<!--more-->
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="k">class</span> <span class="nc">Double</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="k">public</span><span class="o">:</span>
+</span><span class="line">    <span class="kt">int</span> <span class="n">get_next_digit</span><span class="p">(</span><span class="kt">bool</span> <span class="o">&amp;</span><span class="n">is_decimal</span><span class="p">);</span>
+</span><span class="line">    <span class="kt">bool</span> <span class="nf">is_zero</span><span class="p">();</span>
+</span><span class="line">    <span class="kt">bool</span> <span class="nf">is_neg</span><span class="p">();</span>
+</span><span class="line"><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>通过调用<code>get_next_digit</code>，可以返回一个数字，不断调用它，可以得到所有<strong>digits</strong>。举个例子，对于值为<strong>45.67</strong>的一个<strong>Double</strong>对象，调用它的<code>get_next_digit</code>成员函数将依次得到</p>
+
+<p>4 is_decimal = false //表示整数部分</p>
+
+<p>5 is_decimal = false //表示整数部分</p>
+
+<p>6 is_decimal = true //表示小数部分</p>
+
+<p>7 is_decimal = true //表示小数部分</p>
+
+<p>当<code>get_next_digit</code>返回<strong>-1</strong>时，表示读取完毕。</p>
+
+<p>如何利用<strong>Double</strong>类里的成员函数，来实现<code>is_valid_uint64</code>和<code>is_valid_int64</code>这两个函数呢？</p>
+
+<p>一些新手可能会写这样的代码：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+<span class="line-number">50</span>
+<span class="line-number">51</span>
+<span class="line-number">52</span>
+<span class="line-number">53</span>
+<span class="line-number">54</span>
+<span class="line-number">55</span>
+<span class="line-number">56</span>
+<span class="line-number">57</span>
+<span class="line-number">58</span>
+<span class="line-number">59</span>
+<span class="line-number">60</span>
+<span class="line-number">61</span>
+<span class="line-number">62</span>
+<span class="line-number">63</span>
+<span class="line-number">64</span>
+<span class="line-number">65</span>
+<span class="line-number">66</span>
+<span class="line-number">67</span>
+<span class="line-number">68</span>
+<span class="line-number">69</span>
+<span class="line-number">70</span>
+<span class="line-number">71</span>
+<span class="line-number">72</span>
+<span class="line-number">73</span>
+<span class="line-number">74</span>
+<span class="line-number">75</span>
+<span class="line-number">76</span>
+<span class="line-number">77</span>
+<span class="line-number">78</span>
+<span class="line-number">79</span>
+<span class="line-number">80</span>
+<span class="line-number">81</span>
+<span class="line-number">82</span>
+<span class="line-number">83</span>
+<span class="line-number">84</span>
+<span class="line-number">85</span>
+<span class="line-number">86</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="kt">bool</span> <span class="nf">is_valid_uint64</span><span class="p">(</span><span class="k">const</span> <span class="n">Double</span> <span class="o">&amp;</span><span class="n">value</span><span class="p">)</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="kt">bool</span> <span class="n">is_valid</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span><span class="line">  <span class="kt">int</span> <span class="n">digits</span><span class="p">[</span><span class="mi">2000</span><span class="p">];</span>
+</span><span class="line">  <span class="kt">int</span> <span class="n">counts</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line">  <span class="k">if</span> <span class="p">(</span><span class="n">value</span><span class="p">.</span><span class="n">is_zero</span><span class="p">())</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">is_valid</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span><span class="line">  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">value</span><span class="p">.</span><span class="n">is_neg</span><span class="p">())</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">is_valid</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+</span><span class="line">  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class="line">    <span class="kt">bool</span> <span class="n">is_decimal</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+</span><span class="line">    <span class="kt">int</span> <span class="n">digit</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line">    <span class="k">while</span><span class="p">((</span><span class="n">digit</span><span class="o">=</span><span class="n">value</span><span class="p">.</span><span class="n">get_next_digit</span><span class="p">(</span><span class="n">is_decimal</span><span class="p">))</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">      <span class="k">if</span> <span class="p">(</span><span class="n">is_decimal</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">        <span class="n">is_valid</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+</span><span class="line">        <span class="k">break</span><span class="p">;</span>
+</span><span class="line">      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class="line">        <span class="n">digits</span><span class="p">[</span><span class="n">counts</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">digit</span><span class="p">;</span>
+</span><span class="line">      <span class="p">}</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="kt">uint64_t</span> <span class="n">tmp</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line">    <span class="kt">uint64_t</span> <span class="n">base</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">counts</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">      <span class="n">tmp</span> <span class="o">+=</span> <span class="n">digits</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">base</span><span class="p">;</span>
+</span><span class="line">      <span class="k">if</span> <span class="p">(</span><span class="n">tmp</span> <span class="o">&gt;</span> <span class="n">UINT64_MAX</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">        <span class="n">is_valid</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+</span><span class="line">        <span class="k">break</span><span class="p">;</span>
+</span><span class="line">      <span class="p">}</span>
+</span><span class="line">      <span class="n">base</span> <span class="o">*=</span> <span class="mi">10</span><span class="p">;</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line">  <span class="k">return</span> <span class="n">is_valid</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="kt">bool</span> <span class="nf">is_valid_int64</span><span class="p">(</span><span class="k">const</span> <span class="n">Double</span> <span class="o">&amp;</span><span class="n">value</span><span class="p">)</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="kt">bool</span> <span class="n">is_valid</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span><span class="line">  <span class="kt">int</span> <span class="n">digits</span><span class="p">[</span><span class="mi">2000</span><span class="p">];</span>
+</span><span class="line">  <span class="kt">int</span> <span class="n">counts</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line">  <span class="k">if</span> <span class="p">(</span><span class="n">value</span><span class="p">.</span><span class="n">is_zero</span><span class="p">())</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">is_valid</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span><span class="line">  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">value</span><span class="p">.</span><span class="n">is_neg</span><span class="p">())</span> <span class="p">{</span>
+</span><span class="line">    <span class="kt">bool</span> <span class="n">is_decimal</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+</span><span class="line">    <span class="kt">int</span> <span class="n">digit</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line">    <span class="k">while</span><span class="p">((</span><span class="n">digit</span><span class="o">=</span><span class="n">value</span><span class="p">.</span><span class="n">get_next_digit</span><span class="p">(</span><span class="n">is_decimal</span><span class="p">))</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">      <span class="k">if</span> <span class="p">(</span><span class="n">is_decimal</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">        <span class="n">is_valid</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+</span><span class="line">        <span class="k">break</span><span class="p">;</span>
+</span><span class="line">      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class="line">        <span class="n">digits</span><span class="p">[</span><span class="n">counts</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">digit</span><span class="p">;</span>
+</span><span class="line">      <span class="p">}</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="kt">uint64_t</span> <span class="n">tmp</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line">    <span class="kt">uint64_t</span> <span class="n">base</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">counts</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">      <span class="n">tmp</span> <span class="o">+=</span> <span class="n">digits</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">base</span><span class="p">;</span>
+</span><span class="line">      <span class="n">tmp</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span><span class="line">      <span class="k">if</span> <span class="p">(</span><span class="n">tmp</span> <span class="o">&lt;</span> <span class="n">INT64_MIN</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">        <span class="n">is_valid</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+</span><span class="line">        <span class="k">break</span><span class="p">;</span>
+</span><span class="line">      <span class="p">}</span>
+</span><span class="line">      <span class="n">base</span> <span class="o">*=</span> <span class="mi">10</span><span class="p">;</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class="line">    <span class="kt">bool</span> <span class="n">is_decimal</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+</span><span class="line">    <span class="kt">int</span> <span class="n">digit</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line">    <span class="k">while</span><span class="p">((</span><span class="n">digit</span><span class="o">=</span><span class="n">value</span><span class="p">.</span><span class="n">get_next_digit</span><span class="p">(</span><span class="n">is_decimal</span><span class="p">))</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">      <span class="k">if</span> <span class="p">(</span><span class="n">is_decimal</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">        <span class="n">is_valid</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+</span><span class="line">        <span class="k">break</span><span class="p">;</span>
+</span><span class="line">      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class="line">        <span class="n">digits</span><span class="p">[</span><span class="n">counts</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">digit</span><span class="p">;</span>
+</span><span class="line">      <span class="p">}</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="kt">uint64_t</span> <span class="n">tmp</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line">    <span class="kt">uint64_t</span> <span class="n">base</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">counts</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">      <span class="n">tmp</span> <span class="o">+=</span> <span class="n">digits</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">base</span><span class="p">;</span>
+</span><span class="line">      <span class="k">if</span> <span class="p">(</span><span class="n">tmp</span> <span class="o">&gt;</span> <span class="n">INT64_MAX</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">        <span class="n">is_valid</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+</span><span class="line">        <span class="k">break</span><span class="p">;</span>
+</span><span class="line">      <span class="p">}</span>
+</span><span class="line">      <span class="n">base</span> <span class="o">*=</span> <span class="mi">10</span><span class="p">;</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line">  <span class="k">return</span> <span class="n">is_valid</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>这样的代码，存在诸多问题。</p>
+
+<h2 id="section">设计问题</h2>
+
+<p>不难发现，两个函数存在很多相似甚至相同的代码；而同一个函数内部，也有不少代码重复。重复的东西往往不是好的。重构？</p>
+
+<h2 id="section-1">性能问题</h2>
+
+<p>先获得所有digits，然后从最低位开始向最高位构造值，效率较低。难道没有可以从最高位开始，边获得边计算，不需要临时数组存储所有digits的方法吗？</p>
+
+<h2 id="section-2">正确性问题</h2>
+
+<p>随便举几个例子：</p>
+
+<p>第<strong>24</strong>行，<code>tmp += digits[i] * base</code>;有没有考虑到可能的溢出呢？</p>
+
+<p>第<strong>68</strong>行，难道有小数部分就一定不是合法的<strong>int64</strong>吗？那么，<strong>123.000</strong>？嗯？</p>
+
+<h2 id="section-3">规范问题</h2>
+
+<p>帅哥，这么多代码，一行注释都没有，这样真的好吗？</p>
+
+<p>因此，毫无疑问，这是烂代码，不合格的代码，需要重写的代码。</p>
+
+<hr />
+
+<p>以下是我个人认为比较好的设计和实现，仅供参考。</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+<span class="line-number">50</span>
+<span class="line-number">51</span>
+<span class="line-number">52</span>
+<span class="line-number">53</span>
+<span class="line-number">54</span>
+<span class="line-number">55</span>
+<span class="line-number">56</span>
+<span class="line-number">57</span>
+<span class="line-number">58</span>
+<span class="line-number">59</span>
+<span class="line-number">60</span>
+<span class="line-number">61</span>
+<span class="line-number">62</span>
+<span class="line-number">63</span>
+<span class="line-number">64</span>
+<span class="line-number">65</span>
+<span class="line-number">66</span>
+<span class="line-number">67</span>
+<span class="line-number">68</span>
+<span class="line-number">69</span>
+<span class="line-number">70</span>
+<span class="line-number">71</span>
+<span class="line-number">72</span>
+<span class="line-number">73</span>
+<span class="line-number">74</span>
+<span class="line-number">75</span>
+<span class="line-number">76</span>
+<span class="line-number">77</span>
+<span class="line-number">78</span>
+<span class="line-number">79</span>
+<span class="line-number">80</span>
+<span class="line-number">81</span>
+<span class="line-number">82</span>
+<span class="line-number">83</span>
+<span class="line-number">84</span>
+<span class="line-number">85</span>
+<span class="line-number">86</span>
+<span class="line-number">87</span>
+<span class="line-number">88</span>
+<span class="line-number">89</span>
+<span class="line-number">90</span>
+<span class="line-number">91</span>
+<span class="line-number">92</span>
+<span class="line-number">93</span>
+<span class="line-number">94</span>
+<span class="line-number">95</span>
+<span class="line-number">96</span>
+<span class="line-number">97</span>
+<span class="line-number">98</span>
+<span class="line-number">99</span>
+<span class="line-number">100</span>
+<span class="line-number">101</span>
+<span class="line-number">102</span>
+<span class="line-number">103</span>
+<span class="line-number">104</span>
+<span class="line-number">105</span>
+<span class="line-number">106</span>
+<span class="line-number">107</span>
+<span class="line-number">108</span>
+<span class="line-number">109</span>
+<span class="line-number">110</span>
+<span class="line-number">111</span>
+<span class="line-number">112</span>
+<span class="line-number">113</span>
+<span class="line-number">114</span>
+<span class="line-number">115</span>
+<span class="line-number">116</span>
+<span class="line-number">117</span>
+<span class="line-number">118</span>
+<span class="line-number">119</span>
+<span class="line-number">120</span>
+<span class="line-number">121</span>
+<span class="line-number">122</span>
+<span class="line-number">123</span>
+<span class="line-number">124</span>
+<span class="line-number">125</span>
+<span class="line-number">126</span>
+<span class="line-number">127</span>
+<span class="line-number">128</span>
+<span class="line-number">129</span>
+<span class="line-number">130</span>
+<span class="line-number">131</span>
+<span class="line-number">132</span>
+<span class="line-number">133</span>
+<span class="line-number">134</span>
+<span class="line-number">135</span>
+<span class="line-number">136</span>
+<span class="line-number">137</span>
+<span class="line-number">138</span>
+<span class="line-number">139</span>
+<span class="line-number">140</span>
+<span class="line-number">141</span>
+<span class="line-number">142</span>
+<span class="line-number">143</span>
+<span class="line-number">144</span>
+<span class="line-number">145</span>
+<span class="line-number">146</span>
+<span class="line-number">147</span>
+<span class="line-number">148</span>
+<span class="line-number">149</span>
+<span class="line-number">150</span>
+<span class="line-number">151</span>
+<span class="line-number">152</span>
+<span class="line-number">153</span>
+<span class="line-number">154</span>
+<span class="line-number">155</span>
+<span class="line-number">156</span>
+<span class="line-number">157</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="kt">bool</span> <span class="nf">is_valid_uint64</span><span class="p">(</span><span class="k">const</span> <span class="n">Double</span> <span class="o">&amp;</span><span class="n">value</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">
+</span><span class="line">  <span class="kt">bool</span> <span class="n">ret</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">  <span class="n">check_range</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ret</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line">  <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line"><span class="p">}</span>
+</span><span class="line">
+</span><span class="line">
+</span><span class="line">
+</span><span class="line"><span class="kt">bool</span> <span class="nf">is_valid_int64</span><span class="p">(</span><span class="k">const</span> <span class="n">Double</span> <span class="o">&amp;</span><span class="n">value</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">
+</span><span class="line">  <span class="kt">bool</span> <span class="n">ret</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">  <span class="n">check_range</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ret</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line">  <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line"><span class="p">}</span>
+</span><span class="line">
+</span><span class="line">
+</span><span class="line">
+</span><span class="line"><span class="kt">void</span> <span class="n">check_range</span><span class="p">(</span><span class="k">const</span> <span class="n">Double</span> <span class="o">&amp;</span><span class="n">value</span><span class="p">,</span>
+</span><span class="line">
+</span><span class="line">                 <span class="kt">bool</span> <span class="o">*</span><span class="n">is_valid_uint64</span><span class="p">,</span>
+</span><span class="line">
+</span><span class="line">                 <span class="kt">bool</span> <span class="o">*</span><span class="n">is_valid_int64</span><span class="p">)</span> <span class="k">const</span>
+</span><span class="line">
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">
+</span><span class="line">  <span class="cm">/*</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">   * 对于一个负数的value，它不可能是一个合法的uint64.</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">   * 因此，只剩下三种可能：</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">   * I 输入的value是负数，判断是否是合法的int64</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">   * II 输入的value是正数，判断是否是合法的uint64</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">   * III 输入的value是正数，判断是否是合法的int64</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">   * 对于第II、III这两种情况：只要判断value的值是否超过uint64、int64的上界即可</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">   * 对于第I种情况，我们利用-A &gt; -B 等价于 A &lt; B （其中A、B是正数）</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">   * 因此，在第I种情况里，可以判断value的绝对值，是否超过int64的最小值的绝对值即可。</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">   * （int64的最小值的绝对值？那不就是int64的最大值？哦，不！）</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">   * 因此，不管哪种情况，判断绝对值是否超过某个上界即可。</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">   * 这三种情况，上界不一样。把三个上界存到了一个二维数组THRESHOLD里</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">  */</span>
+</span><span class="line">
+</span><span class="line">
+</span><span class="line">
+</span><span class="line">  <span class="kt">bool</span> <span class="o">*</span><span class="n">is_valid</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">  <span class="k">static</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">FLAG_INT64</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">  <span class="k">static</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">FLAG_UINT64</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">  <span class="k">static</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">SIGN_NEG</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">  <span class="k">static</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">SIGN_POS</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">  <span class="kt">int</span> <span class="n">flag</span> <span class="o">=</span> <span class="n">FLAG_INT64</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">  <span class="k">if</span> <span class="p">(</span><span class="nb">NULL</span> <span class="o">!=</span> <span class="n">is_valid_uint64</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="n">is_valid</span> <span class="o">=</span> <span class="n">is_valid_uint64</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="n">flag</span> <span class="o">=</span> <span class="n">FLAG_UINT64</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="n">is_valid</span> <span class="o">=</span> <span class="n">is_valid_int64</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line">
+</span><span class="line">  <span class="o">*</span><span class="n">is_valid</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">  <span class="k">if</span> <span class="p">(</span><span class="n">value</span><span class="p">.</span><span class="n">is_zero</span><span class="p">())</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="c1">//do nothing。0是合法的uint64，也是合法的int64</span>
+</span><span class="line">
+</span><span class="line">  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="kt">int</span> <span class="n">sign</span> <span class="o">=</span> <span class="n">value</span><span class="p">.</span><span class="n">is_neg</span><span class="p">()</span> <span class="o">?</span> <span class="nl">SIGN_NEG</span> <span class="p">:</span> <span class="n">SIGN_POS</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="k">if</span> <span class="p">((</span><span class="n">SIGN_NEG</span> <span class="o">==</span> <span class="n">sign</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">FLAG_UINT64</span> <span class="o">==</span> <span class="n">flag</span><span class="p">))</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">      <span class="o">*</span><span class="n">is_valid</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span><span class="c1">//负数不可能是合法的uint64</span>
+</span><span class="line">
+</span><span class="line">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">      <span class="kt">uint64_t</span> <span class="n">valueUint</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">      <span class="k">static</span> <span class="kt">uint64_t</span> <span class="n">ABS_INT64_MIN</span> <span class="o">=</span> <span class="mi">9223372036854775808ULL</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">                                         <span class="c1">//int64        uint64</span>
+</span><span class="line">
+</span><span class="line">      <span class="k">static</span> <span class="kt">uint64_t</span> <span class="n">THRESHOLD</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="p">{</span><span class="n">ABS_INT64_MIN</span><span class="p">,</span> <span class="mi">0</span><span class="p">},</span> <span class="c1">//neg</span>
+</span><span class="line">
+</span><span class="line">                                         <span class="p">{</span><span class="n">INT64_MAX</span><span class="p">,</span>     <span class="n">UINT64_MAX</span><span class="p">}</span> <span class="p">};</span> <span class="c1">//pos</span>
+</span><span class="line">
+</span><span class="line">      <span class="kt">int</span> <span class="n">digit</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">      <span class="kt">bool</span> <span class="n">is_decimal</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">      <span class="k">while</span> <span class="p">((</span><span class="n">digit</span> <span class="o">=</span> <span class="n">value</span><span class="p">.</span><span class="n">get_next_digit</span><span class="p">(</span><span class="n">is_decimal</span><span class="p">))</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">is_decimal</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">          <span class="c1">//为了防止溢出，我们不能这么写:</span>
+</span><span class="line">
+</span><span class="line">          <span class="c1">//&quot;value * 10 + digit &gt; THRESHOLD[index]&quot;</span>
+</span><span class="line">
+</span><span class="line">          <span class="k">if</span> <span class="p">(</span><span class="n">valueUint</span> <span class="o">&gt;</span> <span class="p">(</span><span class="n">THRESHOLD</span><span class="p">[</span><span class="n">sign</span><span class="p">][</span><span class="n">flag</span><span class="p">]</span> <span class="o">-</span> <span class="n">digit</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">            <span class="o">*</span><span class="n">is_valid</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">            <span class="k">break</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">          <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">            <span class="n">valueUint</span> <span class="o">=</span> <span class="n">valueUint</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="n">digit</span><span class="p">;</span><span class="c1">//霍纳法则（也叫秦九韶算法）</span>
+</span><span class="line">
+</span><span class="line">          <span class="p">}</span>
+</span><span class="line">
+</span><span class="line">        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">          <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">digit</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">
+</span><span class="line">            <span class="o">*</span><span class="n">is_valid</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span> <span class="c1">//小数部分必须是0；否则不可能是合法的uint64、int64</span>
+</span><span class="line">
+</span><span class="line">            <span class="k">break</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">          <span class="p">}</span>
+</span><span class="line">
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">
+</span><span class="line">      <span class="p">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line">
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Linux环境多线程编程基础设施]]></title>
+    <link href="http://www.yebangyu.org/blog/2015/10/31/linux-parallen-programmming-infrastructure/"/>
+    <updated>2015-10-31T18:43:00+08:00</updated>
+    <id>http://www.yebangyu.org/blog/2015/10/31/linux-parallen-programmming-infrastructure</id>
+    <content type="html"><![CDATA[<p>本文介绍多线程环境下并行编程的基础设施。主要包括：
+&gt; * volatile
+&gt; * __thread
+&gt; * Memory Barrier
+&gt; * __sync_synchronize</p>
+
+<h2 id="volatile">volatile</h2>
+
+<p>编译器有时候为了优化性能，会将一些变量的值缓存到寄存器中，因此如果编译器发现该变量的值没有改变的话，将从寄存器里读出该值，这样可以避免内存访问。</p>
+
+<p>但是这种做法有时候会有问题。如果该变量确实（以某种很难检测的方式）被修改呢？那岂不是读到错的值？是的。在多线程情况下，问题更为突出：当某个线程对一个内存单元进行修改后，其他线程如果从寄存器里读取该变量可能读到老值，未更新的值，错误的值，不新鲜的值。</p>
+
+<!--more-->
+
+<p>如何防止这样错误的“优化”？方法就是给变量加上<strong>volatile</strong>修饰。</p>
+
+<pre><code>volatile int i=10;//用volatile修饰变量i
+......//something happened 
+int b = i;//强制从内存中读取实时的i的值
+</code></pre>
+
+<p><strong>OK</strong>，毕竟<strong>volatile</strong>不是完美的，它也在某种程度上限制了优化。有时候是不是有这样的需求：我要你立即实时读取数据的时候，你就访问内存，别优化；否则，你该优化还是优化你的。能做到吗？</p>
+
+<p>不加<strong>volatile</strong>修饰，那么就做不到前面一点。加了<strong>volatile</strong>，后面这一方面就无从谈起，怎么办？伤脑筋。</p>
+
+<p>其实我们可以这样：</p>
+
+<pre><code>int i = 2; //变量i还是不用加volatile修饰
+
+#define ACCESS_ONCE(x) (* (volatile typeof(x) *) &amp;(x))
+</code></pre>
+
+<p>需要实时读取i的值时候，就调用<code>ACCESS_ONCE(i)</code>，否则直接使用i即可。</p>
+
+<p>这个技巧，我是从《<strong>Is parallel programming hard？</strong>》上学到的。</p>
+
+<p>听起来都很好？然而险象环生：<strong>volatile</strong>常被误用，很多人往往不知道或者忽略它的两个特点：在<strong>C/C++</strong>语言里，<strong>volatile</strong>不保证原子性；使用<strong>volatile</strong>不应该对它有任何<strong>Memory Barrier</strong>的期待。</p>
+
+<p>第一点比较好理解，对于第二点，我们来看一个很经典的例子：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="k">volatile</span> <span class="kt">int</span> <span class="n">is_ready</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="kt">char</span> <span class="n">message</span><span class="p">[</span><span class="mi">123</span><span class="p">];</span>
+</span><span class="line"><span class="kt">void</span> <span class="n">thread_A</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="k">while</span><span class="p">(</span><span class="n">is_ready</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class="line">  <span class="p">{</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line">  <span class="c1">//use message;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="kt">void</span> <span class="n">thread_B</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="n">strcpy</span><span class="p">(</span><span class="n">message</span><span class="p">,</span><span class="s">&quot;everything seems ok&quot;</span><span class="p">);</span>
+</span><span class="line">  <span class="n">is_ready</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>线程<strong>B</strong>中，虽然<strong>is_ready</strong>有<strong>volatile</strong>修饰，但是这里的<strong>volatile</strong>不提供任何<strong>Memory Barrier</strong>，因此<strong>12</strong>行和<strong>13</strong>行可能被乱序执行，<code>is_ready = 1</code>被执行，而<strong>message</strong>还未被正确设置，导致线程<strong>A</strong>读到错误的值。</p>
+
+<p>这意味着，在多线程中使用<strong>volatile</strong>需要非常谨慎、小心。</p>
+
+<h2 id="thread">__thread</h2>
+
+<p><strong>__thread</strong>是<strong>gcc</strong>内置的用于多线程编程的基础设施。用<strong>__thread</strong>修饰的变量，每个线程都拥有一份实体，相互独立，互不干扰。举个例子：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="cp">#include&lt;iostream&gt;  </span>
+</span><span class="line"><span class="cp">#include&lt;pthread.h&gt;  </span>
+</span><span class="line"><span class="cp">#include&lt;unistd.h&gt;  </span>
+</span><span class="line"><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span><span class="line"><span class="n">__thread</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line"><span class="kt">void</span><span class="o">*</span> <span class="nf">thread1</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">arg</span><span class="p">);</span>
+</span><span class="line"><span class="kt">void</span><span class="o">*</span> <span class="nf">thread2</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">arg</span><span class="p">);</span>
+</span><span class="line"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="kt">pthread_t</span> <span class="n">pthread1</span><span class="p">;</span>
+</span><span class="line">  <span class="kt">pthread_t</span> <span class="n">pthread2</span><span class="p">;</span>
+</span><span class="line">  <span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pthread1</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">thread1</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span><span class="line">  <span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pthread2</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">thread2</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span><span class="line">  <span class="n">pthread_join</span><span class="p">(</span><span class="n">pthread1</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span><span class="line">  <span class="n">pthread_join</span><span class="p">(</span><span class="n">pthread2</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span><span class="line">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="kt">void</span><span class="o">*</span> <span class="nf">thread1</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">arg</span><span class="p">)</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="n">cout</span><span class="o">&lt;&lt;++</span><span class="n">i</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span><span class="c1">//输出 2  </span>
+</span><span class="line">  <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="kt">void</span><span class="o">*</span> <span class="nf">thread2</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">arg</span><span class="p">)</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">  <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="c1">//等待thread1完成更新</span>
+</span><span class="line">  <span class="n">cout</span><span class="o">&lt;&lt;++</span><span class="n">i</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span><span class="c1">//输出 2，而不是3</span>
+</span><span class="line">  <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>需要注意的是：</p>
+
+<p>1，<strong>__thread</strong>可以修饰全局变量、函数的静态变量，但是无法修饰函数的局部变量。</p>
+
+<p>2，被<strong>__thread</strong>修饰的变量只能在编译期初始化，且只能通过常量表达式来初始化。</p>
+
+<h2 id="memory-barrier">Memory Barrier</h2>
+
+<p>为了优化，现代编译器和<strong>CPU</strong>可能会乱序执行指令。例如：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line"><span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class="line"><span class="n">a</span> <span class="o">=</span> <span class="n">b</span> <span class="o">+</span> <span class="mi">3</span><span class="p">;</span>
+</span><span class="line"><span class="n">b</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><strong>CPU</strong>乱序执行后，第4行语句和第5行语句的执行顺序可能变为先<code>b=10</code>然后再<code>a=b+3</code></p>
+
+<p>有些人可能会说，那结果不就不对了吗？b为10，a为13？可是正确结果应该是a为5啊。</p>
+
+<p>哦，这里说的是语句的执行，对应的汇编指令不是简单的mov b,10和mov b,a+3。</p>
+
+<p>生成的汇编代码可能是：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="n">movl</span>    <span class="n">b</span><span class="p">(</span><span class="o">%</span><span class="n">rip</span><span class="p">),</span> <span class="o">%</span><span class="n">eax</span> <span class="p">;</span> <span class="err">将</span><span class="n">b</span><span class="err">的值暂存入</span><span class="o">%</span><span class="n">eax</span>
+</span><span class="line"><span class="n">movl</span>    <span class="err">$</span><span class="mi">10</span><span class="p">,</span> <span class="n">b</span><span class="p">(</span><span class="o">%</span><span class="n">rip</span><span class="p">)</span> <span class="p">;</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">10</span>
+</span><span class="line"><span class="n">addl</span>    <span class="err">$</span><span class="mi">3</span><span class="p">,</span> <span class="o">%</span><span class="n">eax</span> <span class="p">;</span> <span class="o">%</span><span class="n">eax</span><span class="err">加</span><span class="mi">3</span>
+</span><span class="line"><span class="n">movl</span>    <span class="o">%</span><span class="n">eax</span><span class="p">,</span> <span class="n">a</span><span class="p">(</span><span class="o">%</span><span class="n">rip</span><span class="p">)</span> <span class="p">;</span> <span class="err">将</span><span class="o">%</span><span class="n">eax</span><span class="err">也就是</span><span class="n">b</span><span class="o">+</span><span class="mi">3</span><span class="err">的值写入</span><span class="n">a</span><span class="p">,</span><span class="err">即</span> <span class="n">a</span> <span class="o">=</span> <span class="n">b</span> <span class="o">+</span> <span class="mi">3</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>这并不奇怪，为了优化性能，有时候确实可以这么做。但是在多线程并行编程中，有时候乱序就会出问题。</p>
+
+<p>一个最典型的例子是用锁保护临界区。如果临界区的代码被拉到加锁前或者释放锁之后执行，那么将导致不明确的结果，往往让人不开心的结果。</p>
+
+<p>还有，比如随意将读数据和写数据乱序，那么本来是先读后写，变成先写后读就导致后面读到了脏的数据。因此，<strong>Memory Barrier</strong>就是用来防止乱序执行的。具体说来，<strong>Memory Barrier</strong>包括三种：</p>
+
+<p>1，<strong>acquire barrier</strong>。<strong>acquire barrier</strong>之后的指令不能也不会被拉到该<strong>acquire barrier</strong>之前执行。</p>
+
+<p>2，<strong>release barrier</strong>。<strong>release barrier</strong>之前的指令不能也不会被拉到该<strong>release barrier</strong>之后执行。</p>
+
+<p>3，<strong>full barrier</strong>。以上两种的合集。</p>
+
+<p>所以，很容易知道，加锁，也就是<strong>lock</strong>对应<strong>acquire barrier</strong>；释放锁，也就是<strong>unlock</strong>对应<strong>release barrier</strong>。哦，那么<strong>full barrier</strong>呢？</p>
+
+<h2 id="syncsynchronize">__sync_synchronize</h2>
+
+<p><code>__sync_synchronize</code>就是一种<strong>full barrier</strong>。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Tools of the trade]]></title>
+    <link href="http://www.yebangyu.org/blog/2015/10/25/tools-of-the-trade/"/>
+    <updated>2015-10-25T22:09:08+08:00</updated>
+    <id>http://www.yebangyu.org/blog/2015/10/25/tools-of-the-trade</id>
+    <content type="html"><![CDATA[<p>本篇是对《<strong>Is parallel programming hard</strong>》第四章《<strong>Tools of the trade</strong>》的总结，不是单纯的翻译，算是读书笔记，并且略有补充。</p>
+
+<p>本章介绍了并行编程的工具和途径，具体包括</p>
+
+<blockquote>
+  <ul>
+    <li>Shell Script Languages</li>
+    <li>POSIX 多进程</li>
+    <li>POSIX 多线程</li>
+    <li>原子操作</li>
+  </ul>
+</blockquote>
+
+<h2 id="shell-script-language">Shell Script Language</h2>
+
+<!--more-->
+
+<p>如果不同的执行单元之间没有过多的数据交互，待执行的任务分区性较好，那么我们可以考虑通过<strong>Shell</strong>创建多个进程来完成任务。例如，我们需要计算每连续的<strong>100</strong>个元素的和，需要计算3组，好吧，比如说我们需要计算<strong>1+2+3+…+100</strong>；<strong>101+102+…200</strong>；<strong>201+201+…+300</strong>，那么我们可以编写一个程序，然后通过<strong>Shell</strong>创建<strong>3</strong>个进程，通过命令行传入参数（比如这里的待求和的元素的起点）。</p>
+
+<pre><code>compute 1 &gt; compute_1.out &amp;
+compute 101 &gt; compute_2.out &amp;
+compute 201 &gt; compute_3.out &amp;
+wait
+</code></pre>
+
+<p>其中<strong>compute</strong>是可执行程序名，<strong>1</strong>、<strong>101</strong>、<strong>201</strong>是命令行参数，<strong>&gt; x.out</strong>代表将输出结果重定向到文件<strong>x.out</strong>中，<strong>&amp;</strong>表示程序后台运行。<strong>wait</strong>表示等待运行程序结束。</p>
+
+<p>那么多进程的并行设计有什么缺点呢？</p>
+
+<p>1，创建进程的时间略长。在<strong>Intel Core Duo Laptop</strong>上创建一个最小<strong>C</strong>程序需要大概<strong>480ms</strong>。当你的任务执行时间和进程启动时间相比反而不值一提时，这时候创建进程所需的时间就显得很尴尬。多线程<strong>VS</strong>多进程也是<strong>Spark</strong>和<strong>Hadoop</strong>相比的一个不同。</p>
+
+<p>2，进程间不共享内存，不利于通信和数据交互。</p>
+
+<p>3，多进程间的同步相对费事复杂。</p>
+
+<h2 id="posix-">POSIX 多进程</h2>
+
+<p>可以通过<strong>fork</strong>、<strong>kill</strong>、<strong>wait</strong>等原语来创建、管理进程。书里简单介绍了这几个原语的使用，小结一下就是：</p>
+
+<p>1，<strong>fork</strong>会有两次返回，一次对<strong>child process</strong>，一次对<strong>parent process</strong>。<strong>fork</strong>的返回值为<strong>0</strong>代表在<strong>child process</strong>的上下文中，负数代表错误，正数代表<strong>parent process</strong>上下文中，并且返回值就是<strong>child process</strong>的<strong>pid</strong>。</p>
+
+<p>2，<strong>parent process</strong>和<strong>child process</strong>并不<strong>share memory</strong>。</p>
+
+<h2 id="posix--1">POSIX 多线程</h2>
+
+<p>可以通过<strong>pthread_mutex_lock</strong>以及<strong>pthread_mutex_unlock</strong>等原语，以加锁和释放锁的方式，使用多线程来并行设计。</p>
+
+<p>锁有多种，除了互斥锁，读写锁也是常见的一种。读写锁的特点是：</p>
+
+<p>1，同一个时刻，允许多个读线程。当然，此时不能有写线程。</p>
+
+<p>2，同一个时刻，最多只能有一个写线程进行更新操作。</p>
+
+<p>也就是说写写互斥，写读互斥，读读不互斥。换句话说，要么多个读线程，要么一个写线程。</p>
+
+<p>那么读写锁的<strong>scalability</strong>如何呢？作者写了一个程序来分析，程序运行在<strong>64</strong>个<strong>cores</strong>，一共<strong>n</strong>个读线程，每个读线程的流程大概是：</p>
+
+<pre><code>while(not terminated)
+{
+  acquire the lock;
+  do something;//t1
+  release the lock;
+  wait some time;//t2
+  ++count of acquisitions;
+}
+</code></pre>
+
+<p>把其中<strong>t2</strong>的时间设置为<strong>0</strong>，<strong>t1</strong>的控制则是通过更改调整执行循环次数（图上所谓的<strong>100K</strong>、<strong>100M</strong>神马的）。图上的横坐标为线程数目，纵坐标代表 $\frac {C}{nc}$ ，其中<strong>C</strong>是<strong>n</strong>个线程总共的<strong>acquisition</strong>数目，<strong>c</strong>是单个线程<strong>acquisition</strong>数目。</p>
+
+<p>理想情况下，这个值应该是<strong>1.0</strong>。</p>
+
+<p><img src="http://7xnljs.com1.z0.glb.clouddn.com/figure4.10.jpg" alt="expriments for rwl" /></p>
+
+<p>实验表明，当读线程的数目增多，每次<strong>acquire lock</strong>时，花在修改数据结构（锁也是一种数据结构实现，当一个读线程<strong>acquire</strong>或者<strong>release</strong>成功显然需要对数据结构进行修改，加加减减神马的）的时间将显著影响<strong>scalability</strong>。极端情况下，当<strong>n</strong>个读线程同时<strong>acquire</strong>时，第<strong>n</strong>个线程需要等前面的<strong>n-1</strong>个线程都修改完毕，它才能修改。</p>
+
+<p>同时，注意到线程有<strong>n</strong>个，而<strong>CPU</strong> <strong>cores</strong>只有<strong>64</strong>个，因此当<strong>n&lt;=64</strong>时，每个<strong>thread</strong>可以独享一个<strong>core</strong>，当<strong>n&gt;64</strong>后，根据鸽巢原理，至少有一个<strong>core</strong>上有多个<strong>thread</strong>在运行，这也会带来性能下降。</p>
+
+<p>因此，读写锁比较适合临界区比较大的情形（有文件<strong>IO</strong>或者网络访问等）。</p>
+
+<p>如果临界区比较短呢？比如我仅仅是加加一个变量呢？哦，那么原子操作可能是一个很好的选择。</p>
+
+<h2 id="section">原子操作</h2>
+
+<p><strong>gcc</strong>内置提供了一系列的原子操作。很多操作有两个版本，比如说：</p>
+
+<p><code>__sync_fetch_and_sub()</code>与 <code>__sync_sub_and_fetch()</code>，如名字所说，一个是先减，然后获得减之后的新值；一个是减，返回的是减之前的<strong>old value</strong>。</p>
+
+<p>此外，非常有名的<strong>CAS</strong>操作：</p>
+
+<p><code>__sync_bool_compare_and_swap()</code>和<code>__sync_val_compare_and_swap()</code>，前者返回是否操作成功（待修改变量被替换为新值），而后者返回的是老值。</p>
+
+<p>由于原子操作是让多个步骤看起来是一次的行为，因此往往包含<strong>Memory Barrier</strong>以保证语句的执行顺序。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[C++中逗号表达式的一个应用]]></title>
+    <link href="http://www.yebangyu.org/blog/2015/10/22/atrickofcomma/"/>
+    <updated>2015-10-22T23:55:35+08:00</updated>
+    <id>http://www.yebangyu.org/blog/2015/10/22/atrickofcomma</id>
+    <content type="html"><![CDATA[<p>假设我们的程序需要调用三个函数<strong>f</strong>，<strong>g</strong>，<strong>h</strong>。其中<strong>f</strong>和<strong>h</strong>可能失败，可能成功，而<strong>g</strong>一定成功。<strong>f</strong>和<strong>h</strong>有返回值，<strong>g</strong>没有返回值。我们可能得写这样的代码：</p>
+
+<pre><code>if (f()!=SUCCESS) {
+  //abort
+} else {
+  g();
+  if (h()!=SUCCESS) {
+  }
+}
+</code></pre>
+
+<p>由于<strong>g</strong>没有返回值，因此这么写似乎是天经地义的。能不能优雅点？</p>
+
+<!--more-->
+
+<p>借助于逗号表达式，我们可以这样：</p>
+
+<pre><code>if (f()!=SUCCESS){
+} else if (g(),false) { //逗号表达式
+  //we will never be here...
+} else if (h()!=SUCCESS) {
+}
+</code></pre>
+
+<p>形式上更加优美，但是和之前的写法相比可读性较差，并且使用了三次比较，之前只需要两次比较。</p>
+
+<p>在<strong>C++</strong>中，逗号表达式有时候是一种很有用的工具：(<strong>A,B,C</strong>)，则从左到右求值，最后<strong>C</strong>的（返回）值作为整个表达式的值。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[计算机应届生简历撰写指南]]></title>
+    <link href="http://www.yebangyu.org/blog/2015/10/22/tipsforwritingcv/"/>
+    <updated>2015-10-22T22:39:33+08:00</updated>
+    <id>http://www.yebangyu.org/blog/2015/10/22/tipsforwritingcv</id>
+    <content type="html"><![CDATA[<p>最近帮很多朋友<strong>review</strong>他们的简历，总结起来存在以下问题：</p>
+
+<blockquote>
+  <ul>
+    <li>简历太多页</li>
+  </ul>
+</blockquote>
+
+<p>请尽量不超过两页。一般地，每个<strong>hr</strong>阅读简历的时间大概在<strong>20</strong>s甚至更少，写那么多页不仅毫无必要，而且有害。 而且我怀疑一般的应届毕业生不大可能说写三页的履历。有些人说，你写不了三页是你水平不行，经历不丰富。按我说，写三四页不是履历丰富，而是根本不会写作。</p>
+
+<blockquote>
+  <ul>
+    <li>大量无用信息</li>
+  </ul>
+</blockquote>
+
+<!--more-->
+
+<p>这些无用信息具体包括：</p>
+
+<p>民族，身高，是否团员，具体家庭住址、星座</p>
+
+<p>自己的兴趣爱好。喜欢打篮球和写代码有联系吗？</p>
+
+<p>自我评价最多一句话，不要一坨一坨。建议不要写自我评价，太水太扯了。</p>
+
+<p>学校的<strong>logo</strong>。坦白说，大家只对你是哪个学校的有兴趣，对你学校的<strong>logo</strong>不感冒。</p>
+
+<p>照片。招程序员不是招礼仪公关小姐啊大哥。颜值不是特别高就算了吧。</p>
+
+<blockquote>
+  <ul>
+    <li>过于口语化</li>
+  </ul>
+</blockquote>
+
+<p>“做了”、”搞了”、“弄了”可以用“完成”、“设计”、“实现”、“部署”之类的词代替。</p>
+
+<blockquote>
+  <ul>
+    <li>内容组织混乱</li>
+  </ul>
+</blockquote>
+
+<p>一段一段，一坨一坨，没有一定的分类和板式。建议分成个人信息、项目经验、实习经历、获奖证书等分门别类。</p>
+
+<p>建议不要用这种形式（时间和学期混合）：</p>
+
+<p>大一上   完成了<strong>xxxx</strong>系统</p>
+
+<p>大二下   完成了<strong>xxxx</strong>系统</p>
+
+<p><strong>2013</strong>-<strong>2014</strong> 完成了<strong>xxxx</strong>系统</p>
+
+<p>大三下  完成了<strong>xxxx</strong>系统</p>
+
+<p>建议用统一的时间轴表示，比如。</p>
+
+<p><strong>2013.9</strong>-<strong>2014.7</strong>   完成了<strong>xxxx</strong>系统</p>
+
+<p><strong>2014.7</strong>-<strong>2015.6</strong>   完成了<strong>xxxx</strong>系统</p>
+
+<p><strong>2016.1</strong>-<strong>2018.3</strong>   完成了<strong>xxxx</strong>系统</p>
+
+<blockquote>
+  <ul>
+    <li>漏写期望职位</li>
+  </ul>
+</blockquote>
+
+<p>是想应聘<strong>Java</strong>研发工程师还是<strong>C++</strong>研发工程师还是<strong>Python</strong>研发工程师还是算法工程师还是产品经理？</p>
+
+<blockquote>
+  <ul>
+    <li>使用词汇不讲究</li>
+  </ul>
+</blockquote>
+
+<p>慎用”精通“的同时，也不要全部都是“了解”吧？</p>
+
+<blockquote>
+  <ul>
+    <li>漏写性别</li>
+  </ul>
+</blockquote>
+
+<p>程序员和程序媛差别还是很大的。不过这可能会涉及敏感的政治/性别歧视问题。有争议。不过如果是程序媛，据我说知，不是歧视，而反而是优先录取。哈哈。赞。</p>
+
+<blockquote>
+  <ul>
+    <li>用<strong>QQ</strong>邮箱</li>
+  </ul>
+</blockquote>
+
+<p>包括联系邮箱里写<strong>QQ</strong>邮箱和用<strong>QQ</strong>邮箱发简历。很多公司已经把<strong>QQ</strong>邮箱拉入黑名单。平常用<strong>QQ</strong>聊天就算了，发邮件你还用<strong>QQ</strong>邮箱？</p>
+
+<blockquote>
+  <ul>
+    <li>文件格式用<strong>doc</strong></li>
+  </ul>
+</blockquote>
+
+<p>建议只发<strong>pdf</strong>格式，<strong>doc</strong>格式容易出现各种显示问题。</p>
+
+<blockquote>
+  <ul>
+    <li>文件名太随意</li>
+  </ul>
+</blockquote>
+
+<p>文件名建议“李三-<strong>C++</strong>研发工程师-硕士-<strong>XX</strong>大学<strong>.pdf</strong>”这样。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Hardware and its habit]]></title>
+    <link href="http://www.yebangyu.org/blog/2015/10/18/hardwareanditshabit/"/>
+    <updated>2015-10-18T12:29:44+08:00</updated>
+    <id>http://www.yebangyu.org/blog/2015/10/18/hardwareanditshabit</id>
+    <content type="html"><![CDATA[<p>最近在阅读《<strong>Is parallel programming hard</strong>》这本书，本篇就是整理其中第三章《<strong>Hardware and its habit</strong>》，不是单纯的翻译，只是一个总结，略有补充。</p>
+
+<p>这章介绍了影响<strong>CPU</strong>执行效率的几个因素。具体包括：</p>
+
+<blockquote>
+  <ul>
+    <li>流水线被打断</li>
+    <li>内存访问</li>
+    <li>原子操作</li>
+    <li>Memory Barrier</li>
+    <li>Cache Misses</li>
+    <li>IO 操作</li>
+  </ul>
+</blockquote>
+
+<!--more-->
+
+<p>这其中，前面两个，流水线被打断以及内存访问主要针对串行程序，而后面四个主要针对并行程序，因为在并行程序中显得更为突出。</p>
+
+<h3 id="section">流水线被打断</h3>
+
+<p>现代<strong>CPU</strong>执行指令采用流水线设计和指令预取机制，而影响流水的两种重要情况是停机等待和分支判断失败。前者是<strong>CPU</strong>没有足够的信息来判断取哪些指令（例如，涉及到<strong>C++</strong>中的虚函数时）。而分支判断失败，则是取了指令但是没取对。例如</p>
+
+<pre><code>int a = get();
+if (a == 1)
+{
+  //A
+}
+else
+{
+  //B
+}
+</code></pre>
+
+<p>假设<strong>CPU</strong>预取指令<strong>A</strong>。当预测失败时（<strong>a</strong>不等于<strong>1</strong>），流水线中<strong>A</strong>指令需要被冲刷（<strong>flush</strong>），继而载入<strong>B</strong>指令。冲刷流水线和载入<strong>B</strong>指令都是非常昂贵的操作，因此这深深地影响了效率。</p>
+
+<p>因此，在实际编程时，应该将最有可能执行的代码放到最前面。在<strong>gcc</strong>中内置提供了<strong>likely</strong>和<strong>unlikely</strong>宏，来优化程序分支判断。</p>
+
+<pre><code>#define  likely(x)        __builtin_expect(!!(x), 1) 
+#define  unlikely(x)      __builtin_expect(!!(x), 0) 
+</code></pre>
+
+<p>因此，上面的程序可以改写为：</p>
+
+<pre><code>int a = get();
+if (unlikely(a == 1)) //根据实际情况选择unlikely或者likely
+{
+  //A
+}
+else
+{
+  //B
+}
+</code></pre>
+
+<h3 id="section-1">内存访问</h3>
+
+<p>这个不用说了，内存访问是昂贵操作，相对于寄存器、<strong>cache</strong>而言。</p>
+
+<p>在上世纪的系统中，从内存中读一个值的速度要比<strong>CPU</strong>执行一条指令快速。后来，由于<strong>CPU</strong>的快速发展以及内存容量的增大，这种局面发生了改变。你能想象只有<strong>4KB</strong>内存的机器吗？现在，光是<strong>cache</strong>都不止<strong>4KB</strong>了。</p>
+
+<p>数组通常有比较好的内存访问模式，也就是说访问了<strong>a[0]</strong>，就可以将<strong>a[1]</strong>,<strong>a[2]</strong>,<strong>a[3]</strong>等存进<strong>cache</strong>，等访问到<strong>a[1]</strong>时不需要去访问内存了。但是一般用指针实现的链表的访问模式则比较差。恩，所谓的空间局部性。</p>
+
+<h3 id="section-2">原子操作</h3>
+
+<p><strong>gcc</strong>内置提供了一系列的原子操作，包括著名的用于<strong>CAS</strong>(<strong>compare</strong> <strong>and</strong> <strong>swap</strong>)的<strong>__sync_bool_compare_and_swap</strong>等。当多个线程对一个内存变量进行原子操作时，往往依赖于硬件支持。在<strong>x86</strong>下，原子操作时，锁住总线，防止其他<strong>cpu</strong> <strong>core</strong>访问该内存单元。</p>
+
+<h3 id="memory-barrier">Memory Barrier</h3>
+
+<p><strong>CPU</strong>对指令可能采取乱序执行，以达到优化的目的。但是，并发访问的锁破坏了这种机制。</p>
+
+<pre><code>c = 3;
+lock.lock();
+a = 1;
+b = 2;
+lock.unlock();
+d = 4;
+</code></pre>
+
+<p><code>d=4</code>绝对不会在<code>a=1</code>之前执行，<code>c=3</code>绝对不会在<code>a=1</code>之后执行。</p>
+
+<p><strong>lock</strong>和<strong>unlock</strong>中包含了<strong>memory</strong> <strong>barrier</strong>。由于<strong>memory</strong> <strong>barrier</strong>和乱序执行是对着干的，用来防止乱序执行的；而乱序执行一般是优化的手段和方法，因此<strong>memory</strong> <strong>barrier</strong>往往带来性能下降。</p>
+
+<h3 id="cache-misses">Cache Misses</h3>
+
+<p>先贴一张现代<strong>CPU</strong>和<strong>cache</strong>架构粗略图。</p>
+
+<p><img src="http://7xnljs.com1.z0.glb.clouddn.com/cpuand%20cache.png" alt="cmd-markdown-logo" /></p>
+
+<p>多个<strong>CPU</strong> <strong>core</strong>，一个内存。<strong>cacheline</strong>是<strong>cache</strong>块单位，一般在<strong>32</strong>到<strong>256</strong>字节左右。<strong>cacheline</strong>是这张图中不同模块的数据交互元素。</p>
+
+<p>每两个<strong>cpu</strong> <strong>core</strong>和<strong>Interconnect</strong>组成一个<strong>die</strong>，同一个<strong>die</strong>中的<strong>cpu</strong> <strong>core</strong>通过<strong>Interconnect</strong>来沟通。不同<strong>die</strong>里的<strong>cpu</strong> <strong>core</strong>通过<strong>System</strong> <strong>Interconnect</strong>来沟通。</p>
+
+<p>某个<strong>core</strong>需要对内存变量进行修改时，该变量的<strong>cacheline</strong>如果位于别的<strong>core</strong>的<strong>cache</strong>里，这种情况下的<strong>cache miss</strong>代价很大。</p>
+
+<p>书中举了一个相对简单的例子：<strong>cpu 0</strong>需要对一个变量进行<strong>cas</strong>操作，检查自己的<strong>cache</strong>，发现没有。这时候：</p>
+
+<p>1，<strong>cpu 0</strong>发送请求给<strong>Interconnect</strong>(<strong>cpu 0 &amp; cpu 1</strong>)，后者检查<strong>cpu 1</strong>的<strong>cache</strong>，发现木有。</p>
+
+<p>2，<strong>Interconnect</strong>(<strong>cpu 0 &amp; cpu 1</strong>)将请求发给<strong>System</strong> <strong>Interconnect</strong>，后者检查其他的<strong>3</strong>个<strong>die</strong>，得知<strong>cacheline</strong>位于由<strong>cpu 6</strong>和<strong>cpu 7</strong> 组成的那个<strong>die</strong>里。</p>
+
+<p>3，请求被发给由<strong>cpu 6</strong> 和<strong>cpu 7</strong>组成的那个<strong>die</strong>里的<strong>Interconnect</strong>(<strong>cpu 6</strong> <strong>&amp;</strong> <strong>cpu 7</strong>)，它同时检查<strong>cpu 6</strong>和<strong>cpu 7</strong>的<strong>cache</strong>，得知<strong>cacheline</strong>位于<strong>cpu 7</strong>的<strong>cache</strong>里。</p>
+
+<p>4，<strong>cpu 7</strong> 把<strong>cacheline</strong>发送给<strong>Interconnect</strong>(<strong>cpu 6 &amp; cpu 7</strong>), <strong>and flushes the cacheline from its cache</strong>，以保证<strong>cache</strong>一致性</p>
+
+<p>5，<strong>Interconnect</strong>(<strong>cpu 6 &amp; cpu 7</strong>)将<strong>cacheline</strong>发送给<strong>System</strong> <strong>Interconnect</strong>。</p>
+
+<p>6，<strong>System</strong> <strong>Interconnect</strong>将<strong>cacheline</strong>发送给<strong>Interconnect</strong>(<strong>cpu 0 &amp; cpu 1</strong>)</p>
+
+<p>7，<strong>Interconnect</strong>（<strong>cpu 0 &amp; cpu 1</strong>）将<strong>cacheline</strong>存入<strong>cpu 0</strong>的<strong>cache</strong>里。</p>
+
+<p>是啊，这已经是简单的情况了。想想看，什么情况下更复杂？</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[深谈读研如何提高技术]]></title>
+    <link href="http://www.yebangyu.org/blog/2015/10/17/whattodoinmaster/"/>
+    <updated>2015-10-17T14:34:04+08:00</updated>
+    <id>http://www.yebangyu.org/blog/2015/10/17/whattodoinmaster</id>
+    <content type="html"><![CDATA[<p>你想进什么公司，和你读什么计算机方向，关系不是很大。只要是理工科的学生，面对技术岗位，其实机会是差不多的。</p>
+
+<p>至于你想什么职位，那显然和你的专业/方向关系较大，比如说很多大数据职位，就明确表示要求你<strong>DM</strong>/<strong>ML</strong>/<strong>NLP</strong>/<strong>IR</strong>背景，但是这也只是说这些 
+学生可能更有优势些，事实上，数学和统计学出身的，很多搞这个非常牛逼的。</p>
+
+<p>所以，不要问选什么导师，选什么方向；也不要问我的实验室很水老板很菜我还能找到好工作吗？你要问的是：我想毕业去互联 
+网公司，我读研的这几年是应该打酱油呢，还是打地沟油？</p>
+
+<p>想找一个好的互联网技术类、研发类工作，无非就是以下<strong>4</strong>点，你任选一点，做好了，都是有利的，哪<strong>4</strong>点？</p>
+
+<blockquote>
+  <ul>
+    <li>语言层面</li>
+    <li>算法层面</li>
+    <li>项目层面</li>
+    <li>专业层面</li>
+  </ul>
+</blockquote>
+
+<!--more-->
+
+<p>具体分析如下：</p>
+
+<hr />
+<p>### 语言层面</p>
+
+<p>你是想搞<strong>C++</strong>还是<strong>Java</strong>？选定一门语言后，多看一些这方面的书。</p>
+
+<p><strong>C++</strong>，不用说了，<strong>《Effective C++》</strong>，<strong>《More Effective C++》</strong>，<strong>《Inside The C++ Object Model》</strong>等等。</p>
+
+<p><strong>Java</strong>，最好能看点虚拟机相关的。尤其是<strong>Java</strong>虚拟机的内存管理。以及多线程、线程池、设计模式等。</p>
+
+<p>问题来了：学<strong>C++</strong>好还是学<strong>Java</strong>好呢？语言争论每天都在发生，真的好无聊。建议按照方向和兴趣来选择，不靠谱的说：</p>
+
+<p>如果是想做大型游戏开发、底层研发、系统研发、驱动研发等等，就选用<strong>C</strong>/<strong>C++</strong>。</p>
+
+<p>如果是想做网站开发、网络研发、上层开发、<strong>Android</strong>开发等等，就选用<strong>Java</strong>。</p>
+
+<p>顺便说一下，有空可以学学<strong>Python</strong>。</p>
+
+<hr />
+<p>### 算法层面</p>
+
+<p>学好算法。这个有两条路，最好是并行，那就是看书和做题。</p>
+
+<p>看书的话，主要有《算法导论》、《算法》（<strong>Robert Sedgewick</strong>著）、《算法竞赛入门经典》、《挑战程序设计竞赛》</p>
+
+<p>找一本认真看，认真思考。证明过程可以不看，但是算法思想最好能懂，以及实现，最好能在纸张上写出来。复杂度总要知道吧？</p>
+
+<p>研一的时候，我就把算法导论上的很多算法，都自己亲自<strong>coding</strong>了下。</p>
+
+<p>特别复杂的数据结构，比如红黑树、<strong>B</strong>树，没空就别搞了。互联网面试一般都不要求的。</p>
+
+<p>主要是排序、查找、简单<strong>DP</strong>、贪心、图算法和搜索。 根据身边同学的面试经验，二分搜索和快速排序，是面试常备了。看书的时候，如果有 
+时间，可以思考几个问题：</p>
+
+<ul>
+  <li>
+    <p>这个算法的时间空间复杂度，各是多少？如何分析？</p>
+  </li>
+  <li>
+    <p>工程实现里，都有哪些<strong>trick</strong>？如何加速？</p>
+  </li>
+  <li>
+    <p>这个算法可能用在哪些方面？有哪些应用？你比如说吧，求交集的算法，就广泛用在倒排索引、新浪微博共同关注、计算<strong>Jaccard</strong>系数等 
+等上。</p>
+  </li>
+</ul>
+
+<p>除了看书，还有就是很重要的：刷题啦。主要有<strong>poj</strong>，<strong>zoj</strong>等。找一个网站，认真刷一些题目，踏踏实实的，别浮躁。</p>
+
+<hr />
+<p>### 项目层面</p>
+
+<p>如果实验室比较牛，基本上忙项目就足够累死累活了；不过做了相对给力的项目，对于找工作，还是有很大帮助的。基本上不用怎么愁了。 
+如果老板这儿没项目呢？</p>
+
+<p>如果实验室比较水，那就尽量去实习。大公司的实习经验很能给简历加分。如果老板不让你出去实习。既然实验室很水，说明自由时间 
+比较多，那还是可以干很多事。比如说，<strong>github</strong>上就有很多开源项目，你可以选择一两个著名的，阅读源码，然后尝试自己也参与进去。</p>
+
+<p>说几个我比较感兴趣的开源项目吧：<strong>redis</strong>，<strong>spark</strong>。</p>
+
+<hr />
+<p>### 专业层面</p>
+
+<p>你对数据挖掘很精通，你对推荐系统很熟悉。你在<strong>NIPS</strong>，<strong>SIGIR</strong>上发表论文无数；你是百度推荐大赛，阿里巴巴大数据比赛冠军常客。</p>
+
+<p>也就是说，除了尝试发顶会论文，还可以参加各种比赛。本专业本领域里都有什么比赛可以参加呢？搜一下微博或者知乎，或者问下师兄师姐，不就知道了？</p>
+
+<p>专业层面，可以做的东西非常多。比如，你对数据挖掘很感兴趣，那么数据挖掘中的常见模型，我们了解多少？机器学习，我们掌握到什么程度了？举个例子：</p>
+
+<ul>
+  <li>
+    <p><strong>SVM</strong>和<strong>logistic regression</strong>这两种<strong>model</strong>，有什么特点？各自的适用场合？</p>
+  </li>
+  <li>
+    <p><strong>feature selection</strong>的常用方法有哪些？为什么<strong>lasso</strong>可以作为<strong>feature selection</strong>？</p>
+  </li>
+  <li>
+    <p><strong>Adaboosting</strong>为什么不容易<strong>over-fitting</strong>？你能不能从<strong>statistical view</strong>来解释解释？</p>
+  </li>
+  <li>
+    <p>哦，你和我说，你不是搞学术研究，你反感<strong>Learning Theory</strong>，你说你是一个工程师，那你写了多少代码？</p>
+  </li>
+</ul>
+
+<p><strong>scikit-learn</strong>，<strong>weka</strong>，以及<strong>spark</strong>，你会用哪个工具？（熟悉一种工具）</p>
+
+<p>你有自己下载一些数据集跑跑实验吗？你有参加一些大数据相关的竞赛吗？（动手实验/参加比赛）</p>
+
+<p>专业层面，能做的，要做的，还有很多。</p>
+
+<p>哦，最好熟悉下<strong>linux</strong>的基本使用。</p>
+
+<hr />
+<p>### 最后的话</p>
+
+<p>如果能在读研期间做到这里的一点或者几点，到时候甚至不需要翻《编程之美》或者<strong>leetcode</strong>就毫无压力啦。 最后说几点个人感受。</p>
+
+<ul>
+  <li>算法牛，项目牛，长得又帅，又精通很多语言，这种人，是不多见的。</li>
+</ul>
+
+<p>也就是说，你想拿一个好<strong>offer</strong>，一般只要有一两点突出，就可以了。</p>
+
+<ul>
+  <li>互联网面试，除了个别公司个别面试官，一般都是要考查（考查？考察？这两个词有什么区别？考察是调研、研究、分析的意思）算法的 
+。你研一的时候准备，看书做题，总比研三的时候抱佛脚来的好吧？</li>
+</ul>
+
+<p>况且，算法的学习，也不仅仅是为了面试吧？可能是受益终身的。或者，吹牛皮装逼作为谈资，也是可以的。</p>
+
+<ul>
+  <li>别轻易说我就要去某某公司。到时候，你会发现，选择比你想象的多。</li>
+</ul>
+
+<p>也有可能比你想象的还少，为什么？</p>
+
+<p>就看你有没有做到我上面说的这些了。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Windows下OctoPress环境搭建]]></title>
+    <link href="http://www.yebangyu.org/blog/2015/10/17/howtoinstalloctopress/"/>
+    <updated>2015-10-17T11:28:19+08:00</updated>
+    <id>http://www.yebangyu.org/blog/2015/10/17/howtoinstalloctopress</id>
+    <content type="html"><![CDATA[<hr />
+
+<p>近期学习了如何搭建个人博客的方法，这里备忘一下，如果能帮助到别人，那就更好了。</p>
+
+<p>需要安装的组件主要包括OctoPress、Github、Ruby、Python等，在配置的过程中，主要参考了本文末尾的参考链接，在此表示衷心的感谢。</p>
+
+<h3 id="github">Github</h3>
+
+<p>首先，得有一个Github的账号，便于托管。在申请了Github账号之后，建立一个个人仓库，仓库的命名必须是<code>yourusername.Github.io</code>这样的形式。如果您有购买个人域名，还可以通过CNAME来完成绑定。这一步可以google一下</p>
+
+<h3 id="ruby">Ruby</h3>
+
+<p>安装Ruby的时候需要特别注意勾选“Add Ruby executables to your PATH”</p>
+
+<!--more-->
+
+<h3 id="devkit">DevKit</h3>
+
+<p>下载解压到某个目录（例如DevKit），打开cmd，执行如下口令</p>
+
+<pre><code>cd DevKit
+ruby dk.rb init 
+ruby dk.rb install
+</code></pre>
+
+<h3 id="python">Python</h3>
+
+<p>安装python2.7并添加系统变量。切记，一定不能用python3，否则很多功能没法正常使用，例如代码高亮。</p>
+
+<p>安装easy_install，然后在cmd中执行如下命令安装pygments</p>
+
+<pre><code>easy_install pygments
+</code></pre>
+
+<h3 id="octopress">OctoPress</h3>
+
+<p>首先，通过git命令将OctoPress下载到本地</p>
+
+<pre><code>git clone git://Github.com/imathis/octopress.git octopress
+</code></pre>
+
+<p>切换到目录，然后执行</p>
+
+<pre><code>gem sources -a https://ruby.taobao.org/
+gem sources -r http://rubygems.org/
+gem sources -l
+</code></pre>
+
+<p>请特别注意，第一行里，是https，而不是http。</p>
+
+<p>修改Gemfile下的文件，把将第一行的http://rubygems.org/ 改为https://ruby.taobao.org/</p>
+
+<p>然后，依次执行如下命令</p>
+
+<pre><code>gem install bundler
+bundle install
+</code></pre>
+
+<p>并安装Octopress的默认主题</p>
+
+<pre><code>rake install
+</code></pre>
+
+<p>环境基本上就配置好了，运行<code>rake preview</code>，然后打开http://127.0.0.1:4000/ 看看效果吧，恩，本地的效果。接下去就要写文章，继而发布到Github上了。</p>
+
+<h3 id="section">编写文章</h3>
+
+<p>运行<code>rake new_post['helloworld']</code></p>
+
+<p>这样就可以在octopress/source/_posts 下生成一个markdown文件，然后就可以开始通过编辑该文件来写文章了。我一般使用Cmd Markdown 编辑阅读器来写文章，很适合我这样的新手</p>
+
+<p>写完文章，就可以生成了，命令是<code>rake generate</code> ，然后再通过前面的<code>rake preview</code>来预览下</p>
+
+<h3 id="section-1">发布</h3>
+
+<p>运行命令，<code>rake setup_Github_pages</code> 来设置您的Github账号。注意，这一步得在git bash下完成，而不是Windows命令提示符下。</p>
+
+<p>运行命令，<code>rake deploy</code> ，将文章发布到Github上。</p>
+
+<p>这样一篇文章就发布出去了。以后写新文章或者更改文章后，只需要<code>rake generate</code> 然后 <code>rake deploy</code> 就可以啦</p>
+
+<h3 id="section-2">参考资料：</h3>
+
+<p>Octopress在MAC下的安装、配置</p>
+
+<p>http://www.chongh.wiki/blog/2015/12/16/octopress-tutorial/</p>
+
+<p>Ocotpress在Windows下的安装、配置：</p>
+
+<p>http://www.cnblogs.com/oec2003/archive/2013/05/27/3100896.html</p>
+
+<p>Octopress的个性化配置：</p>
+
+<p>http://www.tuicool.com/articles/miaUR3</p>
+
+<p>http://www.tuicool.com/articles/VbqYNjn</p>
+
+<p>http://foggry.com/blog/2014/04/28/custom-your-octopress-blog/</p>
+
+<p>Octopress添加多说评论功能：</p>
+
+<p>http://droidyue.com/blog/2014/07/29/integrate-duoshuo-in-octopress/</p>
+
+<p>http://dev.duoshuo.com/threads/5364eb968df62dd658bc77af</p>
+
+<p>其他：</p>
+
+<p>http://blog.txx.im/blog/2013/09/04/liquid-exception-about-braces/</p>
+
+<p>http://khaos.Github.io/blog/2012/12/06/using-chinese-category-tags-in-octopress/</p>
+
+<p>https://Github.com/imathis/octopress/issues/1683</p>
+
+<p>http://stackoverflow.com/questions/14932141/octopress-capitalization-in-new-posts</p>
+
+<p>http://blog.depressedmarvin.com/2014/07/08/new-google-fonts-cdn/</p>
+
+]]></content>
+  </entry>
+  
+</feed>

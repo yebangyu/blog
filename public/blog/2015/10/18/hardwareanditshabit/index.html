@@ -1,0 +1,363 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Hardware and its habit - Yebangyu's Blog</title>
+  <meta name="author" content="Yebangyu">
+
+  
+  <meta name="description" content="并行编程影响cpu性能的几个因素">
+  <meta name="keywords" content="并行编程, CPU, 性能, cache一致性">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.yebangyu.org/blog/2015/10/18/hardwareanditshabit/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Yebangyu's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.useso.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.useso.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.useso.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Yebangyu's Blog</a></h1>
+  
+    <h2>Specialized in Concurrent Programming and C++.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.baidu.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="www.yebangyu.org">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About Me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Hardware and its habit</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-10-18T12:29:44+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:29 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>最近在阅读《<strong>Is parallel programming hard</strong>》这本书，本篇就是整理其中第三章《<strong>Hardware and its habit</strong>》，不是单纯的翻译，只是一个总结，略有补充。</p>
+
+<p>这章介绍了影响<strong>CPU</strong>执行效率的几个因素。具体包括：</p>
+
+<blockquote>
+  <ul>
+    <li>流水线被打断</li>
+    <li>内存访问</li>
+    <li>原子操作</li>
+    <li>Memory Barrier</li>
+    <li>Cache Misses</li>
+    <li>IO 操作</li>
+  </ul>
+</blockquote>
+
+<!--more-->
+
+<p>这其中，前面两个，流水线被打断以及内存访问主要针对串行程序，而后面四个主要针对并行程序，因为在并行程序中显得更为突出。</p>
+
+<h3 id="section">流水线被打断</h3>
+
+<p>现代<strong>CPU</strong>执行指令采用流水线设计和指令预取机制，而影响流水的两种重要情况是停机等待和分支判断失败。前者是<strong>CPU</strong>没有足够的信息来判断取哪些指令（例如，涉及到<strong>C++</strong>中的虚函数时）。而分支判断失败，则是取了指令但是没取对。例如</p>
+
+<pre><code>int a = get();
+if (a == 1)
+{
+  //A
+}
+else
+{
+  //B
+}
+</code></pre>
+
+<p>假设<strong>CPU</strong>预取指令<strong>A</strong>。当预测失败时（<strong>a</strong>不等于<strong>1</strong>），流水线中<strong>A</strong>指令需要被冲刷（<strong>flush</strong>），继而载入<strong>B</strong>指令。冲刷流水线和载入<strong>B</strong>指令都是非常昂贵的操作，因此这深深地影响了效率。</p>
+
+<p>因此，在实际编程时，应该将最有可能执行的代码放到最前面。在<strong>gcc</strong>中内置提供了<strong>likely</strong>和<strong>unlikely</strong>宏，来优化程序分支判断。</p>
+
+<pre><code>#define  likely(x)        __builtin_expect(!!(x), 1) 
+#define  unlikely(x)      __builtin_expect(!!(x), 0) 
+</code></pre>
+
+<p>因此，上面的程序可以改写为：</p>
+
+<pre><code>int a = get();
+if (unlikely(a == 1)) //根据实际情况选择unlikely或者likely
+{
+  //A
+}
+else
+{
+  //B
+}
+</code></pre>
+
+<h3 id="section-1">内存访问</h3>
+
+<p>这个不用说了，内存访问是昂贵操作，相对于寄存器、<strong>cache</strong>而言。</p>
+
+<p>在上世纪的系统中，从内存中读一个值的速度要比<strong>CPU</strong>执行一条指令快速。后来，由于<strong>CPU</strong>的快速发展以及内存容量的增大，这种局面发生了改变。你能想象只有<strong>4KB</strong>内存的机器吗？现在，光是<strong>cache</strong>都不止<strong>4KB</strong>了。</p>
+
+<p>数组通常有比较好的内存访问模式，也就是说访问了<strong>a[0]</strong>，就可以将<strong>a[1]</strong>,<strong>a[2]</strong>,<strong>a[3]</strong>等存进<strong>cache</strong>，等访问到<strong>a[1]</strong>时不需要去访问内存了。但是一般用指针实现的链表的访问模式则比较差。恩，所谓的空间局部性。</p>
+
+<h3 id="section-2">原子操作</h3>
+
+<p><strong>gcc</strong>内置提供了一系列的原子操作，包括著名的用于<strong>CAS</strong>(<strong>compare</strong> <strong>and</strong> <strong>swap</strong>)的<strong>__sync_bool_compare_and_swap</strong>等。当多个线程对一个内存变量进行原子操作时，往往依赖于硬件支持。在<strong>x86</strong>下，原子操作时，锁住总线，防止其他<strong>cpu</strong> <strong>core</strong>访问该内存单元。</p>
+
+<h3 id="memory-barrier">Memory Barrier</h3>
+
+<p><strong>CPU</strong>对指令可能采取乱序执行，以达到优化的目的。但是，并发访问的锁破坏了这种机制。</p>
+
+<pre><code>c = 3;
+lock.lock();
+a = 1;
+b = 2;
+lock.unlock();
+d = 4;
+</code></pre>
+
+<p><code>d=4</code>绝对不会在<code>a=1</code>之前执行，<code>c=3</code>绝对不会在<code>a=1</code>之后执行。</p>
+
+<p><strong>lock</strong>和<strong>unlock</strong>中包含了<strong>memory</strong> <strong>barrier</strong>。由于<strong>memory</strong> <strong>barrier</strong>和乱序执行是对着干的，用来防止乱序执行的；而乱序执行一般是优化的手段和方法，因此<strong>memory</strong> <strong>barrier</strong>往往带来性能下降。</p>
+
+<h3 id="cache-misses">Cache Misses</h3>
+
+<p>先贴一张现代<strong>CPU</strong>和<strong>cache</strong>架构粗略图。</p>
+
+<p><img src="http://7xnljs.com1.z0.glb.clouddn.com/cpuand%20cache.png" alt="cmd-markdown-logo" /></p>
+
+<p>多个<strong>CPU</strong> <strong>core</strong>，一个内存。<strong>cacheline</strong>是<strong>cache</strong>块单位，一般在<strong>32</strong>到<strong>256</strong>字节左右。<strong>cacheline</strong>是这张图中不同模块的数据交互元素。</p>
+
+<p>每两个<strong>cpu</strong> <strong>core</strong>和<strong>Interconnect</strong>组成一个<strong>die</strong>，同一个<strong>die</strong>中的<strong>cpu</strong> <strong>core</strong>通过<strong>Interconnect</strong>来沟通。不同<strong>die</strong>里的<strong>cpu</strong> <strong>core</strong>通过<strong>System</strong> <strong>Interconnect</strong>来沟通。</p>
+
+<p>某个<strong>core</strong>需要对内存变量进行修改时，该变量的<strong>cacheline</strong>如果位于别的<strong>core</strong>的<strong>cache</strong>里，这种情况下的<strong>cache miss</strong>代价很大。</p>
+
+<p>书中举了一个相对简单的例子：<strong>cpu 0</strong>需要对一个变量进行<strong>cas</strong>操作，检查自己的<strong>cache</strong>，发现没有。这时候：</p>
+
+<p>1，<strong>cpu 0</strong>发送请求给<strong>Interconnect</strong>(<strong>cpu 0 &amp; cpu 1</strong>)，后者检查<strong>cpu 1</strong>的<strong>cache</strong>，发现木有。</p>
+
+<p>2，<strong>Interconnect</strong>(<strong>cpu 0 &amp; cpu 1</strong>)将请求发给<strong>System</strong> <strong>Interconnect</strong>，后者检查其他的<strong>3</strong>个<strong>die</strong>，得知<strong>cacheline</strong>位于由<strong>cpu 6</strong>和<strong>cpu 7</strong> 组成的那个<strong>die</strong>里。</p>
+
+<p>3，请求被发给由<strong>cpu 6</strong> 和<strong>cpu 7</strong>组成的那个<strong>die</strong>里的<strong>Interconnect</strong>(<strong>cpu 6</strong> <strong>&amp;</strong> <strong>cpu 7</strong>)，它同时检查<strong>cpu 6</strong>和<strong>cpu 7</strong>的<strong>cache</strong>，得知<strong>cacheline</strong>位于<strong>cpu 7</strong>的<strong>cache</strong>里。</p>
+
+<p>4，<strong>cpu 7</strong> 把<strong>cacheline</strong>发送给<strong>Interconnect</strong>(<strong>cpu 6 &amp; cpu 7</strong>), <strong>and flushes the cacheline from its cache</strong>，以保证<strong>cache</strong>一致性</p>
+
+<p>5，<strong>Interconnect</strong>(<strong>cpu 6 &amp; cpu 7</strong>)将<strong>cacheline</strong>发送给<strong>System</strong> <strong>Interconnect</strong>。</p>
+
+<p>6，<strong>System</strong> <strong>Interconnect</strong>将<strong>cacheline</strong>发送给<strong>Interconnect</strong>(<strong>cpu 0 &amp; cpu 1</strong>)</p>
+
+<p>7，<strong>Interconnect</strong>（<strong>cpu 0 &amp; cpu 1</strong>）将<strong>cacheline</strong>存入<strong>cpu 0</strong>的<strong>cache</strong>里。</p>
+
+<p>是啊，这已经是简单的情况了。想想看，什么情况下更复杂？</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Yebangyu</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-10-18T12:29:44+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:29 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/bing-xing-bian-cheng/'>并行编程</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/10/17/whattodoinmaster/" title="Previous Post: 深谈读研如何提高技术">&laquo; 深谈读研如何提高技术</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2015/10/22/tipsforwritingcv/" title="Next Post: 计算机应届生简历撰写指南">计算机应届生简历撰写指南 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/12/26/aprogrammersclock/">程序员时钟解读</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/19/cuckoo-hashing/">Introduction To Cuckoo Hashing</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/16/readinglist/">2015-12-16 近期好书推荐</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/14/introduction-to-hazard-pointer/">Lock Free中的Hazard Pointer(中)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/10/introduction-to-hazard-pointer/">Lock Free中的Hazard Pointer(上)</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>友情链接</h1>
+  <ul>
+    <li>
+	  <li><a href="http://www.chongh.wiki/">wangchonghua</a></li>
+      <li><a href="http://www.armsword.com">armsword</a></li>
+    </li>
+  </ul>
+</section><section>
+  <h1>Yebangyu</h1>
+  <p>福建人。热爱历史、K歌、NBA</p>
+  <p>帝都码农</p>
+  <p>历史学家，专治三国史</p>
+</section>
+<section>
+ <h1>Categories</h1>
+ <ul id="categories">
+  <li class='category'><a href='/blog/categories/c-plus-plus/'>c++ (4)</a></li>
+<li class='category'><a href='/blog/categories/life/'>life (1)</a></li>
+<li class='category'><a href='/blog/categories/web/'>web (1)</a></li>
+<li class='category'><a href='/blog/categories/qi-ta/'>其他 (4)</a></li>
+<li class='category'><a href='/blog/categories/li-shi/'>历史 (1)</a></li>
+<li class='category'><a href='/blog/categories/bing-xing-bian-cheng/'>并行编程 (5)</a></li>
+<li class='category'><a href='/blog/categories/suan-fa/'>算法 (1)</a></li>
+<li class='category'><a href='/blog/categories/bian-yi-lian-jie/'>编译链接 (2)</a></li>
+
+ </ul>
+</section>
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+<p>
+  Copyright &copy; 2015 - Yebangyu -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

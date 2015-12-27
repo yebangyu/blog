@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: 部署 | Yebangyu's Blog]]></title>
+  <link href="http://yebangyu.org/blog/categories/bu-shu/atom.xml" rel="self"/>
+  <link href="http://yebangyu.org/"/>
+  <updated>2015-10-17T12:09:55+08:00</updated>
+  <id>http://yebangyu.org/</id>
+  <author>
+    <name><![CDATA[Yebangyu]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Windows下OctoPress环境搭建]]></title>
+    <link href="http://yebangyu.org/blog/2015/10/17/howtoinstalloctopress/"/>
+    <updated>2015-10-17T11:28:19+08:00</updated>
+    <id>http://yebangyu.org/blog/2015/10/17/howtoinstalloctopress</id>
+    <content type="html"><![CDATA[<hr />
+
+<p>近期学习了如何搭建个人博客的方法，这里备忘一下，如果能帮助到别人，那就更好了。</p>
+
+<p>使用的工具主要用<strong>OctoPress</strong>,<strong>github</strong>,<strong>ruby</strong>,<strong>python</strong>等，在配置的过程中，主要参考了这篇文章： <a href="http://www.cnblogs.com/oec2003/archive/2013/05/27/3100896.html">http://www.cnblogs.com/oec2003/archive/2013/05/27/3100896.html</a> 在此表示衷心的感谢</p>
+
+<h3>Github</h3>
+
+<p>首先，得有一个<strong>github</strong>的账号，便于托管。在申请了<strong>github</strong>账号之后，建立一个个人仓库，仓库的命名必须是<code>yourusername.github.io</code>这样的形式。如果您有购买个人域名，还可以通过CNAME来完成绑定。这一步可以google一下</p>
+
+<h3>Ruby</h3>
+
+<p>安装Ruby的时候需要特别注意勾选“<strong>Add Ruby executables to your PATH</strong>”</p>
+
+<h3>DevKit</h3>
+
+<p>下载解压到某个目录（例如<strong>DevKit</strong>），打开<strong>cmd</strong>，执行如下口令</p>
+
+<pre><code>cd DevKit
+ruby dk.rb init 
+ruby dk.rb install
+</code></pre>
+
+<h3>Python</h3>
+
+<p>安装<strong>python</strong>，安装<strong>easy_install</strong>，然后在<strong>cmd</strong>中执行如下命令安装<strong>pygments</strong></p>
+
+<pre><code>easy_install pygments
+</code></pre>
+
+<h3>OctoPress</h3>
+
+<p>首先，通过<strong>git</strong>命令将<strong>OctoPress</strong>下载到本地</p>
+
+<pre><code>git clone git://github.com/imathis/octopress.git octopress
+</code></pre>
+
+<p>切换到目录，然后执行</p>
+
+<pre><code>gem sources -a https://ruby.taobao.org/
+gem sources -r http://rubygems.org/
+gem sources -l
+</code></pre>
+
+<p>请特别注意，第一行里，是<strong>https</strong>，而不是<strong>http</strong>。</p>
+
+<p>修改Gemfile下的文件，把将第一行的"<a href="http://rubygems.org/">http://rubygems.org/</a>&ldquo; 改为"<a href="https://ruby.taobao.org/">https://ruby.taobao.org/</a>&rdquo; (不包含引号，你懂的)</p>
+
+<p>然后，依次执行如下命令</p>
+
+<pre><code>gem install bundler
+bundle install
+</code></pre>
+
+<p>并安装<strong>Octopress</strong>的默认主题</p>
+
+<pre><code>rake install
+</code></pre>
+
+<p>环境基本上就配置好了，运行<code>rake preview</code>，然后打开<a href="http://127.0.0.1:4000/">http://127.0.0.1:4000/</a> 看看效果吧，恩，本地的效果。接下去就要发布到<strong>github</strong>上了。</p>
+
+<h3>编写文章</h3>
+
+<p>运行<code>rake new_past['helloworld']</code></p>
+
+<p>这样就可以在<strong>octopress/source/_posts</strong> 下生成一个<strong>markdown</strong>文件，然后就可以开始通过编辑该文件来写文章了。我一般使用<strong>Cmd Markdown</strong> 编辑阅读器来写文章，很适合我这样的新手</p>
+
+<p>写完文章，就可以生成了，命令是<code>rake generate</code> ，然后再通过前面的<code>rake preview</code>来预览下</p>
+
+<h3>发布</h3>
+
+<p>运行命令，<code>rake setup_github_pages</code> 来设置您的<strong>github</strong>账号</p>
+
+<p>运行命令，<code>rake deploy</code> ，将文章发布到<strong>github</strong>上。</p>
+
+<p>运行如下命令，将源文件推送到<strong>github</strong>上。</p>
+
+<pre><code>git add .
+git commit -m “your message”
+git push origin source
+</code></pre>
+
+<p>这样一篇文章就发布出去了。</p>
+]]></content>
+  </entry>
+  
+</feed>

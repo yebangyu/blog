@@ -1,0 +1,343 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Tools of the trade - Yebangyu's Blog</title>
+  <meta name="author" content="Yebangyu">
+
+  
+  <meta name="description" content="多进程，多线程，原子操作">
+  <meta name="keywords" content="高并发, 读写锁, 多进程, 多线程">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.yebangyu.org/blog/2015/10/25/tools-of-the-trade/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Yebangyu's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.useso.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.useso.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.useso.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Yebangyu's Blog</a></h1>
+  
+    <h2>Specialized in Concurrent Programming and C++.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.baidu.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="www.yebangyu.org">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About Me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Tools of the trade</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-10-25T22:09:08+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:09 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>本篇是对《<strong>Is parallel programming hard</strong>》第四章《<strong>Tools of the trade</strong>》的总结，不是单纯的翻译，算是读书笔记，并且略有补充。</p>
+
+<p>本章介绍了并行编程的工具和途径，具体包括</p>
+
+<blockquote>
+  <ul>
+    <li>Shell Script Languages</li>
+    <li>POSIX 多进程</li>
+    <li>POSIX 多线程</li>
+    <li>原子操作</li>
+  </ul>
+</blockquote>
+
+<h2 id="shell-script-language">Shell Script Language</h2>
+
+<!--more-->
+
+<p>如果不同的执行单元之间没有过多的数据交互，待执行的任务分区性较好，那么我们可以考虑通过<strong>Shell</strong>创建多个进程来完成任务。例如，我们需要计算每连续的<strong>100</strong>个元素的和，需要计算3组，好吧，比如说我们需要计算<strong>1+2+3+…+100</strong>；<strong>101+102+…200</strong>；<strong>201+201+…+300</strong>，那么我们可以编写一个程序，然后通过<strong>Shell</strong>创建<strong>3</strong>个进程，通过命令行传入参数（比如这里的待求和的元素的起点）。</p>
+
+<pre><code>compute 1 &gt; compute_1.out &amp;
+compute 101 &gt; compute_2.out &amp;
+compute 201 &gt; compute_3.out &amp;
+wait
+</code></pre>
+
+<p>其中<strong>compute</strong>是可执行程序名，<strong>1</strong>、<strong>101</strong>、<strong>201</strong>是命令行参数，<strong>&gt; x.out</strong>代表将输出结果重定向到文件<strong>x.out</strong>中，<strong>&amp;</strong>表示程序后台运行。<strong>wait</strong>表示等待运行程序结束。</p>
+
+<p>那么多进程的并行设计有什么缺点呢？</p>
+
+<p>1，创建进程的时间略长。在<strong>Intel Core Duo Laptop</strong>上创建一个最小<strong>C</strong>程序需要大概<strong>480ms</strong>。当你的任务执行时间和进程启动时间相比反而不值一提时，这时候创建进程所需的时间就显得很尴尬。多线程<strong>VS</strong>多进程也是<strong>Spark</strong>和<strong>Hadoop</strong>相比的一个不同。</p>
+
+<p>2，进程间不共享内存，不利于通信和数据交互。</p>
+
+<p>3，多进程间的同步相对费事复杂。</p>
+
+<h2 id="posix-">POSIX 多进程</h2>
+
+<p>可以通过<strong>fork</strong>、<strong>kill</strong>、<strong>wait</strong>等原语来创建、管理进程。书里简单介绍了这几个原语的使用，小结一下就是：</p>
+
+<p>1，<strong>fork</strong>会有两次返回，一次对<strong>child process</strong>，一次对<strong>parent process</strong>。<strong>fork</strong>的返回值为<strong>0</strong>代表在<strong>child process</strong>的上下文中，负数代表错误，正数代表<strong>parent process</strong>上下文中，并且返回值就是<strong>child process</strong>的<strong>pid</strong>。</p>
+
+<p>2，<strong>parent process</strong>和<strong>child process</strong>并不<strong>share memory</strong>。</p>
+
+<h2 id="posix--1">POSIX 多线程</h2>
+
+<p>可以通过<strong>pthread_mutex_lock</strong>以及<strong>pthread_mutex_unlock</strong>等原语，以加锁和释放锁的方式，使用多线程来并行设计。</p>
+
+<p>锁有多种，除了互斥锁，读写锁也是常见的一种。读写锁的特点是：</p>
+
+<p>1，同一个时刻，允许多个读线程。当然，此时不能有写线程。</p>
+
+<p>2，同一个时刻，最多只能有一个写线程进行更新操作。</p>
+
+<p>也就是说写写互斥，写读互斥，读读不互斥。换句话说，要么多个读线程，要么一个写线程。</p>
+
+<p>那么读写锁的<strong>scalability</strong>如何呢？作者写了一个程序来分析，程序运行在<strong>64</strong>个<strong>cores</strong>，一共<strong>n</strong>个读线程，每个读线程的流程大概是：</p>
+
+<pre><code>while(not terminated)
+{
+  acquire the lock;
+  do something;//t1
+  release the lock;
+  wait some time;//t2
+  ++count of acquisitions;
+}
+</code></pre>
+
+<p>把其中<strong>t2</strong>的时间设置为<strong>0</strong>，<strong>t1</strong>的控制则是通过更改调整执行循环次数（图上所谓的<strong>100K</strong>、<strong>100M</strong>神马的）。图上的横坐标为线程数目，纵坐标代表 $\frac {C}{nc}$ ，其中<strong>C</strong>是<strong>n</strong>个线程总共的<strong>acquisition</strong>数目，<strong>c</strong>是单个线程<strong>acquisition</strong>数目。</p>
+
+<p>理想情况下，这个值应该是<strong>1.0</strong>。</p>
+
+<p><img src="http://7xnljs.com1.z0.glb.clouddn.com/figure4.10.jpg" alt="expriments for rwl" /></p>
+
+<p>实验表明，当读线程的数目增多，每次<strong>acquire lock</strong>时，花在修改数据结构（锁也是一种数据结构实现，当一个读线程<strong>acquire</strong>或者<strong>release</strong>成功显然需要对数据结构进行修改，加加减减神马的）的时间将显著影响<strong>scalability</strong>。极端情况下，当<strong>n</strong>个读线程同时<strong>acquire</strong>时，第<strong>n</strong>个线程需要等前面的<strong>n-1</strong>个线程都修改完毕，它才能修改。</p>
+
+<p>同时，注意到线程有<strong>n</strong>个，而<strong>CPU</strong> <strong>cores</strong>只有<strong>64</strong>个，因此当<strong>n&lt;=64</strong>时，每个<strong>thread</strong>可以独享一个<strong>core</strong>，当<strong>n&gt;64</strong>后，根据鸽巢原理，至少有一个<strong>core</strong>上有多个<strong>thread</strong>在运行，这也会带来性能下降。</p>
+
+<p>因此，读写锁比较适合临界区比较大的情形（有文件<strong>IO</strong>或者网络访问等）。</p>
+
+<p>如果临界区比较短呢？比如我仅仅是加加一个变量呢？哦，那么原子操作可能是一个很好的选择。</p>
+
+<h2 id="section">原子操作</h2>
+
+<p><strong>gcc</strong>内置提供了一系列的原子操作。很多操作有两个版本，比如说：</p>
+
+<p><code>__sync_fetch_and_sub()</code>与 <code>__sync_sub_and_fetch()</code>，如名字所说，一个是先减，然后获得减之后的新值；一个是减，返回的是减之前的<strong>old value</strong>。</p>
+
+<p>此外，非常有名的<strong>CAS</strong>操作：</p>
+
+<p><code>__sync_bool_compare_and_swap()</code>和<code>__sync_val_compare_and_swap()</code>，前者返回是否操作成功（待修改变量被替换为新值），而后者返回的是老值。</p>
+
+<p>由于原子操作是让多个步骤看起来是一次的行为，因此往往包含<strong>Memory Barrier</strong>以保证语句的执行顺序。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Yebangyu</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-10-25T22:09:08+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:09 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/bing-xing-bian-cheng/'>并行编程</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/10/22/atrickofcomma/" title="Previous Post: C++中逗号表达式的一个应用">&laquo; C++中逗号表达式的一个应用</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2015/10/31/linux-parallen-programmming-infrastructure/" title="Next Post: Linux环境多线程编程基础设施">Linux环境多线程编程基础设施 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/12/26/aprogrammersclock/">程序员时钟解读</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/19/cuckoo-hashing/">Introduction To Cuckoo Hashing</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/16/readinglist/">2015-12-16 近期好书推荐</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/14/introduction-to-hazard-pointer/">Lock Free中的Hazard Pointer(中)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/10/introduction-to-hazard-pointer/">Lock Free中的Hazard Pointer(上)</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>友情链接</h1>
+  <ul>
+    <li>
+	  <li><a href="http://www.chongh.wiki/">wangchonghua</a></li>
+      <li><a href="http://www.armsword.com">armsword</a></li>
+    </li>
+  </ul>
+</section><section>
+  <h1>Yebangyu</h1>
+  <p>福建人。热爱历史、K歌、NBA</p>
+  <p>帝都码农</p>
+  <p>历史学家，专治三国史</p>
+</section>
+<section>
+ <h1>Categories</h1>
+ <ul id="categories">
+  <li class='category'><a href='/blog/categories/c-plus-plus/'>c++ (4)</a></li>
+<li class='category'><a href='/blog/categories/life/'>life (1)</a></li>
+<li class='category'><a href='/blog/categories/web/'>web (1)</a></li>
+<li class='category'><a href='/blog/categories/qi-ta/'>其他 (4)</a></li>
+<li class='category'><a href='/blog/categories/li-shi/'>历史 (1)</a></li>
+<li class='category'><a href='/blog/categories/bing-xing-bian-cheng/'>并行编程 (5)</a></li>
+<li class='category'><a href='/blog/categories/suan-fa/'>算法 (1)</a></li>
+<li class='category'><a href='/blog/categories/bian-yi-lian-jie/'>编译链接 (2)</a></li>
+
+ </ul>
+</section>
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+<p>
+  Copyright &copy; 2015 - Yebangyu -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

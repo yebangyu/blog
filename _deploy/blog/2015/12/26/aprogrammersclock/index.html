@@ -1,0 +1,348 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>程序员时钟解读 - Yebangyu's Blog</title>
+  <meta name="author" content="Yebangyu">
+
+  
+  <meta name="description" content="数学帝 程序员 时钟 勒让德常数">
+  <meta name="keywords" content="数学帝 程序员 时钟 勒让德常数">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.yebangyu.org/blog/2015/12/26/aprogrammersclock/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Yebangyu's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.useso.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.useso.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.useso.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Yebangyu's Blog</a></h1>
+  
+    <h2>Specialized in Concurrent Programming and C++.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.baidu.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="www.yebangyu.org">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About Me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">程序员时钟解读</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-12-26T10:59:04+08:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:59 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>最近购买圣诞礼物，抱着万能的淘宝的想法，在上面搜了一下“数学钟”，也就是非常流行的下面这幅图：</p>
+
+<p><img src="http://7xnljs.com1.z0.glb.clouddn.com/mathclock.jpg" alt="matchclock" /></p>
+
+<p>以前，只知道其中十一个点钟的分析；对于3点钟，一直没有思路。于是发了一条朋友圈，求助大神解释其中的3点钟。在刘梓溪、贾顾森、黎鸣等大神的指导下，明白了其中是怎么回事。所以这里介绍下这十二个点，应该如何解释。个人观点，仅供参考。</p>
+
+<h2 id="section">12点</h2>
+
+<p>不用说了，1728的立方根。</p>
+
+<h2 id="section-1">1点</h2>
+
+<p>可能很多人不大知道，这是勒让德常数：</p>
+
+<!--more-->
+
+<p>$\lim_{x \rightarrow +\infty} {ln(x) - \frac{x}{\pi(x)}}$</p>
+
+<p>其中的$\pi(x)$表示不大于x的素数的个数，可以用$\frac{x}{lnx}$近似。</p>
+
+<p>这个值经过勒让德、高斯等一批数学大佬的努力，最后被数学家Charles Jean证明为1。</p>
+
+<h2 id="section-2">2点</h2>
+
+<p>无穷递缩等比级数的求和，首项为1，公比为$\frac{1}{2}$ ，所以它的和为</p>
+
+<p>S = $\frac{a_1}{1-q}$ = 2</p>
+
+<h2 id="section-3">3点</h2>
+
+<p>在刘梓溪、贾顾森、黎鸣等大神的帮助下，终于知道了。</p>
+
+<p>广泛用于XML、HTML中。&amp;#后面接十进制字符，&amp;#x后面接十六进制字符。相当于转义序列吧。</p>
+
+<p>其中十六进制33，等于十进制51，即’3’。</p>
+
+<h2 id="section-4">4点</h2>
+
+<p>同余问题（Modular Multiplicative Inverse）</p>
+
+<p>令</p>
+
+<p>$x\equiv2^{-1} mod 7$</p>
+
+<p>$2x\equiv1 mod 7$</p>
+
+<p>$x =  4$</p>
+
+<h2 id="section-5">5点</h2>
+
+<p>$\phi$表示黄金分割比，$\phi = \frac{\sqrt{5} - 1}{2} $</p>
+
+<p>黄金分割比在斐波那契数列的通项公式中出现。</p>
+
+<p>不过这个地方，我没搞懂，不知道这是不是这幅图作者的笔误？个人认为应该是 $(2\phi+1)^2$ 而不是 $(2\phi-1)^2$</p>
+
+<h2 id="section-6">6点</h2>
+
+<p>不用说了，阶乘。</p>
+
+<h2 id="section-7">7点</h2>
+
+<p>表示6.999999999…其中9的头上一横，表示循环节是9。</p>
+
+<p>那么，6.9999….为什么等于7呢？恩，还是无穷递缩等比级数的视角来考虑，就老少皆宜了。</p>
+
+<p>6.9999…= 6 + 0.9 + 0.09 + 0.009 + 0.0009 + …</p>
+
+<p>后面的那个，</p>
+
+<p>0.9 + 0.09 + 0.009 + 0.0009 + …</p>
+
+<p>首项为0.9，公比为0.1，收敛于1。</p>
+
+<p>因此6.9999… = 7</p>
+
+<h2 id="section-8">8点</h2>
+
+<p>代表1000（二进制），因为只有第一个是亮的，其他是暗的。（亮为1，暗为0，bitmap的感觉。可能是盲文），因此为8。</p>
+
+<h2 id="section-9">9点</h2>
+
+<p>四进制。21（四进制） = 2 * 4 + 1 = 9。</p>
+
+<h2 id="section-10">10点</h2>
+
+<p>组合数，5! /(2! * 3!) = 10</p>
+
+<h2 id="section-11">11点</h2>
+
+<p>十六进制，A是10，B是11，C是12。注意，注意，这里是0x0B，不是0x08。哈哈。</p>
+
+<p>点评：知识点有点重复，比如进制就有好几个。给个好评吧，但不是五星的。</p>
+
+<h2 id="section-12">感谢</h2>
+
+<p>感谢朋友刘梓溪、贾顾森、黎鸣告诉我如何解读其中的3点钟。</p>
+
+<p>本文发出后，阿里花隆同学指出了文中的一个笔误。非常感谢。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Yebangyu</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-12-26T10:59:04+08:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:59 am</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/qi-ta/'>其他</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/12/19/cuckoo-hashing/" title="Previous Post: Introduction To Cuckoo Hashing">&laquo; Introduction To Cuckoo Hashing</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/12/26/aprogrammersclock/">程序员时钟解读</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/19/cuckoo-hashing/">Introduction To Cuckoo Hashing</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/16/readinglist/">2015-12-16 近期好书推荐</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/14/introduction-to-hazard-pointer/">Lock Free中的Hazard Pointer(中)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/10/introduction-to-hazard-pointer/">Lock Free中的Hazard Pointer(上)</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>友情链接</h1>
+  <ul>
+    <li>
+	  <li><a href="http://www.chongh.wiki/">wangchonghua</a></li>
+      <li><a href="http://www.armsword.com">armsword</a></li>
+    </li>
+  </ul>
+</section><section>
+  <h1>Yebangyu</h1>
+  <p>福建人。热爱历史、K歌、NBA</p>
+  <p>帝都码农</p>
+  <p>历史学家，专治三国史</p>
+</section>
+<section>
+ <h1>Categories</h1>
+ <ul id="categories">
+  <li class='category'><a href='/blog/categories/c-plus-plus/'>c++ (4)</a></li>
+<li class='category'><a href='/blog/categories/life/'>life (1)</a></li>
+<li class='category'><a href='/blog/categories/web/'>web (1)</a></li>
+<li class='category'><a href='/blog/categories/qi-ta/'>其他 (4)</a></li>
+<li class='category'><a href='/blog/categories/li-shi/'>历史 (1)</a></li>
+<li class='category'><a href='/blog/categories/bing-xing-bian-cheng/'>并行编程 (5)</a></li>
+<li class='category'><a href='/blog/categories/suan-fa/'>算法 (1)</a></li>
+<li class='category'><a href='/blog/categories/bian-yi-lian-jie/'>编译链接 (2)</a></li>
+
+ </ul>
+</section>
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+<p>
+  Copyright &copy; 2015 - Yebangyu -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

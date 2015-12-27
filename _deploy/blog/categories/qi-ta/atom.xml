@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: 其他 | Yebangyu's Blog]]></title>
+  <link href="http://www.yebangyu.org/blog/categories/qi-ta/atom.xml" rel="self"/>
+  <link href="http://www.yebangyu.org/"/>
+  <updated>2015-12-27T20:35:33+08:00</updated>
+  <id>http://www.yebangyu.org/</id>
+  <author>
+    <name><![CDATA[Yebangyu]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[程序员时钟解读]]></title>
+    <link href="http://www.yebangyu.org/blog/2015/12/26/aprogrammersclock/"/>
+    <updated>2015-12-26T10:59:04+08:00</updated>
+    <id>http://www.yebangyu.org/blog/2015/12/26/aprogrammersclock</id>
+    <content type="html"><![CDATA[<p>最近购买圣诞礼物，抱着万能的淘宝的想法，在上面搜了一下“数学钟”，也就是非常流行的下面这幅图：</p>
+
+<p><img src="http://7xnljs.com1.z0.glb.clouddn.com/mathclock.jpg" alt="matchclock" /></p>
+
+<p>以前，只知道其中十一个点钟的分析；对于3点钟，一直没有思路。于是发了一条朋友圈，求助大神解释其中的3点钟。在刘梓溪、贾顾森、黎鸣等大神的指导下，明白了其中是怎么回事。所以这里介绍下这十二个点，应该如何解释。个人观点，仅供参考。</p>
+
+<h2 id="section">12点</h2>
+
+<p>不用说了，1728的立方根。</p>
+
+<h2 id="section-1">1点</h2>
+
+<p>可能很多人不大知道，这是勒让德常数：</p>
+
+<!--more-->
+
+<p>$\lim_{x \rightarrow +\infty} {ln(x) - \frac{x}{\pi(x)}}$</p>
+
+<p>其中的$\pi(x)$表示不大于x的素数的个数，可以用$\frac{x}{lnx}$近似。</p>
+
+<p>这个值经过勒让德、高斯等一批数学大佬的努力，最后被数学家Charles Jean证明为1。</p>
+
+<h2 id="section-2">2点</h2>
+
+<p>无穷递缩等比级数的求和，首项为1，公比为$\frac{1}{2}$ ，所以它的和为</p>
+
+<p>S = $\frac{a_1}{1-q}$ = 2</p>
+
+<h2 id="section-3">3点</h2>
+
+<p>在刘梓溪、贾顾森、黎鸣等大神的帮助下，终于知道了。</p>
+
+<p>广泛用于XML、HTML中。&amp;#后面接十进制字符，&amp;#x后面接十六进制字符。相当于转义序列吧。</p>
+
+<p>其中十六进制33，等于十进制51，即’3’。</p>
+
+<h2 id="section-4">4点</h2>
+
+<p>同余问题（Modular Multiplicative Inverse）</p>
+
+<p>令</p>
+
+<p>$x\equiv2^{-1} mod 7$</p>
+
+<p>$2x\equiv1 mod 7$</p>
+
+<p>$x =  4$</p>
+
+<h2 id="section-5">5点</h2>
+
+<p>$\phi$表示黄金分割比，$\phi = \frac{\sqrt{5} - 1}{2} $</p>
+
+<p>黄金分割比在斐波那契数列的通项公式中出现。</p>
+
+<p>不过这个地方，我没搞懂，不知道这是不是这幅图作者的笔误？个人认为应该是 $(2\phi+1)^2$ 而不是 $(2\phi-1)^2$</p>
+
+<h2 id="section-6">6点</h2>
+
+<p>不用说了，阶乘。</p>
+
+<h2 id="section-7">7点</h2>
+
+<p>表示6.999999999…其中9的头上一横，表示循环节是9。</p>
+
+<p>那么，6.9999….为什么等于7呢？恩，还是无穷递缩等比级数的视角来考虑，就老少皆宜了。</p>
+
+<p>6.9999…= 6 + 0.9 + 0.09 + 0.009 + 0.0009 + …</p>
+
+<p>后面的那个，</p>
+
+<p>0.9 + 0.09 + 0.009 + 0.0009 + …</p>
+
+<p>首项为0.9，公比为0.1，收敛于1。</p>
+
+<p>因此6.9999… = 7</p>
+
+<h2 id="section-8">8点</h2>
+
+<p>代表1000（二进制），因为只有第一个是亮的，其他是暗的。（亮为1，暗为0，bitmap的感觉。可能是盲文），因此为8。</p>
+
+<h2 id="section-9">9点</h2>
+
+<p>四进制。21（四进制） = 2 * 4 + 1 = 9。</p>
+
+<h2 id="section-10">10点</h2>
+
+<p>组合数，5! /(2! * 3!) = 10</p>
+
+<h2 id="section-11">11点</h2>
+
+<p>十六进制，A是10，B是11，C是12。注意，注意，这里是0x0B，不是0x08。哈哈。</p>
+
+<p>点评：知识点有点重复，比如进制就有好几个。给个好评吧，但不是五星的。</p>
+
+<h2 id="section-12">感谢</h2>
+
+<p>感谢朋友刘梓溪、贾顾森、黎鸣告诉我如何解读其中的3点钟。</p>
+
+<p>本文发出后，阿里花隆同学指出了文中的一个笔误。非常感谢。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[2015-12-16 近期好书推荐]]></title>
+    <link href="http://www.yebangyu.org/blog/2015/12/16/readinglist/"/>
+    <updated>2015-12-16T23:05:35+08:00</updated>
+    <id>http://www.yebangyu.org/blog/2015/12/16/readinglist</id>
+    <content type="html"><![CDATA[<p>推荐几本近期阅读的好书。</p>
+
+<h2 id="recommender-systems-handbook">Recommender Systems Handbook</h2>
+
+<!--more-->
+
+<p><img src="http://7xnljs.com1.z0.glb.clouddn.com/recommendersystemhandbook2nd.jpg" alt="rsh" /></p>
+
+<p>这本书最近出第二版了，和第一版相比新增了不少内容，我最感兴趣的是其中的第11章，<strong>Recommender Systems in Industry: A Netflix Case Study</strong>，<strong>Xavier Amatriain</strong>大牛所写。</p>
+
+<h2 id="distributed-systems--an-algorithmic-approach">Distributed Systems : An Algorithmic Approach</h2>
+
+<p><img src="http://7xnljs.com1.z0.glb.clouddn.com/distributedsystem.jpg" alt="dsaaa" /></p>
+
+<p>这本书去年出的第二版(第一版没看过)，貌似增加了<strong>paxos</strong>等不少内容。这本书强烈推荐，和其他分布式系统书籍相比，它不扯淡，也不是百科全书一样各种列词条全而不深，这本书实实在在的讲了一些内容，非常适合作为分布式系统的入门书。</p>
+
+<h2 id="shared-memory-synchronization">Shared-Memory Synchronization</h2>
+
+<p><img src="http://7xnljs.com1.z0.glb.clouddn.com/sharedmemorysync.jpg" alt="sms" /></p>
+
+<p>并发编程（多处理器编程）方面的书籍，涉及到原子操作、<strong>spin lock</strong>、<strong>lock free</strong>等内容，配合其他书籍，效果更佳。</p>
+
+<h2 id="the-go-programming-language">The Go Programming Language</h2>
+
+<p><img src="http://7xnljs.com1.z0.glb.clouddn.com/thegoprogramminglanguage.jpg" alt="tgpl" /></p>
+
+<p><strong>Go</strong>语言编程入门书，作者之一<strong>Brian W. Kernighan</strong>，不用多介绍了吧。估计不久就要被列为<strong>Go</strong>语言的圣经了。为嘛学<strong>Go</strong>？个人对其中的并行特性比较感兴趣。</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[计算机应届生简历撰写指南]]></title>
+    <link href="http://www.yebangyu.org/blog/2015/10/22/tipsforwritingcv/"/>
+    <updated>2015-10-22T22:39:33+08:00</updated>
+    <id>http://www.yebangyu.org/blog/2015/10/22/tipsforwritingcv</id>
+    <content type="html"><![CDATA[<p>最近帮很多朋友<strong>review</strong>他们的简历，总结起来存在以下问题：</p>
+
+<blockquote>
+  <ul>
+    <li>简历太多页</li>
+  </ul>
+</blockquote>
+
+<p>请尽量不超过两页。一般地，每个<strong>hr</strong>阅读简历的时间大概在<strong>20</strong>s甚至更少，写那么多页不仅毫无必要，而且有害。 而且我怀疑一般的应届毕业生不大可能说写三页的履历。有些人说，你写不了三页是你水平不行，经历不丰富。按我说，写三四页不是履历丰富，而是根本不会写作。</p>
+
+<blockquote>
+  <ul>
+    <li>大量无用信息</li>
+  </ul>
+</blockquote>
+
+<!--more-->
+
+<p>这些无用信息具体包括：</p>
+
+<p>民族，身高，是否团员，具体家庭住址、星座</p>
+
+<p>自己的兴趣爱好。喜欢打篮球和写代码有联系吗？</p>
+
+<p>自我评价最多一句话，不要一坨一坨。建议不要写自我评价，太水太扯了。</p>
+
+<p>学校的<strong>logo</strong>。坦白说，大家只对你是哪个学校的有兴趣，对你学校的<strong>logo</strong>不感冒。</p>
+
+<p>照片。招程序员不是招礼仪公关小姐啊大哥。颜值不是特别高就算了吧。</p>
+
+<blockquote>
+  <ul>
+    <li>过于口语化</li>
+  </ul>
+</blockquote>
+
+<p>“做了”、”搞了”、“弄了”可以用“完成”、“设计”、“实现”、“部署”之类的词代替。</p>
+
+<blockquote>
+  <ul>
+    <li>内容组织混乱</li>
+  </ul>
+</blockquote>
+
+<p>一段一段，一坨一坨，没有一定的分类和板式。建议分成个人信息、项目经验、实习经历、获奖证书等分门别类。</p>
+
+<p>建议不要用这种形式（时间和学期混合）：</p>
+
+<p>大一上   完成了<strong>xxxx</strong>系统</p>
+
+<p>大二下   完成了<strong>xxxx</strong>系统</p>
+
+<p><strong>2013</strong>-<strong>2014</strong> 完成了<strong>xxxx</strong>系统</p>
+
+<p>大三下  完成了<strong>xxxx</strong>系统</p>
+
+<p>建议用统一的时间轴表示，比如。</p>
+
+<p><strong>2013.9</strong>-<strong>2014.7</strong>   完成了<strong>xxxx</strong>系统</p>
+
+<p><strong>2014.7</strong>-<strong>2015.6</strong>   完成了<strong>xxxx</strong>系统</p>
+
+<p><strong>2016.1</strong>-<strong>2018.3</strong>   完成了<strong>xxxx</strong>系统</p>
+
+<blockquote>
+  <ul>
+    <li>漏写期望职位</li>
+  </ul>
+</blockquote>
+
+<p>是想应聘<strong>Java</strong>研发工程师还是<strong>C++</strong>研发工程师还是<strong>Python</strong>研发工程师还是算法工程师还是产品经理？</p>
+
+<blockquote>
+  <ul>
+    <li>使用词汇不讲究</li>
+  </ul>
+</blockquote>
+
+<p>慎用”精通“的同时，也不要全部都是“了解”吧？</p>
+
+<blockquote>
+  <ul>
+    <li>漏写性别</li>
+  </ul>
+</blockquote>
+
+<p>程序员和程序媛差别还是很大的。不过这可能会涉及敏感的政治/性别歧视问题。有争议。不过如果是程序媛，据我说知，不是歧视，而反而是优先录取。哈哈。赞。</p>
+
+<blockquote>
+  <ul>
+    <li>用<strong>QQ</strong>邮箱</li>
+  </ul>
+</blockquote>
+
+<p>包括联系邮箱里写<strong>QQ</strong>邮箱和用<strong>QQ</strong>邮箱发简历。很多公司已经把<strong>QQ</strong>邮箱拉入黑名单。平常用<strong>QQ</strong>聊天就算了，发邮件你还用<strong>QQ</strong>邮箱？</p>
+
+<blockquote>
+  <ul>
+    <li>文件格式用<strong>doc</strong></li>
+  </ul>
+</blockquote>
+
+<p>建议只发<strong>pdf</strong>格式，<strong>doc</strong>格式容易出现各种显示问题。</p>
+
+<blockquote>
+  <ul>
+    <li>文件名太随意</li>
+  </ul>
+</blockquote>
+
+<p>文件名建议“李三-<strong>C++</strong>研发工程师-硕士-<strong>XX</strong>大学<strong>.pdf</strong>”这样。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[深谈读研如何提高技术]]></title>
+    <link href="http://www.yebangyu.org/blog/2015/10/17/whattodoinmaster/"/>
+    <updated>2015-10-17T14:34:04+08:00</updated>
+    <id>http://www.yebangyu.org/blog/2015/10/17/whattodoinmaster</id>
+    <content type="html"><![CDATA[<p>你想进什么公司，和你读什么计算机方向，关系不是很大。只要是理工科的学生，面对技术岗位，其实机会是差不多的。</p>
+
+<p>至于你想什么职位，那显然和你的专业/方向关系较大，比如说很多大数据职位，就明确表示要求你<strong>DM</strong>/<strong>ML</strong>/<strong>NLP</strong>/<strong>IR</strong>背景，但是这也只是说这些 
+学生可能更有优势些，事实上，数学和统计学出身的，很多搞这个非常牛逼的。</p>
+
+<p>所以，不要问选什么导师，选什么方向；也不要问我的实验室很水老板很菜我还能找到好工作吗？你要问的是：我想毕业去互联 
+网公司，我读研的这几年是应该打酱油呢，还是打地沟油？</p>
+
+<p>想找一个好的互联网技术类、研发类工作，无非就是以下<strong>4</strong>点，你任选一点，做好了，都是有利的，哪<strong>4</strong>点？</p>
+
+<blockquote>
+  <ul>
+    <li>语言层面</li>
+    <li>算法层面</li>
+    <li>项目层面</li>
+    <li>专业层面</li>
+  </ul>
+</blockquote>
+
+<!--more-->
+
+<p>具体分析如下：</p>
+
+<hr />
+<p>### 语言层面</p>
+
+<p>你是想搞<strong>C++</strong>还是<strong>Java</strong>？选定一门语言后，多看一些这方面的书。</p>
+
+<p><strong>C++</strong>，不用说了，<strong>《Effective C++》</strong>，<strong>《More Effective C++》</strong>，<strong>《Inside The C++ Object Model》</strong>等等。</p>
+
+<p><strong>Java</strong>，最好能看点虚拟机相关的。尤其是<strong>Java</strong>虚拟机的内存管理。以及多线程、线程池、设计模式等。</p>
+
+<p>问题来了：学<strong>C++</strong>好还是学<strong>Java</strong>好呢？语言争论每天都在发生，真的好无聊。建议按照方向和兴趣来选择，不靠谱的说：</p>
+
+<p>如果是想做大型游戏开发、底层研发、系统研发、驱动研发等等，就选用<strong>C</strong>/<strong>C++</strong>。</p>
+
+<p>如果是想做网站开发、网络研发、上层开发、<strong>Android</strong>开发等等，就选用<strong>Java</strong>。</p>
+
+<p>顺便说一下，有空可以学学<strong>Python</strong>。</p>
+
+<hr />
+<p>### 算法层面</p>
+
+<p>学好算法。这个有两条路，最好是并行，那就是看书和做题。</p>
+
+<p>看书的话，主要有《算法导论》、《算法》（<strong>Robert Sedgewick</strong>著）、《算法竞赛入门经典》、《挑战程序设计竞赛》</p>
+
+<p>找一本认真看，认真思考。证明过程可以不看，但是算法思想最好能懂，以及实现，最好能在纸张上写出来。复杂度总要知道吧？</p>
+
+<p>研一的时候，我就把算法导论上的很多算法，都自己亲自<strong>coding</strong>了下。</p>
+
+<p>特别复杂的数据结构，比如红黑树、<strong>B</strong>树，没空就别搞了。互联网面试一般都不要求的。</p>
+
+<p>主要是排序、查找、简单<strong>DP</strong>、贪心、图算法和搜索。 根据身边同学的面试经验，二分搜索和快速排序，是面试常备了。看书的时候，如果有 
+时间，可以思考几个问题：</p>
+
+<ul>
+  <li>
+    <p>这个算法的时间空间复杂度，各是多少？如何分析？</p>
+  </li>
+  <li>
+    <p>工程实现里，都有哪些<strong>trick</strong>？如何加速？</p>
+  </li>
+  <li>
+    <p>这个算法可能用在哪些方面？有哪些应用？你比如说吧，求交集的算法，就广泛用在倒排索引、新浪微博共同关注、计算<strong>Jaccard</strong>系数等 
+等上。</p>
+  </li>
+</ul>
+
+<p>除了看书，还有就是很重要的：刷题啦。主要有<strong>poj</strong>，<strong>zoj</strong>等。找一个网站，认真刷一些题目，踏踏实实的，别浮躁。</p>
+
+<hr />
+<p>### 项目层面</p>
+
+<p>如果实验室比较牛，基本上忙项目就足够累死累活了；不过做了相对给力的项目，对于找工作，还是有很大帮助的。基本上不用怎么愁了。 
+如果老板这儿没项目呢？</p>
+
+<p>如果实验室比较水，那就尽量去实习。大公司的实习经验很能给简历加分。如果老板不让你出去实习。既然实验室很水，说明自由时间 
+比较多，那还是可以干很多事。比如说，<strong>github</strong>上就有很多开源项目，你可以选择一两个著名的，阅读源码，然后尝试自己也参与进去。</p>
+
+<p>说几个我比较感兴趣的开源项目吧：<strong>redis</strong>，<strong>spark</strong>。</p>
+
+<hr />
+<p>### 专业层面</p>
+
+<p>你对数据挖掘很精通，你对推荐系统很熟悉。你在<strong>NIPS</strong>，<strong>SIGIR</strong>上发表论文无数；你是百度推荐大赛，阿里巴巴大数据比赛冠军常客。</p>
+
+<p>也就是说，除了尝试发顶会论文，还可以参加各种比赛。本专业本领域里都有什么比赛可以参加呢？搜一下微博或者知乎，或者问下师兄师姐，不就知道了？</p>
+
+<p>专业层面，可以做的东西非常多。比如，你对数据挖掘很感兴趣，那么数据挖掘中的常见模型，我们了解多少？机器学习，我们掌握到什么程度了？举个例子：</p>
+
+<ul>
+  <li>
+    <p><strong>SVM</strong>和<strong>logistic regression</strong>这两种<strong>model</strong>，有什么特点？各自的适用场合？</p>
+  </li>
+  <li>
+    <p><strong>feature selection</strong>的常用方法有哪些？为什么<strong>lasso</strong>可以作为<strong>feature selection</strong>？</p>
+  </li>
+  <li>
+    <p><strong>Adaboosting</strong>为什么不容易<strong>over-fitting</strong>？你能不能从<strong>statistical view</strong>来解释解释？</p>
+  </li>
+  <li>
+    <p>哦，你和我说，你不是搞学术研究，你反感<strong>Learning Theory</strong>，你说你是一个工程师，那你写了多少代码？</p>
+  </li>
+</ul>
+
+<p><strong>scikit-learn</strong>，<strong>weka</strong>，以及<strong>spark</strong>，你会用哪个工具？（熟悉一种工具）</p>
+
+<p>你有自己下载一些数据集跑跑实验吗？你有参加一些大数据相关的竞赛吗？（动手实验/参加比赛）</p>
+
+<p>专业层面，能做的，要做的，还有很多。</p>
+
+<p>哦，最好熟悉下<strong>linux</strong>的基本使用。</p>
+
+<hr />
+<p>### 最后的话</p>
+
+<p>如果能在读研期间做到这里的一点或者几点，到时候甚至不需要翻《编程之美》或者<strong>leetcode</strong>就毫无压力啦。 最后说几点个人感受。</p>
+
+<ul>
+  <li>算法牛，项目牛，长得又帅，又精通很多语言，这种人，是不多见的。</li>
+</ul>
+
+<p>也就是说，你想拿一个好<strong>offer</strong>，一般只要有一两点突出，就可以了。</p>
+
+<ul>
+  <li>互联网面试，除了个别公司个别面试官，一般都是要考查（考查？考察？这两个词有什么区别？考察是调研、研究、分析的意思）算法的 
+。你研一的时候准备，看书做题，总比研三的时候抱佛脚来的好吧？</li>
+</ul>
+
+<p>况且，算法的学习，也不仅仅是为了面试吧？可能是受益终身的。或者，吹牛皮装逼作为谈资，也是可以的。</p>
+
+<ul>
+  <li>别轻易说我就要去某某公司。到时候，你会发现，选择比你想象的多。</li>
+</ul>
+
+<p>也有可能比你想象的还少，为什么？</p>
+
+<p>就看你有没有做到我上面说的这些了。</p>
+]]></content>
+  </entry>
+  
+</feed>

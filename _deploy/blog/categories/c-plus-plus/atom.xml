@@ -1,0 +1,727 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: c++ | Yebangyu's Blog]]></title>
+  <link href="http://www.yebangyu.org/blog/categories/c-plus-plus/atom.xml" rel="self"/>
+  <link href="http://www.yebangyu.org/"/>
+  <updated>2015-12-27T20:35:33+08:00</updated>
+  <id>http://www.yebangyu.org/</id>
+  <author>
+    <name><![CDATA[Yebangyu]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[再谈C++中的static const]]></title>
+    <link href="http://www.yebangyu.org/blog/2015/11/15/static-const-in-cpp/"/>
+    <updated>2015-11-15T12:45:16+08:00</updated>
+    <id>http://www.yebangyu.org/blog/2015/11/15/static-const-in-cpp</id>
+    <content type="html"><![CDATA[<p>废话不多说了，开始这次的讨论吧。</p>
+
+<h2 id="section">提出问题</h2>
+
+<p>同事颜廷帅（微博：@颜挺帅）拿了一段代码让我分析。以下代码，能编译链接通过吗？</p>
+
+<!--more-->
+
+<p><code>c++
+void f(const int &amp;value)
+{
+}
+class Test
+{
+public:
+  static const int a = 1;
+};
+int main()
+{
+  f(Test::a);
+  return 0;
+}
+</code></p>
+
+<p>我的第一感觉是：应该没问题，吧。在<strong>Visual Studio 2013</strong> 实验了下，顺利通过，一切正常.</p>
+
+<p>然而同事说，<strong>gcc</strong>下是报错的：Undefined reference to ‘Test::a’</p>
+
+<p>这是为什么？</p>
+
+<h2 id="section-1">分析问题</h2>
+
+<p>写作本文时所用的环境是<strong>gcc 4.8.2 (Ubuntu 14.04 , X86平台)</strong>。</p>
+
+<p>注意，本文的讨论只针对类的<strong>static const</strong>成员，也就是所谓的<strong>class scope</strong>。<strong>namespace scope</strong>的情况不属于我们的讨论范围内。</p>
+
+<p>把以上代码保存为<strong>test.cpp</strong>，然后用<strong>gcc</strong>编译它：</p>
+
+<pre><code>g++ -c -o test.o test.cpp
+</code></pre>
+
+<p>这个命令执行之后，我们会在目录下得到<strong>test.o</strong>文件。接着，我们通过<strong>objdump</strong>来查看符号表：</p>
+
+<pre><code>objdump -x test.o
+</code></pre>
+
+<p>我们可以看到类似如下的输出：</p>
+
+<pre><code>SYMBOL TABLE:
+00000000 l    df *ABS*	00000000 test.cpp
+00000000 l    d  .text	00000000 .text
+00000000 l    d  .data	00000000 .data
+00000000 l    d  .bss	00000000 .bss
+00000000 l    d  .note.GNU-stack	00000000 .note.GNU-stack
+00000000 l    d  .eh_frame	00000000 .eh_frame
+00000000 l    d  .comment	00000000 .comment
+00000000 g     F .text	00000005 _Z1fRKi
+00000005 g     F .text	00000019 main
+00000000         *UND*	00000000 _ZN4Test1aE
+</code></pre>
+
+<p>上面的最后一行，<strong>_ZN4Test1aE</strong>就是对应我们程序中声明的<strong>Test::a</strong>。之所以长得这么复杂、奇怪，是因为编译器做了<strong>mangling</strong>处理。</p>
+
+<p>注意到*UND*没？根据<a href="https://sourceware.org/binutils/docs/binutils/objdump.html">文档</a>的解释：</p>
+
+<p>*UND* : if the section is referenced in the file being dumped, but not defined there</p>
+
+<p>也就是<strong>_ZN4Test1aE</strong>在本<strong>.o</strong>文件中引用，然而它却木有定义。因此，报Undefined reference to ‘Test::a’的错，也就情理之中了。</p>
+
+<p>那么，我们的程序是否真的引用了<strong>_ZN4Test1aE</strong>呢？恩，我们接着往下看。</p>
+
+<p>输入如下命令：</p>
+
+<pre><code>g++ -S test.cpp
+</code></pre>
+
+<p>我们可以得到类似这样的汇编代码(做了整理，节选)：</p>
+
+<pre><code>main:
+	pushl	%ebp
+	movl	%esp, %ebp
+	subl	$4, %esp
+	movl	$_ZN4Test1aE, (%esp) ;看到没？_ZN4Test1aE ！
+	call	_Z1fRKi ;调用函数f
+	movl	$0, %eax
+	leave
+	ret
+</code></pre>
+
+<p>虽然我们已经分析出为什么会报错，然而，我们还有一个疑问，就是，为什么下面的代码，是OK的？</p>
+
+<p><code>c++
+void f(const int value) //这里没有 &amp;
+{
+}
+class Test
+{
+public:
+  static const int a = 1;
+};
+int main()
+{
+  f(Test::a);//没问题
+  return 0;
+}
+</code></p>
+
+<p>恩，有了前面的基础，相信读者诸君已经知道怎么分析。我们可以用同样的方法，看看它的汇编代码：</p>
+
+<pre><code>main:
+	pushl	%ebp
+	movl	%esp, %ebp
+	subl	$4, %esp
+	movl	$1, (%esp)     ;看到没？1，不是_ZN4Test1aE，也不是Test::a
+	call	_Z1fi
+	movl	$0, %eax
+	leave
+	ret
+</code></pre>
+
+<p>也就是说，在这里，编译器只是把<strong>Test::a</strong>认作一个占位符，实际使用之处用<strong>1</strong>代替了。</p>
+
+<h2 id="section-2">解决问题</h2>
+
+<p>知道原因了，那么怎么解决呢？恩，至少三种方法：</p>
+
+<p>1，我们可以<strong>定义</strong>（而不是声明）<strong>Test::a</strong>。是的，上面的<code>static const int a = 1;</code>并不是它的定义式。如果要定义，那么我们应该这么做：</p>
+
+<p><code>c++
+void f(const int &amp;value)//还是传引用
+{
+}
+class Test
+{
+public:
+  static const int a;
+};
+const int Test::a = 1;//定义a
+int main()
+{
+  f(Test::a);//现在没问题了
+  return 0;
+}
+</code>
+有兴趣的读者可以看看这个程序对应的符号表，就会发现<strong>Test::a</strong>被放在了程序的<strong>rodata section</strong>，而不是*UND*了。</p>
+
+<p>2，如果仅仅声明<strong>a</strong>，那么我们可以按值的方式使用它，这没问题。也就是只使用它的值；而不去获得它的地址(当然，也包括引用。引用本质上也是地址)。</p>
+
+<p>3，使用枚举类型。是的，枚举！像这样：</p>
+
+<p><code>c++
+void f(const int &amp;value)//还是传引用
+{
+}
+class Test
+{
+public:
+  enum HELLOWORLD {a = 1}; //枚举，而不是 static const
+};
+int main()
+{
+  f(Test::a);//没问题
+  return 0;
+}
+</code>
+那么，这种情况下，编译器是如何处理的呢？就留给读者诸君作为练习吧。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[空指针(NULL)不能用吗？]]></title>
+    <link href="http://www.yebangyu.org/blog/2015/11/06/null-pointer-can-be-accessed/"/>
+    <updated>2015-11-06T22:38:30+08:00</updated>
+    <id>http://www.yebangyu.org/blog/2015/11/06/null-pointer-can-be-accessed</id>
+    <content type="html"><![CDATA[<p>我们常常被告知，使用指针前需要判断是否为<strong>NULL</strong>；如果是<strong>NULL</strong>而你去使用它就会出问题。真相果真是这样吗？</p>
+
+<p>同事颜廷帅（微博：@颜挺帅）给我看以下一个程序，问我，这段程序执行后，有问题吗？</p>
+
+<!--more-->
+
+<p><code>c++
+#include&lt;iostream&gt;
+#include&lt;cstdlib&gt;
+using namespace std;
+class Test1
+{
+private:
+  int a;
+public:
+  void f()
+  {
+    cout&lt;&lt;"Test1: Core or not ? "&lt;&lt;endl;
+  }
+};
+int main()
+{
+  Test1 *p = NULL;
+  p-&gt;f();//会core吗？会出大事吗？
+  return 0;
+}
+</code></p>
+
+<p>这里，<strong>p</strong>是一个空指针，通过这个空指针，我们访问了函数<strong>f</strong>。没<strong>core</strong>，没问题，成功输出了 <strong>Test1: Core or not ?</strong></p>
+
+<p>发生了什么事？空指针也能用？</p>
+
+<p>如果我们把<strong>f</strong>稍作修改，程序其他地方不做任何变动：</p>
+
+<pre><code>void f()
+{
+  cout&lt;&lt;"Test1: Core or not ? "&lt;&lt;a&lt;&lt;endl;//access a
+}
+</code></pre>
+
+<p>那么程序运行后分分钟<strong>core</strong>掉了。</p>
+
+<p>有没有感觉了？嗯，相信有了。我们继续往下看：</p>
+
+<p><code>c++
+#include&lt;iostream&gt;
+#include&lt;cstdlib&gt;
+using namespace std;
+static int global = 1;
+class Test2
+{
+private:
+  int a;
+public:
+  void f()
+  {
+    cout&lt;&lt;"Test1: Core or not ? "&lt;&lt;global&lt;&lt;endl;//access global
+  }
+};
+int main()
+{
+  Test2 *p = NULL;
+  p-&gt;f();//会core吗？会出大事吗？
+  return 0;
+}
+</code></p>
+
+<p>也没问题。</p>
+
+<p>嗯，你可能已经知道了真相。通过空指针访问东西，只要那个东西是确实存在的，就不会有问题。</p>
+
+<p>怎么理解“确实存在”？它是一个实体，看得见，摸得着。</p>
+
+<p>这得说到<strong>C++</strong>程序中对象的内存布局。</p>
+
+<p>在<strong>C++</strong>中，成员函数、静态变量是独立于对象存放的；而普通的数据成员是和对象相关的。</p>
+
+<pre><code>Test1 obj1;
+Test1 obj2;
+</code></pre>
+
+<p><strong>obj1</strong>和<strong>obj2</strong>是共用函数<strong>f</strong>的，函数<strong>f</strong>对<strong>obj1</strong>和<strong>obj2</strong>是相同的，内存中只有一份实体；而<strong>obj1</strong>和<strong>obj2</strong>有自己的实体<strong>a</strong>。</p>
+
+<p>然而，注意到<code>Test1 *p = NULL;</code>仅仅是声明式，而非定义式。这时候，没有定义任何的对象出来，通过<strong>p</strong>如何访问<strong>a</strong>呢？哪来的<strong>a</strong>呢？<strong>a</strong>在内存里并不存在。因此，访问<strong>a</strong>必定<strong>core</strong>。</p>
+
+<p>而函数<strong>f</strong>呢？它是独立于对象存放的，自然没问题。一般说来，<strong>f</strong>位于程序的代码段，而全局变量一般位于<strong>BSS</strong>段或者<strong>DATA</strong>段（这个比较复杂，和该全局变量是否初始化以及初始化为<strong>0</strong>还是非<strong>0</strong>有关）。而当我们定义对象时，才为该对象分配内存，才有数据成员<strong>a</strong>的存在：</p>
+
+<p><code>c++
+#include&lt;iostream&gt;
+#include&lt;cstdlib&gt;
+using namespace std;
+static int global1 = 1; //DATA段
+static int global2; //BSS段
+class Test3
+{
+private:
+  int a;
+public:
+  void f()
+  {
+    cout&lt;&lt;"Test1: Core or not ? "&lt;&lt;endl;
+  }
+};
+Test3 obj3; //DATA段 (调用默认构造函数进行初始化)
+int main()
+{
+  Test3 obj1; //stack段。定义obj1，这时候自然为a分配内存了
+  Test3 *obj2 = new Test3();//heap段，也为a分配内存了。
+  Test3 *p;//只是声明，没有定义。没有对象，也没有a。
+  return 0;
+}
+</code>
+受王杰兄（微博：@skyline09_）启发和提示，其实我们可以换一种形式来理解。</p>
+
+<p>我们知道，<strong>C++</strong>中，类的非静态成员函数会被编译器改写：</p>
+
+<p><code>void Test::f()</code>被改写为类似于<code>void Test__f(Test *const this)</code></p>
+
+<p>而</p>
+
+<pre><code>Test *p = NULL;
+
+p-&gt;f();
+</code></pre>
+
+<p>将被编译器改写为</p>
+
+<pre><code>Test *p = NULL;
+Test__f(p);
+</code></pre>
+
+<p>因此<code>Test::f</code>中带有一个值为<strong>NULL</strong>的<strong>this</strong>指针（<strong>p</strong>），如果通过这个空指针<strong>p</strong>读写数据，就会崩溃。否则，安然无事。</p>
+
+<p>那么，<strong>this</strong>指针可以操纵哪些东西呢？哦，类的非静态数据成员。而类的静态数据成员，全局变量等，是不会通过<strong>this</strong>指针访问的，因此，上例中，访问<strong>a</strong>崩溃，访问<strong>global</strong>则安全。</p>
+
+<p>最后，我们看一个问题。这个问题，最早我是从杜克伟兄（微博：@小伙伴-小伙伴儿）那里听到的。
+<code>c++
+class Test4
+{
+public:
+  void f()
+  {
+    cout&lt;&lt;&amp;(*this)&lt;&lt;endl; // 有问题吗？
+  }
+};
+int main()
+{
+  Test4 *p = NULL;
+  p-&gt;f();
+  return 0;
+}
+</code></p>
+
+<p>没问题。<strong>&amp;(*this)</strong>就是<strong>this</strong>，值和<strong>p</strong>相等。因此上面会输出<strong>0</strong>。</p>
+
+<p>综上，使用空指针并不一定会发生问题，关键是怎么用。遇到问题得理性分析，不要想当然。</p>
+
+<p>纸上学来终觉浅，绝知此事要躬行。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[编写高质量代码(上)]]></title>
+    <link href="http://www.yebangyu.org/blog/2015/11/06/how-to-write-elegant-cpp-codes/"/>
+    <updated>2015-11-06T00:24:56+08:00</updated>
+    <id>http://www.yebangyu.org/blog/2015/11/06/how-to-write-elegant-cpp-codes</id>
+    <content type="html"><![CDATA[<p>我们知道，<strong>int</strong>和<strong>double</strong>能表示的数值的范围不同。其中，<strong>64</strong>位有符号整数的范围是[<strong>-9223372036854775808</strong>,<strong>9223372036854775807</strong>]，而<strong>64</strong>位无符号整数的范围是[<strong>0</strong>,<strong>18446744073709551615</strong>]。这两个区间有一定的<strong>overlap</strong>，而<strong>double</strong>可以表示的范围更大。</p>
+
+<p>现在，需要编写两个函数:给定一个<strong>double</strong>型的<strong>value</strong>，判断这个<strong>value</strong>是否是一个合法的<strong>int64_t</strong>或者<strong>uint64_t</strong>。本文说的“合法”，是指数值上落在了范围内。</p>
+
+<pre><code>bool is_valid_uint64(const Double &amp;value);
+
+bool is_valid_int64(const Double &amp;value);
+</code></pre>
+
+<p>这里我们用<strong>Double</strong>而不是<strong>double</strong>，原因是我们的<strong>double</strong>不是基础数据类型，而是通过一定方法实现的<strong>ADT</strong>，这个<strong>ADT</strong>的成员函数有：</p>
+
+<!--more-->
+
+<p><code>c++
+class Double
+{
+  public:
+    int get_next_digit(bool &amp;is_decimal);
+    bool is_zero();
+    bool is_neg();
+};
+</code>
+通过调用<code>get_next_digit</code>，可以返回一个数字，不断调用它，可以得到所有<strong>digits</strong>。举个例子，对于值为<strong>45.67</strong>的一个<strong>Double</strong>对象，调用它的<code>get_next_digit</code>成员函数将依次得到</p>
+
+<p>4 is_decimal = false //表示整数部分</p>
+
+<p>5 is_decimal = false //表示整数部分</p>
+
+<p>6 is_decimal = true //表示小数部分</p>
+
+<p>7 is_decimal = true //表示小数部分</p>
+
+<p>当<code>get_next_digit</code>返回<strong>-1</strong>时，表示读取完毕。</p>
+
+<p>如何利用<strong>Double</strong>类里的成员函数，来实现<code>is_valid_uint64</code>和<code>is_valid_int64</code>这两个函数呢？</p>
+
+<p>一些新手可能会写这样的代码：</p>
+
+<p><code>c++
+bool is_valid_uint64(const Double &amp;value)
+{
+  bool is_valid = true;
+  int digits[2000];
+  int counts = 0;
+  if (value.is_zero()) { 
+    is_valid = true;
+  } else if(value.is_neg()) { 
+    is_valid = false;
+  } else { 
+    bool is_decimal = false;
+    int digit = 0;
+    while((digit=value.get_next_digit(is_decimal)) != -1) {
+      if (is_decimal) { 
+        is_valid = false;
+        break;
+      } else {
+        digits[counts++] = digit;
+      }
+    }
+    uint64_t tmp = 0;
+    uint64_t base = 1;
+    for (int i = counts - 1; i &gt;= 0; i++) {
+      tmp += digits[i] * base;
+      if (tmp &gt; UINT64_MAX) {
+        is_valid = false;
+        break;
+      }
+      base *= 10;
+    }
+  }
+  return is_valid;
+}
+bool is_valid_int64(const Double &amp;value)
+{
+  bool is_valid = true;
+  int digits[2000];
+  int counts = 0;
+  if (value.is_zero()) { 
+    is_valid = true;
+  } else if(value.is_neg()) { 
+    bool is_decimal = false;
+    int digit = 0;
+    while((digit=value.get_next_digit(is_decimal)) != -1) {
+      if (is_decimal) { 
+        is_valid = false;
+        break;
+      } else {
+        digits[counts++] = digit;
+      }
+    }
+    uint64_t tmp = 0;
+    uint64_t base = 1;
+    for (int i = counts - 1; i &gt;= 0; i++) {
+      tmp += digits[i] * base;
+      tmp *= -1;
+      if (tmp &lt; INT64_MIN) {
+        is_valid = false;
+        break;
+      }
+      base *= 10;
+    }
+  } else { 
+    bool is_decimal = false;
+    int digit = 0;
+    while((digit=value.get_next_digit(is_decimal)) != -1) {
+      if (is_decimal) { 
+        is_valid = false;
+        break;
+      } else {
+        digits[counts++] = digit;
+      }
+    }
+    uint64_t tmp = 0;
+    uint64_t base = 1;
+    for (int i = counts - 1; i &gt;= 0; i++) {
+      tmp += digits[i] * base;
+      if (tmp &gt; INT64_MAX) {
+        is_valid = false;
+        break;
+      }
+      base *= 10;
+    }
+  }
+  return is_valid;
+}
+</code>
+这样的代码，存在诸多问题。</p>
+
+<h2 id="section">设计问题</h2>
+
+<p>不难发现，两个函数存在很多相似甚至相同的代码；而同一个函数内部，也有不少代码重复。重复的东西往往不是好的。重构？</p>
+
+<h2 id="section-1">性能问题</h2>
+
+<p>先获得所有digits，然后从最低位开始向最高位构造值，效率较低。难道没有可以从最高位开始，边获得边计算，不需要临时数组存储所有digits的方法吗？</p>
+
+<h2 id="section-2">正确性问题</h2>
+
+<p>随便举几个例子：</p>
+
+<p>第<strong>24</strong>行，<code>tmp += digits[i] * base</code>;有没有考虑到可能的溢出呢？</p>
+
+<p>第<strong>68</strong>行，难道有小数部分就一定不是合法的<strong>int64</strong>吗？那么，<strong>123.000</strong>？嗯？</p>
+
+<h2 id="section-3">规范问题</h2>
+
+<p>帅哥，这么多代码，一行注释都没有，这样真的好吗？</p>
+
+<p>因此，毫无疑问，这是烂代码，不合格的代码，需要重写的代码。</p>
+
+<hr />
+
+<p>以下是我个人认为比较好的设计和实现，仅供参考。</p>
+
+<p>```c++</p>
+
+<p>bool is_valid_uint64(const Double &amp;value)</p>
+
+<p>{</p>
+
+<p>bool ret = false;</p>
+
+<p>check_range(&amp;ret, NULL, value);</p>
+
+<p>return ret;</p>
+
+<p>}</p>
+
+<p>bool is_valid_int64(const Double &amp;value)</p>
+
+<p>{</p>
+
+<p>bool ret = false;</p>
+
+<p>check_range(NULL, &amp;ret, value);</p>
+
+<p>return ret;</p>
+
+<p>}</p>
+
+<p>void check_range(const Double &amp;value,</p>
+
+<pre><code>             bool *is_valid_uint64,
+
+             bool *is_valid_int64) const
+</code></pre>
+
+<p>{</p>
+
+<p>/*</p>
+
+<ul>
+  <li>
+    <p>对于一个负数的value，它不可能是一个合法的uint64.</p>
+  </li>
+  <li>
+    <p>因此，只剩下三种可能：</p>
+  </li>
+  <li>
+    <p>I 输入的value是负数，判断是否是合法的int64</p>
+  </li>
+  <li>
+    <p>II 输入的value是正数，判断是否是合法的uint64</p>
+  </li>
+  <li>
+    <p>III 输入的value是正数，判断是否是合法的int64</p>
+  </li>
+  <li>
+    <p>对于第II、III这两种情况：只要判断value的值是否超过uint64、int64的上界即可</p>
+  </li>
+  <li>
+    <p>对于第I种情况，我们利用-A &gt; -B 等价于 A &lt; B （其中A、B是正数）</p>
+  </li>
+  <li>
+    <p>因此，在第I种情况里，可以判断value的绝对值，是否超过int64的最小值的绝对值即可。</p>
+  </li>
+  <li>
+    <p>（int64的最小值的绝对值？那不就是int64的最大值？哦，不！）</p>
+  </li>
+  <li>
+    <p>因此，不管哪种情况，判断绝对值是否超过某个上界即可。</p>
+  </li>
+  <li>
+    <p>这三种情况，上界不一样。把三个上界存到了一个二维数组THRESHOLD里</p>
+  </li>
+</ul>
+
+<p>*/</p>
+
+<p>bool *is_valid = NULL;</p>
+
+<p>static const int FLAG_INT64 = 0;</p>
+
+<p>static const int FLAG_UINT64 = 1;</p>
+
+<p>static const int SIGN_NEG = 0;</p>
+
+<p>static const int SIGN_POS = 1;</p>
+
+<p>int flag = FLAG_INT64;</p>
+
+<p>if (NULL != is_valid_uint64) {</p>
+
+<pre><code>is_valid = is_valid_uint64;
+
+flag = FLAG_UINT64;
+</code></pre>
+
+<p>} else {</p>
+
+<pre><code>is_valid = is_valid_int64;
+</code></pre>
+
+<p>}</p>
+
+<p>*is_valid = true;</p>
+
+<p>if (value.is_zero()) {</p>
+
+<pre><code>//do nothing。0是合法的uint64，也是合法的int64
+</code></pre>
+
+<p>} else {</p>
+
+<pre><code>int sign = value.is_neg() ? SIGN_NEG : SIGN_POS;
+
+if ((SIGN_NEG == sign) &amp;&amp; (FLAG_UINT64 == flag)) {
+
+  *is_valid = false;//负数不可能是合法的uint64
+
+} else {
+
+  uint64_t valueUint = 0;
+
+  static uint64_t ABS_INT64_MIN = 9223372036854775808ULL;
+
+                                     //int64        uint64
+
+  static uint64_t THRESHOLD[2][2] = { {ABS_INT64_MIN, 0}, //neg
+
+                                     {INT64_MAX,     UINT64_MAX} }; //pos
+
+  int digit = 0;
+
+  bool is_decimal = false;
+
+  while ((digit = value.get_next_digit(is_decimal)) != -1) {
+
+    if (!is_decimal) {
+
+      //为了防止溢出，我们不能这么写:
+
+      //"value * 10 + digit &gt; THRESHOLD[index]"
+
+      if (valueUint &gt; (THRESHOLD[sign][flag] - digit) / 10) {
+
+        *is_valid = false;
+
+        break;
+
+      } else {
+
+        valueUint = valueUint * 10 + digit;//霍纳法则（也叫秦九韶算法）
+
+      }
+
+    } else {
+
+      if (!digit) {
+
+        *is_valid = false; //小数部分必须是0；否则不可能是合法的uint64、int64
+
+        break;
+
+      }
+
+    }
+
+  }
+
+}
+</code></pre>
+
+<p>}</p>
+
+<p>}
+```</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[C++中逗号表达式的一个应用]]></title>
+    <link href="http://www.yebangyu.org/blog/2015/10/22/atrickofcomma/"/>
+    <updated>2015-10-22T23:55:35+08:00</updated>
+    <id>http://www.yebangyu.org/blog/2015/10/22/atrickofcomma</id>
+    <content type="html"><![CDATA[<p>假设我们的程序需要调用三个函数<strong>f</strong>，<strong>g</strong>，<strong>h</strong>。其中<strong>f</strong>和<strong>h</strong>可能失败，可能成功，而<strong>g</strong>一定成功。<strong>f</strong>和<strong>h</strong>有返回值，<strong>g</strong>没有返回值。我们可能得写这样的代码：</p>
+
+<pre><code>if (f()!=SUCCESS) {
+  //abort
+} else {
+  g();
+  if (h()!=SUCCESS) {
+  }
+}
+</code></pre>
+
+<p>由于<strong>g</strong>没有返回值，因此这么写似乎是天经地义的。能不能优雅点？</p>
+
+<!--more-->
+
+<p>借助于逗号表达式，我们可以这样：</p>
+
+<pre><code>if (f()!=SUCCESS){
+} else if (g(),false) { //逗号表达式
+  //we will never be here...
+} else if (h()!=SUCCESS) {
+}
+</code></pre>
+
+<p>形式上更加优美，但是和之前的写法相比可读性较差，并且使用了三次比较，之前只需要两次比较。</p>
+
+<p>在<strong>C++</strong>中，逗号表达式有时候是一种很有用的工具：(<strong>A,B,C</strong>)，则从左到右求值，最后<strong>C</strong>的（返回）值作为整个表达式的值。</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: 编译链接 | Yebangyu's Blog]]></title>
+  <link href="http://www.yebangyu.org/blog/categories/bian-yi-lian-jie/atom.xml" rel="self"/>
+  <link href="http://www.yebangyu.org/"/>
+  <updated>2015-12-27T20:35:33+08:00</updated>
+  <id>http://www.yebangyu.org/</id>
+  <author>
+    <name><![CDATA[Yebangyu]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[利用Distcc和Dmucs构建大规模、分布式C++编译环境(下)]]></title>
+    <link href="http://www.yebangyu.org/blog/2015/11/30/build-distributed-compilation-env/"/>
+    <updated>2015-11-30T22:23:46+08:00</updated>
+    <id>http://www.yebangyu.org/blog/2015/11/30/build-distributed-compilation-env</id>
+    <content type="html"><![CDATA[<p><a href="http://www.yebangyu.org/blog/2015/11/23/build-distributed-compilation-ev/">上篇</a>文章，我们介绍了如何利用<strong>Distcc</strong>来搭建分布式编译环境，但是<strong>Distcc</strong>的默认调度策略过于简单，并且并不合理。假如我们的配置是</p>
+
+<pre><code>export DISTCC_HOSTS="192.168.1.11 192.168.1.22 192.168.1.33"
+</code></pre>
+
+<p>那么<strong>Distcc</strong>会根据<strong>DISTCC_HOSTS</strong>中机器出现的先后顺序，来安排编译任务，越靠前的机器(比如这里的<strong>192.168.1.11</strong>)获得越多的任务，这显然是不科学的。</p>
+
+<p>因此，我们可以利用<strong>Dmucs</strong>提供的调度策略，来优化我们的方案。它可以根据编译机的负载情况和硬件实力，来合理的调度资源。能者多劳嘛。</p>
+
+<p>为了保证本文的完整性，我们还是不厌其烦地把我们的环境再交待下：</p>
+
+<!--more-->
+
+<p>开发机（<strong>Client</strong>）：这一台机器上有我们的项目、工程文件、代码，平时我们在这台机器上写代码，要编译的对象也在这台机器上。机器<strong>IP</strong>为<strong>192.168.1.99</strong>。</p>
+
+<p>服务器（<strong>Server</strong>）：负责编译的机器，一共有<strong>3</strong>台。<strong>IP</strong>分别为<strong>192.168.1.11</strong>,<strong>192.168.1.22</strong>,<strong>192.168.1.33</strong>。</p>
+
+<p>调度器（<strong>Scheduler</strong>）：调度程序<strong>Dmucs</strong>所在的机器，负责把编译任务合理的派发到编译机器（服务器）的编译程序上。<strong>IP</strong>为<strong>192.168.1.88</strong>。</p>
+
+<h2 id="section">服务器</h2>
+
+<p>1，安装<strong>gcc</strong></p>
+
+<pre><code>sudo apt-get install gcc
+</code></pre>
+
+<p>2，安装<strong>Distcc</strong></p>
+
+<pre><code>sudo apt-get install distcc
+</code></pre>
+
+<p>安装后可以得到两个二进制文件，<strong>distccd</strong>和<strong>distcc</strong>。前者主要负责网络数据处理，后者可以认为是<strong>g++</strong>的前端，调用<strong>g++</strong>进行编译。</p>
+
+<p>3，配置<strong>Distcc</strong></p>
+
+<p>打开<code>/etc/default/distcc</code>，设置如下配置项：</p>
+
+<pre><code>STARTDISTCC="true"  
+ALLOWEDNETS="127.0.0.1 192.168.1.0/24"
+LISTENER="0.0.0.0"
+</code></pre>
+
+<p>第一行设置开机就启动<strong>distccd</strong></p>
+
+<p>第二行设置允许利用本机进行编译的开发机</p>
+
+<p>第三行设置监听的网络</p>
+
+<p>4，启动<strong>distccd</strong></p>
+
+<pre><code>sudo service distcc start
+</code></pre>
+
+<p>经过以上配置，每次机器开机，都会自动运行<strong>distccd</strong>。</p>
+
+<p>运行如下命令确认下：</p>
+
+<pre><code>ps -aux | grep distccd
+</code></pre>
+
+<p>如果看到类似的输出，说明<strong>distccd</strong>成功启动了。</p>
+
+<pre><code>distccd   3457  0.0  0.0   3260   144 ?        SNs  23:33   0:00 /usr/bin/distccd --pid-file=/var/run/distccd.pid --log-file=/var/log/distccd.log --daemon --allow 127.0.0.1 --listen 0.0.0.0 --nice 10
+distccd   3458  0.0  0.0   3260   144 ?        SN   23:33   0:00 /usr/bin/distccd --pid-file=/var/run/distccd.pid --log-file=/var/log/distccd.log --daemon --allow 127.0.0.1 --listen 0.0.0.0 --nice 10
+distccd   3461  0.0  0.0   3260   144 ?        SN   23:33   0:00 /usr/bin/distccd --pid-file=/var/run/distccd.pid --log-file=/var/log/distccd.log --daemon --allow 127.0.0.1 --listen 0.0.0.0 --nice 10
+</code></pre>
+
+<p>5，安装<strong>Dmucs</strong></p>
+
+<p>首先，从<a href="http://sourceforge.net/projects/dmucs/files/dmucs/dmucs%200.6.1/">这里</a>下载最新版本的<strong>Dmucs</strong>。</p>
+
+<p>安装也就是普通的<code>configure</code>、<code>make</code>和<code>make install</code>，需要注意的是，执行<strong>make</strong>时，需要加上参数，例如：</p>
+
+<pre><code>make CPPFLAGS=-DSERVER_MACH_NAME=\\\"192.168.1.88\\\"
+</code></pre>
+
+<p>其中<strong>192.168.1.88</strong>是我们的调度器的机器<strong>IP</strong>，根据实际情况自行修改。服务器上的编译程序，需要把编译负载情况，发送给调度器上的调度程序，作为它调度时的参考信息。</p>
+
+<p>如果您嫌这样麻烦，那么也可以在<strong>make</strong>的时候不指定选项，而是在安装后，打开<code>/etc/default/dmucs</code>文件，设置如下字段：</p>
+
+<pre><code>USE_SERVER = 192.168.1.88
+</code></pre>
+
+<p>6，启动<strong>loadavg</strong></p>
+
+<p><strong>loadavg</strong>是安装<strong>Dmucs</strong>后得到的一个二进制文件，它会定期发送服务器平均负载情况给调度器，供调度程序决策之用。</p>
+
+<pre><code>sudo loadavg -s 192.168.1.88 &amp;
+</code></pre>
+
+<p>其中，<strong>192.168.1.88</strong>是调度程序所在机器的<strong>IP</strong>地址。</p>
+
+<h2 id="section-1">调度器</h2>
+
+<p>1，安装<strong>Dmucs</strong></p>
+
+<p>请参考上面的第<strong>5</strong>步。</p>
+
+<p>2，配置服务器属性</p>
+
+<p>在调度器的<code>/usr/local/share/dmucs/</code>目录下，新建<strong>hosts-info</strong>文件，格式和内容如下：</p>
+
+<pre><code>#Format: machine number-of-cpus power-index
+192.168.1.11       4            10
+192.168.1.22       4            5
+192.168.1.33       4            5
+</code></pre>
+
+<p>其中，<strong>power-index</strong>（必须大于等于<strong>1</strong>）表示了这台机器的战斗力，值越高代表性能越强，分到的编译任务也越多。能者多劳嘛。</p>
+
+<p>3，启动调度程序</p>
+
+<p>命令为：</p>
+
+<pre><code>sudo service dmucs start
+</code></pre>
+
+<h2 id="section-2">开发机</h2>
+
+<p>1，安装<strong>Distcc</strong></p>
+
+<p>当然啦，我们假设您的开发机上已经安装<strong>gcc</strong>了。</p>
+
+<p>2，设置编译资源</p>
+
+<p>这一步是指定哪些机器（也就是上面的<strong>Server</strong>）来负责编译工作。</p>
+
+<pre><code>export DISTCC_HOSTS="192.168.1.11 192.168.1.22 192.168.1.33"
+</code></pre>
+
+<p>每台机器的<strong>IP</strong>之间用空格隔开。</p>
+
+<p>如果机器很多，那么这样填写可能不大方便，可以在<code>/etc/distcc/hosts</code>里添加。</p>
+
+<p>这两种方法可以任选一种，如果您两种都用，那么<strong>Distcc</strong>只认<strong>DISTCC_HOSTS</strong>值。</p>
+
+<p>3，应用<strong>Distcc</strong>和<strong>Dmucs</strong></p>
+
+<p>应用<strong>Distcc</strong>和<strong>Dmucs</strong>来编译代码有几种方法：</p>
+
+<p>方法一：修改<strong>makefile</strong>中的<strong>CXX</strong>的值</p>
+
+<p>将<strong>makefile</strong>文件中的这一行</p>
+
+<pre><code>CXX = g++
+</code></pre>
+
+<p>改为</p>
+
+<pre><code>CXX = gethost distcc g++
+</code></pre>
+
+<p>然后运行<code>make -j18</code>即可。这里的<strong>18</strong>，为所有服务器的<strong>CPU Cores</strong>的数量乘以<strong>1.5</strong>。上面有<strong>3</strong>台服务器，每台有<strong>4</strong>核，因此这里设置为<strong>18</strong>。</p>
+
+<p>为了获得最优值，很可能需要反复实验、测试。</p>
+
+<p>方法二：修改<strong>configure</strong>文件</p>
+
+<p>如果您的<strong>makefile</strong>文件由<strong>automake</strong>产生，那么在运行<code>./configure</code>时得加上参数，变为：</p>
+
+<pre><code>./configure --CXX=gethost distcc g++
+</code></pre>
+
+<p>那么生成的<strong>makefile</strong>文件将自动使用<strong>Distcc</strong>和<strong>Dmucs</strong>了。</p>
+
+<h2 id="section-3">附录：调度策略</h2>
+
+<p>根据<a href="http://dmucs.sourceforge.net/">文档</a>，<strong>Dmucs</strong>的调度策略是：</p>
+
+<p>1，<strong>Dmucs</strong>会维护几个列表（原文为<strong>tier</strong>，表示等级、阶梯），每个列表对应一个<strong>power-index</strong>，具有相同<strong>power-index</strong>值的机器会在同一个列表中。因此，上面三台服务器，<strong>192.168.1.22</strong>和<strong>192.168.1.33</strong>会在同一个列表里，<strong>192.168.1.11</strong>在一个列表里。</p>
+
+<p>2，每次获得编译任务请求时，<strong>Dmucs</strong>会优先从高<strong>power-index</strong>对应的列表里随机选一台机器。</p>
+
+<p>3，如果<strong>Dmucs</strong>获知某台机器的平均负载过高（回忆下，该信息是服务器上的<strong>loadavg</strong>进程发过来的），那么会把该机器放到低一级的<strong>power-index</strong>对应的列表里。例如，<strong>192.168.1.11</strong>会被“下放”到<strong>power-index</strong>为<strong>5</strong>对应的列表里。</p>
+
+<p>4，如果某台机器的平均负载过高超过五分钟，那么该机器会被暂时雪藏，不会给它分发编译任务，直到它的负载下降到正常水平。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[利用Distcc和Dmucs构建大规模、分布式C++编译环境(上)]]></title>
+    <link href="http://www.yebangyu.org/blog/2015/11/23/build-distributed-compilation-ev/"/>
+    <updated>2015-11-23T22:48:32+08:00</updated>
+    <id>http://www.yebangyu.org/blog/2015/11/23/build-distributed-compilation-ev</id>
+    <content type="html"><![CDATA[<p>如果您的<strong>C++</strong>项目非常庞大，含有<strong>1000</strong>个<strong>.h</strong>文件，<strong>2000</strong>个<strong>.cpp</strong>文件，那么我敢打赌，每次编译所花的时间，都足够您喝<strong>3000</strong>杯咖啡了。如何加快编译速度？</p>
+
+<p><strong>Distcc</strong>是开源的用于搭建分布式编译环境的利器，它通过利用多台机器的资源，并行编译，来解决这个棘手的问题。然而，它的调度算法过于简单，不大合理，因此我们利用<strong>DMUCS</strong>提供的调度功能，来搭建一个相对完美的分布式编译平台。本文，我们首先介绍如何（单独）使用<strong>Distcc</strong>来加速编译，下一篇介绍如何组合使用<strong>Distcc</strong>+<strong>DMUCS</strong>来做进一步的完善和优化。</p>
+
+<p>话不多说，我们的编译平台包括：</p>
+
+<!--more-->
+
+<p>开发机（<strong>Client</strong>）：这一台机器上有我们的项目、工程文件、代码，平时我们在这台机器上写代码，要编译的对象也在这台机器上。机器<strong>IP</strong>为<strong>192.168.1.99</strong></p>
+
+<p>服务器（<strong>Server</strong>）：负责编译的机器，一共有<strong>3</strong>台。<strong>IP</strong>分别为<strong>192.168.1.11</strong>,<strong>192.168.1.22</strong>,<strong>192.168.1.33</strong>.</p>
+
+<p>调度器（<strong>Scheduler</strong>）：调度程序所在的机器，负责把编译任务合理的派发到编译机器（服务器）的编译程序上。<strong>IP</strong>为<strong>192.168.1.88</strong>。这台机器的部署和配置，我们留到下一篇博文介绍。</p>
+
+<p>以上所有机器都是安装的<strong>Ubuntu 14.04</strong>操作系统。</p>
+
+<h2 id="section">服务器</h2>
+
+<p>1，安装<strong>gcc</strong></p>
+
+<pre><code>sudo apt-get install gcc
+</code></pre>
+
+<p>2，安装<strong>Distcc</strong></p>
+
+<pre><code>sudo apt-get install distcc
+</code></pre>
+
+<p>安装后可以得到两个二进制文件，<strong>distccd</strong>和<strong>distcc</strong>。前者主要负责网络数据处理，后者可以认为是<strong>g++</strong>的前端，调用<strong>g++</strong>进行编译。</p>
+
+<p>3，配置<strong>Distcc</strong></p>
+
+<p>打开<code>/etc/default/distcc</code>，设置如下配置项：</p>
+
+<pre><code>STARTDISTCC="true"  
+ALLOWEDNETS="127.0.0.1 192.168.1.0/24"
+LISTENER="0.0.0.0"
+</code></pre>
+
+<p>第一行设置开机就启动<strong>distccd</strong></p>
+
+<p>第二行设置允许利用本机进行编译的开发机</p>
+
+<p>第三行设置监听的网络</p>
+
+<p>4，启动<strong>distccd</strong></p>
+
+<pre><code>sudo service distcc start
+</code></pre>
+
+<p>经过以上配置，每次机器开机，都会自动运行<strong>distccd</strong>。</p>
+
+<p>运行如下命令确认下：</p>
+
+<pre><code>ps -aux | grep distccd
+</code></pre>
+
+<p>如果看到类似的输出，说明一切OK了。</p>
+
+<pre><code>distccd   3457  0.0  0.0   3260   144 ?        SNs  23:33   0:00 /usr/bin/distccd --pid-file=/var/run/distccd.pid --log-file=/var/log/distccd.log --daemon --allow 127.0.0.1 --listen 0.0.0.0 --nice 10
+distccd   3458  0.0  0.0   3260   144 ?        SN   23:33   0:00 /usr/bin/distccd --pid-file=/var/run/distccd.pid --log-file=/var/log/distccd.log --daemon --allow 127.0.0.1 --listen 0.0.0.0 --nice 10
+distccd   3461  0.0  0.0   3260   144 ?        SN   23:33   0:00 /usr/bin/distccd --pid-file=/var/run/distccd.pid --log-file=/var/log/distccd.log --daemon --allow 127.0.0.1 --listen 0.0.0.0 --nice 10
+</code></pre>
+
+<h2 id="section-1">开发机</h2>
+
+<p>1，安装<strong>Distcc</strong></p>
+
+<p>当然啦，我们假设您的开发机上已经安装<strong>gcc</strong>了。</p>
+
+<p>2，设置编译资源</p>
+
+<p>这一步是指定哪些机器（也就是上面的<strong>Server</strong>）来负责编译工作。</p>
+
+<pre><code>export DISTCC_HOSTS="192.168.1.11 192.168.1.22 192.168.1.33"
+</code></pre>
+
+<p>每台机器的<strong>IP</strong>之间用空格隔开。</p>
+
+<p>如果机器很多，那么这样填写可能不大方便，可以在<code>/etc/distcc/hosts</code>里添加。</p>
+
+<p>这两种方法可以任选一种，如果您两种都用，那么<strong>Distcc</strong>只认<strong>DISTCC_HOSTS</strong>值。</p>
+
+<p>3，应用<strong>Distcc</strong></p>
+
+<p>应用<strong>Distcc</strong>来编译代码有几种方法：</p>
+
+<p>方法一：修改<strong>makefile</strong>中的<code>CXX</code>的值</p>
+
+<p>将<strong>makefile</strong>文件中的这一行</p>
+
+<pre><code>CXX = g++ 
+</code></pre>
+
+<p>改为</p>
+
+<pre><code>CXX = distcc g++
+</code></pre>
+
+<p>然后运行<code>make -j18</code>即可。这里的<strong>18</strong>，为所有服务器的<strong>CPU Cores</strong>的数量乘以<strong>1.5</strong>。上面有3台服务器，每台有<strong>4</strong>核，因此这里设置为<strong>18</strong>。</p>
+
+<p>为了获得最优值，很可能需要反复实验、测试。</p>
+
+<p>方法二：修改<strong>configure</strong>文件</p>
+
+<p>如果您的<strong>makefile</strong>文件由<strong>automake</strong>产生，那么在运行<code>./configure</code>时得加上参数，变为：</p>
+
+<pre><code>./configure --CXX=distcc g++
+</code></pre>
+
+<p>那么生成的<strong>makefile</strong>文件将自动使用<strong>Distcc</strong>了。</p>
+
+<p>如果不出意外，编译速度已经大大提升了。然而，还有提高的空间，欲知详情，请看<a href="http://www.yebangyu.org/blog/2015/11/30/build-distributed-compilation-env/">下篇</a>分解。</p>
+]]></content>
+  </entry>
+  
+</feed>
